@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -154,19 +155,27 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
               ],
             ),
           ),
-          // Keeps the clock readable over whatever scrolls under it.
+          // Keeps the clock readable over whatever scrolls under it; at the top the cover's own
+          // scrim does that, so this one fades in only once the page moves.
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             height: MediaQuery.paddingOf(context).top + 12,
-            child: const IgnorePointer(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xE609090B), Color(0x0009090B)],
+            child: IgnorePointer(
+              child: ListenableBuilder(
+                listenable: _scroll,
+                builder: (_, child) => Opacity(
+                  opacity: _scroll.hasClients ? (_scroll.offset / 120).clamp(0.0, 1.0) : 0,
+                  child: child,
+                ),
+                child: const DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xE609090B), Color(0x0009090B)],
+                    ),
                   ),
                 ),
               ),
@@ -197,7 +206,7 @@ class _Player extends StatelessWidget {
     final top = MediaQuery.paddingOf(context).top;
     const white = Colors.white;
 
-    return Padding(
+    final content = Padding(
       padding: EdgeInsets.only(top: top + 4, bottom: MediaQuery.paddingOf(context).bottom + 8),
       child: Column(
         children: [
@@ -271,48 +280,18 @@ class _Player extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               // Swipe the cover sideways to change station.
+              behavior: HitTestBehavior.opaque,
               onHorizontalDragEnd: (d) {
                 final v = d.primaryVelocity ?? 0;
                 if (v.abs() < 300) return;
                 v < 0 ? radio.skipToNext() : radio.skipToPrevious();
               },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(28, 16, 28, 20),
-                child: AnimatedSwitcher(
-                  duration: Motion.base,
-                  switchInCurve: Motion.out,
-                  child: lyrics != null
-                      ? LyricsView(key: const ValueKey('lyrics'), lyrics: lyrics!)
-                      : Center(
-                          key: const ValueKey('art'),
-                          child: ValueListenableBuilder<bool>(
-                            valueListenable: radio.wantPlaying,
-                            builder: (_, playing, _) => AnimatedScale(
-                              scale: playing ? 1 : 0.86,
-                              duration: Motion.slow,
-                              curve: Motion.out,
-                              child: AspectRatio(
-                                aspectRatio: 1,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color(0xD9000000),
-                                        blurRadius: 80,
-                                        offset: Offset(0, 30),
-                                        spreadRadius: -20,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Artwork(t?.artworkUrl, radius: 14, iconSize: 56),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                ),
-              ),
+              child: lyrics != null
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(28, 16, 28, 20),
+                      child: LyricsView(key: const ValueKey('lyrics'), lyrics: lyrics!),
+                    )
+                  : const SizedBox.expand(),
             ),
           ),
           Padding(
@@ -443,6 +422,79 @@ class _Player extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+
+    // The cover runs edge to edge from the top of the screen and melts into its own glow
+    // (Apple Music's full-bleed player). With lyrics up, the glow alone is the backdrop.
+    return LayoutBuilder(
+      builder: (context, box) {
+        // Down to just above the title, as square as that allows: on a tall phone the sides of
+        // the cover are trimmed a little (never more than a quarter), on a wide one it stays square.
+        final art = (box.maxHeight - 290).clamp(min(box.maxWidth, box.maxHeight * 0.5), box.maxWidth * 1.35).toDouble();
+        return Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: art,
+              child: AnimatedOpacity(
+                opacity: lyrics == null ? 1 : 0,
+                duration: Motion.slow,
+                curve: Motion.out,
+                child: _BleedArt(url: t?.artworkUrl),
+              ),
+            ),
+            // Keeps the header readable on a bright cover.
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: top + 150,
+              child: const IgnorePointer(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Color(0xB3000000), Color(0x66000000), Color(0x00000000)],
+                      stops: [0, 0.55, 1],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            content,
+          ],
+        );
+      },
+    );
+  }
+}
+
+/// The cover, full width and square, cross-fading on a new song and fading out at its
+/// lower edge into whatever sits behind it.
+class _BleedArt extends StatelessWidget {
+  const _BleedArt({this.url});
+  final String? url;
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      blendMode: BlendMode.dstIn,
+      shaderCallback: (rect) => const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Colors.white, Colors.white, Color(0x00FFFFFF)],
+        stops: [0, 0.7, 1],
+      ).createShader(rect),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 600),
+        layoutBuilder: (current, previous) => Stack(fit: StackFit.expand, children: [...previous, ?current]),
+        child: url == null
+            ? const SizedBox.expand(key: ValueKey('none'))
+            : Artwork(url, key: ValueKey(url), radius: 0, fit: BoxFit.cover, iconSize: 56),
       ),
     );
   }
