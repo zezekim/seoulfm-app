@@ -108,10 +108,7 @@ struct NowPlayingView: View {
       if let art = entry.art {
         Image(uiImage: art).resizable().aspectRatio(contentMode: .fill)
       } else {
-        ZStack {
-          entry.accent.opacity(0.35)
-          Image(systemName: "radio").font(.system(size: 28, weight: .semibold)).foregroundStyle(.white.opacity(0.7))
-        }
+        StationCover(accent: entry.accent)
       }
     }
   }
@@ -153,6 +150,31 @@ struct NowPlayingView: View {
           LinearGradient(colors: [entry.accent.opacity(0.35), .clear], startPoint: .leading, endPoint: .trailing)
         }
       }
+    }
+  }
+}
+
+/// The cover before there is a song's (first install, offline): SeoulFM's monogram on the
+/// station's colour, Pop!'s pink by default, as the app icon has it.
+struct StationCover: View {
+  let accent: Color
+  var body: some View {
+    GeometryReader { g in
+      let side = min(g.size.width, g.size.height)
+      ZStack {
+        accent
+        LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .topLeading, endPoint: .bottomTrailing)
+        RadialGradient(colors: [.white.opacity(0.22), .clear], center: .topLeading, startRadius: 0, endRadius: side)
+        Text("SFM")
+          .font(.system(size: side * 0.3, weight: .black))
+          .kerning(-side * 0.012)
+          .foregroundStyle(.white)
+          .minimumScaleFactor(0.3)
+          .lineLimit(1)
+          .padding(side * 0.1)
+          .shadow(color: .black.opacity(0.25), radius: side * 0.04, y: side * 0.02)
+      }
+      .frame(width: g.size.width, height: g.size.height)
     }
   }
 }

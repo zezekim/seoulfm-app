@@ -55,10 +55,7 @@ private struct Cover: View {
     if let file, let url = RadioActivityArt.url(file), let image = UIImage(contentsOfFile: url.path) {
       Image(uiImage: image).resizable().aspectRatio(contentMode: .fill)
     } else {
-      ZStack {
-        argbColor(accent).opacity(0.4)
-        Image(systemName: "radio").foregroundStyle(.white.opacity(0.8))
-      }
+      StationCover(accent: argbColor(accent))
     }
   }
 }
