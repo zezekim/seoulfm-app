@@ -11,4 +11,9 @@ fi
 for tag in "${TAGS[@]}"; do
   echo "== $tag"
   tool/store_screenshots.sh "$DEVICE" "$tag" "$OUT"
+  # A run can fail on what happens to be on air (no lyrics, a slow cover): one retry.
+  if [ "$(ls "$OUT" | grep -c "^$tag-[0-9]")" -lt 6 ]; then
+    echo "== $tag (retry)"
+    tool/store_screenshots.sh "$DEVICE" "$tag" "$OUT"
+  fi
 done
