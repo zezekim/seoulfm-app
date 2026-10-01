@@ -1,1 +1,4 @@
 #include "Generated.xcconfig"
+
+// The app's bundle id; a personal test build overrides it (SFM_BUNDLE_ID=... on the command line).
+SFM_BUNDLE_ID = com.seoulfm.seoulfm

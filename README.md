@@ -35,6 +35,22 @@ every REST call returns 401 and only the tuned station's live feed works.
 
 `flutter analyze` and `flutter test` must pass. `flutter gen-l10n` runs on `pub get`.
 
+### On your own iPhone (free Apple ID)
+
+A personal team can't use the real bundle id, CarPlay or the App Group, so build with a
+personal id and no entitlements (the widget then shows placeholder data):
+
+```bash
+flutter build ios --config-only --release --dart-define-from-file=dart-defines.json
+cd ios && xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release \
+  -destination 'id=<device udid>' -derivedDataPath ../build/device -allowProvisioningUpdates \
+  DEVELOPMENT_TEAM=<team id> SFM_BUNDLE_ID=com.seoulfm.dev.<you> CODE_SIGN_ENTITLEMENTS=Runner/Dev.entitlements build
+xcrun devicectl device install app --device <device udid> ../build/device/Build/Products/Release-iphoneos/Runner.app
+```
+
+Then trust the developer on the phone (Settings → General → VPN & Device Management). Free
+builds expire after 7 days.
+
 ## How it is built
 
 ```
