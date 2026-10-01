@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/data/channels.dart';
@@ -17,7 +18,7 @@ class HomeWidgets {
     if (kIsWeb) return;
     final data = <String, Object?>{
       'stationKey': channel.key,
-      'stationName': 'SeoulFM ${channel.name}',
+      'stationName': isolate('SeoulFM ${channel.rawName}'),
       'title': track?.displayTitle,
       'artist': track?.displayArtist,
       'artUrl': track?.artworkUrl,

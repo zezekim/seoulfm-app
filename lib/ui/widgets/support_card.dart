@@ -21,12 +21,12 @@ class SupportCard extends StatelessWidget {
       builder: (context, _) {
         final fill = forWhiteText(Color.lerp(accent, Colors.black, 0.35)!);
         return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 4),
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 24, 16, 4),
           child: Pressable(
             scale: 0.98,
             onTap: Nav.openSupport,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(18, 16, 14, 16),
+              padding: const EdgeInsetsDirectional.fromSTEB(18, 16, 14, 16),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,

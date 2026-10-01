@@ -35,7 +35,7 @@ class SongScreen extends StatelessWidget {
                 child: AspectRatio(aspectRatio: 1, child: Artwork(t.artworkUrl ?? track.artworkUrl, radius: Radii.lg, iconSize: 48)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

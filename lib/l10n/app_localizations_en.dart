@@ -647,4 +647,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get supportSubscriptionTerms =>
       'Monthly support renews automatically until cancelled in your store account settings.';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get languageSystem => 'Use system language';
 }

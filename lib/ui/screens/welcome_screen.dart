@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -72,10 +73,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         body: Stack(
           children: [
             // A soft glow in the station colour behind everything.
-            Positioned(
+            PositionedDirectional(
               top: -160,
-              left: -80,
-              right: -80,
+              start: -80,
+              end: -80,
               height: 520,
               child: DecoratedBox(
                 decoration: BoxDecoration(
@@ -266,7 +267,7 @@ class _Pick extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(8, 6, 8, 16),
+            padding: const EdgeInsetsDirectional.fromSTEB(8, 6, 8, 16),
             child: Text(context.l.pickStationsBody, style: TextStyle(color: Colors.white.withValues(alpha: 0.7))),
           ),
           Expanded(
@@ -314,7 +315,7 @@ class _PickTile extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     button: true,
     selected: selected,
-    label: 'SeoulFM ${channel.name}',
+    label: isolate('SeoulFM ${channel.rawName}'),
     child: Pressable(
       onTap: onTap,
       child: AnimatedContainer(
@@ -328,15 +329,15 @@ class _PickTile extends StatelessWidget {
         child: Stack(
           children: [
             if (art != null)
-              Positioned(
-                right: -10,
+              PositionedDirectional(
+                end: -10,
                 bottom: -8,
                 child: Transform.rotate(angle: 0.4, child: Artwork(art, size: 60, radius: 6)),
               ),
-            Positioned(
-              left: 12,
+            PositionedDirectional(
+              start: 12,
               top: 10,
-              right: 30,
+              end: 30,
               child: Text(
                 channel.name,
                 maxLines: 1,
@@ -344,9 +345,9 @@ class _PickTile extends StatelessWidget {
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.white),
               ),
             ),
-            Positioned(
+            PositionedDirectional(
               top: 8,
-              right: 8,
+              end: 8,
               child: AnimatedScale(
                 scale: selected ? 1 : 0,
                 duration: Motion.base,

@@ -6,6 +6,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/wall_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/widgets/language_picker.dart';
 import 'package:seoulfm/ui/widgets/support_card.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 import 'package:seoulfm/ui/icons.dart';
@@ -53,6 +54,19 @@ class MoreScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
+              ListTile(
+                leading: const Icon(AppIcons.language),
+                title: Text(l.language),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(languageName(app.locale) ?? l.languageSystem, style: TextStyle(color: c.muted, fontSize: 13)),
+                    const SizedBox(width: 4),
+                    Icon(AppIcons.next, color: c.muted, size: 18),
+                  ],
+                ),
+                onTap: () => pickLanguage(context),
+              ),
               // The time left when a timer runs, nothing (and no repeated label) when not.
               ValueListenableBuilder<DateTime?>(
                 valueListenable: app.radio.sleepAt,

@@ -172,7 +172,7 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 26, trailing == null ? 16 : 4, 10),
+      padding: EdgeInsetsDirectional.fromSTEB(16, 26, trailing == null ? 16 : 4, 10),
       child: Row(
         children: [
           Expanded(
@@ -195,7 +195,7 @@ class ShelfTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.sfm;
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, 28, trailing == null ? 16 : 4, 12),
+      padding: EdgeInsetsDirectional.fromSTEB(16, 28, trailing == null ? 16 : 4, 12),
       child: Row(
         children: [
           Expanded(
@@ -441,7 +441,7 @@ class TrackRow extends StatelessWidget {
       background: Container(
         color: accent,
         alignment: AlignmentDirectional.centerStart,
-        padding: const EdgeInsets.only(left: 24),
+        padding: const EdgeInsetsDirectional.only(start: 24),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -809,7 +809,7 @@ class PillSegmented<T> extends StatelessWidget {
                   return AnimatedPadding(
                     duration: Motion.base,
                     curve: Motion.out,
-                    padding: EdgeInsets.only(left: w * index, right: w * (keys.length - 1 - index)),
+                    padding: EdgeInsetsDirectional.only(start: w * index, end: w * (keys.length - 1 - index)),
                     child: DecoratedBox(
                       decoration: BoxDecoration(color: c.text, borderRadius: BorderRadius.circular(99)),
                     ),
@@ -921,10 +921,10 @@ SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWid
         final t = ((box.maxHeight - min) / large).clamp(0.0, 1.0); // 1 = fully expanded
         return Stack(
           children: [
-            Positioned(
+            PositionedDirectional(
               top: top,
-              left: 56,
-              right: 56,
+              start: 56,
+              end: 56,
               height: kToolbarHeight,
               child: Center(
                 child: Opacity(
@@ -938,14 +938,14 @@ SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWid
                 ),
               ),
             ),
-            Positioned(
-              left: 16,
-              right: 16,
+            PositionedDirectional(
+              start: 16,
+              end: 16,
               bottom: bottomHeight + 6,
               child: Opacity(
                 opacity: t,
                 child: Transform.scale(
-                  alignment: Alignment.bottomLeft,
+                  alignment: AlignmentDirectional.bottomStart,
                   scale: 0.9 + 0.1 * t,
                   child: Text(
                     title,

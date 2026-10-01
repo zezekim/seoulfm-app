@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/cover_colors.dart';
@@ -33,7 +34,7 @@ class MiniPlayer extends StatelessWidget {
     const white = Colors.white;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 6),
+      padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 6),
       child: Pressable(
         scale: 0.98,
         onTap: () => Nav.showNowPlaying(context),
@@ -49,7 +50,7 @@ class MiniPlayer extends StatelessWidget {
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 4, 10),
+                padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 4, 10),
                 child: Row(
                   children: [
                     Hero(
@@ -62,7 +63,7 @@ class MiniPlayer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            t?.displayTitle ?? 'SeoulFM ${channel.name}',
+                            t?.displayTitle ?? isolate('SeoulFM ${channel.rawName}'),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: white),
@@ -74,7 +75,7 @@ class MiniPlayer extends StatelessWidget {
                                 valueListenable: radio.losslessActive,
                                 builder: (_, lossless, _) => lossless
                                     ? const Padding(
-                                        padding: EdgeInsets.only(right: 6),
+                                        padding: EdgeInsetsDirectional.only(end: 6),
                                         child: QualityPill(lossless: true, compact: true),
                                       )
                                     : const SizedBox.shrink(),
@@ -82,7 +83,7 @@ class MiniPlayer extends StatelessWidget {
                               if (channel.onAir) ...[LiveDot(color: white, size: 5), const SizedBox(width: 5)],
                               Flexible(
                                 child: Text(
-                                  t == null ? channel.tagline : '${t.displayArtist} · ${channel.name}',
+                                  t == null ? channel.localTagline : '${t.displayArtist} · ${channel.name}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontSize: 12.5, color: white.withValues(alpha: 0.7)),
@@ -103,7 +104,7 @@ class MiniPlayer extends StatelessWidget {
                   ],
                 ),
               ),
-              const Positioned(left: 10, right: 10, bottom: 0, child: _Hairline()),
+              const PositionedDirectional(start: 10, end: 10, bottom: 0, child: _Hairline()),
             ],
           ),
         ),

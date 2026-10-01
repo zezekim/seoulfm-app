@@ -351,5 +351,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "language": "Language",
+  "languageSystem": "Use system language"
 }

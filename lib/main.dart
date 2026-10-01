@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:seoulfm/config.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/platform/screenshots.dart';
@@ -77,6 +78,7 @@ class SeoulFmApp extends StatelessWidget {
         title: 'SeoulFM',
         debugShowCheckedModeBanner: false,
         themeMode: app.themeMode,
+        locale: app.locale,
         theme: buildTheme(Brightness.light, app.accent),
         darkTheme: buildTheme(Brightness.dark, app.accent),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -86,7 +88,14 @@ class SeoulFmApp extends StatelessWidget {
         builder: (context, child) => MediaQuery.withClampedTextScaling(
           minScaleFactor: 0.9,
           maxScaleFactor: 1.35,
-          child: LaunchCurtain(child: child!),
+          child: Builder(
+            builder: (context) {
+              // Text built outside the tree (taglines on the lock screen and in the car) and
+              // script-aware typography follow the language the app resolved to.
+              AppLanguage.set(Localizations.localeOf(context), Directionality.of(context));
+              return LaunchCurtain(child: child!);
+            },
+          ),
         ),
         home: const RootShell(),
       ),

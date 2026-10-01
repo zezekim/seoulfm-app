@@ -61,8 +61,8 @@ class _NoticeCard extends StatelessWidget {
       _ => const Color(0xFF3C9DF5),
     };
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-      padding: const EdgeInsets.fromLTRB(14, 10, 8, 10),
+      margin: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(14, 10, 8, 10),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         border: Border.all(color: color.withValues(alpha: 0.35)),

@@ -271,7 +271,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
                     ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(28, 8, 28, 0),
+              padding: const EdgeInsetsDirectional.fromSTEB(28, 8, 28, 0),
               child: Column(
                 children: [
                   PlayerProgress(color: fg),

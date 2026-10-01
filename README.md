@@ -64,6 +64,18 @@ xcrun devicectl device install app --device <device udid> ../build/device/Build/
 Then trust the developer on the phone (Settings → General → VPN & Device Management). Free
 builds expire after 7 days.
 
+## Languages
+
+The app speaks the site's 20 languages: English, Korean, Spanish (Latin America and Spain),
+Brazilian Portuguese, French, German, Italian, Polish, Turkish, Russian, Kazakh, Arabic
+(right to left), Indonesian, Malay, Thai, Vietnamese, Japanese, and Simplified and Traditional
+Chinese. It follows the device, or the choice in More → Language (and Android 13+'s per-app
+language). Translations reuse the site's wording; station taglines come straight from the
+site (`python3 tool/import_station_taglines.py ../seoulfm-site`). To change a string, edit
+`lib/l10n/app_en.arb` and the same key in every other `app_*.arb`; `flutter gen-l10n` runs on
+`pub get`. Check a language on a device with
+`integration_test/languages_test.dart --dart-define=LOCALE=<tag>`.
+
 ## How it is built
 
 ```
@@ -76,7 +88,7 @@ lib/
   state/                    the site's contexts as ChangeNotifiers
   platform/carplay_bridge.dart
   ui/                       shell, screens, widgets
-  l10n/                     English and Korean strings (ARB)
+  l10n/                     the site's 20 languages (ARB); station taglines in data/
 ios/Runner/SceneDelegate.swift   phone scene, CarPlay scene, the bridge
 ```
 
@@ -149,5 +161,4 @@ here: the car shows only system templates.
 ## Not in this version
 
 Chromecast, the equalizer and visualizer, the marathon "Speed it up" boost (hidden on the site
-too until the API ships it), push notifications, featured-artist heroes, and the other 18 site
-languages (English and Korean are in; add an ARB per language).
+too until the API ships it), push notifications, featured-artist heroes.

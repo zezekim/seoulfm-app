@@ -3,6 +3,7 @@
 // always carries every field, so absent and null mean the same here.
 
 import 'package:seoulfm/config.dart';
+import 'package:seoulfm/data/app_language.dart';
 
 typedef Json = Map<String, dynamic>;
 
@@ -100,8 +101,8 @@ class Track {
 
   /// The id every endpoint takes: the UUID, else the legacy id.
   String? get id => trackId ?? legacySongId?.toString();
-  String get displayTitle => title ?? '';
-  String get displayArtist => artist ?? '';
+  String get displayTitle => isolate(title ?? '');
+  String get displayArtist => isolate(artist ?? '');
   bool get isRequest => source == 'request';
 
   factory Track.fromJson(Json j) => Track(

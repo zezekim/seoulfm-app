@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/data/app_language.dart';
+import 'package:seoulfm/data/station_taglines.dart';
 
 /// Presentation overrides on top of `GET /v3/stations` (lib/channels.ts). The line-up
 /// comes from the API; this registry only holds names, taglines, colours, streams,
@@ -118,7 +120,7 @@ const _fallbackAccent = Color(0xFFF4F4F5);
 class Channel {
   Channel({
     required this.key,
-    required this.name,
+    required String name,
     required this.tagline,
     required this.genre,
     required this.color,
@@ -129,9 +131,15 @@ class Channel {
     required this.marathon,
     required this.comingSoon,
     this.live,
-  });
+  }) : rawName = name;
 
-  final String key, name, tagline, slug, stream;
+  final String key, rawName, tagline, slug, stream;
+
+  /// The name as shown (isolated inside right-to-left text).
+  String get name => isolate(rawName);
+
+  /// The tagline in the app's language (the site's translations), else the registry's.
+  String get localTagline => stationTaglines[AppLanguage.tag]?[key] ?? stationTaglines[AppLanguage.language]?[key] ?? tagline;
   final String? genre, fallbackManifest;
   final Color color;
   final bool lossless, marathon, comingSoon;

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/data/channels.dart';
 
@@ -38,7 +39,7 @@ class CarPlayBridge {
       for (final c in channels.where((c) => c.tunable))
         {
           'key': c.key,
-          'name': 'SeoulFM ${c.name}',
+          'name': isolate('SeoulFM ${c.rawName}'),
           'detail': _detail(c, nowPlaying[c.key]?.current),
           'art': nowPlaying[c.key]?.current?.artworkUrl ?? c.live?.artworkUrl,
           'color': c.color.toARGB32(),
@@ -55,5 +56,5 @@ class CarPlayBridge {
     } catch (_) {}
   }
 
-  String _detail(Channel c, Track? t) => t == null ? c.tagline : '${t.displayTitle} · ${t.displayArtist}';
+  String _detail(Channel c, Track? t) => t == null ? c.localTagline : '${t.displayTitle} · ${t.displayArtist}';
 }

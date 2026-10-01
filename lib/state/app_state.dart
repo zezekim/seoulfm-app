@@ -64,10 +64,32 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     Session.prefs.setStringList('seoulfm-favourites', keys);
   }
 
+  /// The language the listener picked in Settings; null follows the system.
+  Locale? locale;
+
+  void setLocale(Locale? l) {
+    locale = l;
+    if (l == null) {
+      Session.prefs.remove('seoulfm-locale');
+    } else {
+      Session.prefs.setString('seoulfm-locale', l.toLanguageTag());
+    }
+    notifyListeners();
+  }
+
   void finishOnboarding() => Session.prefs.setBool('seoulfm-onboarded', true);
 
   void start() {
     favourites.value = Session.prefs.getStringList('seoulfm-favourites') ?? const [];
+    final tag = Session.prefs.getString('seoulfm-locale');
+    if (tag != null) {
+      final parts = tag.split('-');
+      locale = parts.length == 1
+          ? Locale(parts[0])
+          : parts[1].length == 4
+          ? Locale.fromSubtags(languageCode: parts[0], scriptCode: parts[1])
+          : Locale(parts[0], parts[1]);
+    }
     themeMode = switch (Session.prefs.getString('seoulfm-theme')) {
       'light' => ThemeMode.light,
       'system' => ThemeMode.system,

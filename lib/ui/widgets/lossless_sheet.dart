@@ -15,7 +15,7 @@ Future<void> showLosslessSheet(BuildContext context, AppState app, LosslessPromp
       final english = Localizations.localeOf(context).languageCode == 'en';
       return SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+          padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,

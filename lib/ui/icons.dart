@@ -29,6 +29,7 @@ abstract final class AppIcons {
   static const IconData info = LucideIcons.info;
   static const IconData like = LucideIcons.thumbsUp;
   static const IconData link = LucideIcons.link;
+  static const IconData language = LucideIcons.languages;
   static const IconData lyrics = LucideIcons.micVocal;
   static const IconData mail = LucideIcons.mail;
   static const IconData more = LucideIcons.ellipsis;

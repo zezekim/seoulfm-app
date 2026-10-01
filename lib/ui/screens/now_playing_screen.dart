@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/platform/output_devices.dart';
 import 'package:seoulfm/platform/screenshots.dart';
@@ -202,10 +203,10 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
           ),
           // Keeps the clock readable over whatever scrolls under it; at the top the cover's own
           // scrim does that, so this one fades in only once the page moves.
-          Positioned(
+          PositionedDirectional(
             top: 0,
-            left: 0,
-            right: 0,
+            start: 0,
+            end: 0,
             height: MediaQuery.paddingOf(context).top + 12,
             child: IgnorePointer(
               child: ListenableBuilder(
@@ -277,7 +278,7 @@ class _Player extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w600,
-                                letterSpacing: 2,
+                                letterSpacing: tracking(2),
                                 color: white.withValues(alpha: 0.5),
                               ),
                             ),
@@ -290,7 +291,7 @@ class _Player extends StatelessWidget {
                                 ],
                                 Flexible(
                                   child: Text(
-                                    'SeoulFM ${channel.name}',
+                                    isolate('SeoulFM ${channel.rawName}'),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: white),
@@ -347,7 +348,7 @@ class _Player extends StatelessWidget {
                                 Flexible(
                                   child: Text(
                                     t?.displayTitle ??
-                                        (np.station?.onAir == false ? context.l.offAir : 'SeoulFM ${channel.name}'),
+                                        (np.station?.onAir == false ? context.l.offAir : isolate('SeoulFM ${channel.rawName}')),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -364,7 +365,7 @@ class _Player extends StatelessWidget {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              t?.displayArtist ?? channel.tagline,
+                              t?.displayArtist ?? channel.localTagline,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontSize: 16, color: white.withValues(alpha: 0.6)),
@@ -404,7 +405,7 @@ class _Player extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
-                                    letterSpacing: 1.5,
+                                    letterSpacing: tracking(1.5),
                                     color: white.withValues(alpha: 0.6),
                                   ),
                                 ),
@@ -480,10 +481,10 @@ class _Player extends StatelessWidget {
             .floorToDouble();
         return Stack(
           children: [
-            Positioned(
+            PositionedDirectional(
               top: 0,
-              left: 0,
-              right: 0,
+              start: 0,
+              end: 0,
               height: art,
               child: Hero(
                 tag: playerCoverHero,
@@ -491,10 +492,10 @@ class _Player extends StatelessWidget {
               ),
             ),
             // Keeps the header readable on a bright cover.
-            Positioned(
+            PositionedDirectional(
               top: 0,
-              left: 0,
-              right: 0,
+              start: 0,
+              end: 0,
               height: top + 150,
               child: const IgnorePointer(
                 child: DecoratedBox(
@@ -739,8 +740,8 @@ class _StationRow extends StatelessWidget {
                         ),
                       ),
               ),
-              Positioned(
-                left: 4,
+              PositionedDirectional(
+                start: 4,
                 bottom: 4,
                 child: Container(
                   width: 8,
@@ -764,7 +765,7 @@ class _StationRow extends StatelessWidget {
               ? context.l.comingSoon
               : track != null
               ? '${track!.displayTitle} · ${track!.displayArtist}'
-              : channel.tagline,
+              : channel.localTagline,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(color: c.muted),
@@ -799,7 +800,7 @@ class _LyricsCard extends StatelessWidget {
       icon: Icon(icon, size: 20, color: fg),
     );
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 20, 16, 0),
       child: Pressable(
         scale: 0.98,
         onTap: onExpand,
@@ -811,7 +812,7 @@ class _LyricsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 14, 12, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 14, 12, 0),
                 child: Row(
                   children: [
                     Expanded(
@@ -884,8 +885,8 @@ class _UpNext extends StatelessWidget {
                           children: [
                             Artwork(t.artworkUrl, radius: Radii.md),
                             if (mins != null && mins > 0)
-                              Positioned(
-                                right: 6,
+                              PositionedDirectional(
+                                end: 6,
                                 bottom: 6,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -904,9 +905,9 @@ class _UpNext extends StatelessWidget {
                                 ),
                               ),
                             if (t.isRequest)
-                              Positioned(
+                              PositionedDirectional(
                                 top: 6,
-                                left: 6,
+                                start: 6,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                                   decoration: BoxDecoration(

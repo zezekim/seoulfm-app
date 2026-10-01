@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:seoulfm/data/app_language.dart';
 
 /// The site's design tokens (`app/globals.css`): a neutral base, near-black surfaces,
 /// hairline borders, off-white type, and one accent (the tuned channel's colour, or
@@ -206,4 +207,4 @@ Color readableOn(Color c) => c.computeLuminance() > 0.3 ? const Color(0xFF09090B
 
 /// Eyebrow label: tiny, tracked, uppercase.
 TextStyle eyebrow(BuildContext context, {Color? color}) =>
-    TextStyle(fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 2, color: color ?? context.sfm.muted);
+    TextStyle(fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: tracking(2), color: color ?? context.sfm.muted);

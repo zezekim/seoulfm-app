@@ -184,5 +184,7 @@
   "supportFreeWays": "후원이 어려우신가요? 듣는 것만으로도 힘이 됩니다. 곡을 신청하고, 사연을 남기고, 좋아할 친구 한 명에게 SeoulFM을 알려 주세요.",
   "supportCardTitle": "SeoulFM을 무료로 지켜 주세요",
   "supportCardBody": "광고도, 유료 결제도 없이 — 여러분 같은 청취자 덕분에 방송합니다.",
-  "supportSubscriptionTerms": "월간 후원은 스토어 계정 설정에서 해지할 때까지 자동으로 갱신됩니다."
+  "supportSubscriptionTerms": "월간 후원은 스토어 계정 설정에서 해지할 때까지 자동으로 갱신됩니다.",
+  "language": "언어",
+  "languageSystem": "시스템 언어 사용"
 }

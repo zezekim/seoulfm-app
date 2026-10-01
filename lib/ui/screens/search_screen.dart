@@ -60,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final c = context.sfm;
     final field = Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
       child: TextField(
         controller: _q,
         onChanged: _onChanged,
@@ -96,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
           builder: (context) => _results == null
               ? _list(context, [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                    padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 0),
                     child: Text(context.l.searchIntro, style: TextStyle(color: c.muted, fontSize: 13)),
                   ),
                   SectionHeader(context.l.newSongs, icon: AppIcons.fresh),

@@ -419,7 +419,7 @@ class _LinePickerState extends State<_LinePicker> {
       builder: (context, scroll) => Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 8, 4),
+            padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 8, 4),
             child: Row(
               children: [
                 Expanded(

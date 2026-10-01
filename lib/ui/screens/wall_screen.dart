@@ -61,7 +61,7 @@ class _WallScreenState extends State<WallScreen> {
               );
             }
             return ListView.separated(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.paddingOf(context).bottom + 16),
+              padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, MediaQuery.paddingOf(context).bottom + 16),
               itemCount: items.length,
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (_, i) {

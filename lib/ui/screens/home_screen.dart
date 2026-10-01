@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -68,10 +69,10 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             // Keeps the clock readable over whatever scrolls under it.
-            Positioned(
+            PositionedDirectional(
               top: 0,
-              left: 0,
-              right: 0,
+              start: 0,
+              end: 0,
               height: MediaQuery.paddingOf(context).top + 8,
               child: IgnorePointer(
                 child: DecoratedBox(
@@ -126,7 +127,7 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.sfm;
     return Padding(
-      padding: EdgeInsets.fromLTRB(16, MediaQuery.paddingOf(context).top + 12, 16, 0),
+      padding: EdgeInsetsDirectional.fromSTEB(16, MediaQuery.paddingOf(context).top + 12, 16, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -202,7 +203,7 @@ class _FeaturedCarouselState extends State<_FeaturedCarousel> {
         padEnds: false,
         itemCount: widget.channels.length,
         itemBuilder: (_, i) => Padding(
-          padding: EdgeInsets.only(left: i == 0 ? 16 : 6, right: i == widget.channels.length - 1 ? 16 : 6),
+          padding: EdgeInsetsDirectional.only(start: i == 0 ? 16 : 6, end: i == widget.channels.length - 1 ? 16 : 6),
           child: _FeaturedCard(channel: widget.channels[i]),
         ),
       ),
@@ -226,7 +227,7 @@ class _FeaturedCard extends StatelessWidget {
     return Semantics(
       button: true,
       selected: tuned,
-      label: 'SeoulFM ${channel.name}. ${channel.tagline}',
+      label: 'SeoulFM ${channel.name}. ${channel.localTagline}',
       child: Pressable(
         scale: 0.97,
         onTap: () => _listen(context, channel),
@@ -257,10 +258,10 @@ class _FeaturedCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
+              PositionedDirectional(
                 top: 14,
-                left: 14,
-                right: 14,
+                start: 14,
+                end: 14,
                 child: Row(
                   children: [
                     _Tag(channel: channel),
@@ -273,9 +274,9 @@ class _FeaturedCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                left: 18,
-                right: 14,
+              PositionedDirectional(
+                start: 18,
+                end: 14,
                 bottom: 16,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,7 +295,7 @@ class _FeaturedCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      channel.tagline,
+                      channel.localTagline,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: 13, height: 1.35, color: white.withValues(alpha: 0.75)),
@@ -351,7 +352,7 @@ class _Tag extends StatelessWidget {
           if (channel.onAir) ...[LiveDot(color: channel.color, size: 6), const SizedBox(width: 6)],
           Text(
             label.toUpperCase(),
-            style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: 1.6, color: Colors.white),
+            style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: tracking(1.6), color: Colors.white),
           ),
         ],
       ),
@@ -382,7 +383,7 @@ class _OnAirLine extends StatelessWidget {
           style: TextStyle(
             fontSize: 9,
             fontWeight: FontWeight.w600,
-            letterSpacing: 1.8,
+            letterSpacing: tracking(1.8),
             color: white.withValues(alpha: 0.55),
           ),
         ),
@@ -426,7 +427,7 @@ class _GenreTile extends StatelessWidget {
     return Semantics(
       button: true,
       selected: tuned,
-      label: 'SeoulFM ${channel.name}',
+      label: isolate('SeoulFM ${channel.rawName}'),
       child: Opacity(
         opacity: channel.tunable ? 1 : 0.5,
         child: Pressable(
@@ -443,8 +444,8 @@ class _GenreTile extends StatelessWidget {
               child: Stack(
                 children: [
                   if (t?.artworkUrl != null)
-                    Positioned(
-                      right: -14,
+                    PositionedDirectional(
+                      end: -14,
                       bottom: -8,
                       child: Transform.rotate(
                         angle: 0.42,
@@ -456,10 +457,10 @@ class _GenreTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                  Positioned(
+                  PositionedDirectional(
                     top: 12,
-                    left: 12,
-                    right: 36,
+                    start: 12,
+                    end: 36,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -488,18 +489,18 @@ class _GenreTile extends StatelessWidget {
                     ),
                   ),
                   if (tuned)
-                    Positioned(
+                    PositionedDirectional(
                       top: 12,
-                      right: 12,
+                      end: 12,
                       child: ValueListenableBuilder<bool>(
                         valueListenable: radio.wantPlaying,
                         builder: (_, p, _) => p ? const EqBars(height: 12) : const SizedBox.shrink(),
                       ),
                     ),
                   if (t != null)
-                    Positioned(
-                      left: 12,
-                      right: 72,
+                    PositionedDirectional(
+                      start: 12,
+                      end: 72,
                       bottom: 10,
                       child: Text(
                         t.displayTitle,
@@ -570,7 +571,7 @@ class _StationBubble extends StatelessWidget {
     return Semantics(
       button: true,
       selected: tuned,
-      label: 'SeoulFM ${channel.name}',
+      label: isolate('SeoulFM ${channel.rawName}'),
       child: Pressable(
         onTap: () => _listen(context, channel),
         child: SizedBox(

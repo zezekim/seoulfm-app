@@ -7,6 +7,7 @@ import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/session.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
@@ -134,7 +135,7 @@ class _MarathonPanelState extends State<MarathonPanel> {
       children: [
         SectionHeader(context.l.marathonOnAir, icon: AppIcons.timer),
         Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
+          padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 4),
           child: Text(context.l.marathonIntro, style: TextStyle(fontSize: 12, color: c.muted)),
         ),
         if (s.current != null) _BlockCard(block: s.current!, big: true, accent: accent),
@@ -183,7 +184,7 @@ class _MarathonPanelState extends State<MarathonPanel> {
           ),
         if (s.accepting)
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 0),
             child: OutlinedButton.icon(
               style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(46)),
               onPressed: _nominate,
@@ -228,9 +229,9 @@ class _BlockCard extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              left: 12,
-              right: 12,
+            PositionedDirectional(
+              start: 12,
+              end: 12,
               bottom: 10,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +239,7 @@ class _BlockCard extends StatelessWidget {
                   if (block.source == 'votes')
                     Text(
                       context.l.marathonVotedIn.toUpperCase(),
-                      style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 1.5, color: accent),
+                      style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: tracking(1.5), color: accent),
                     ),
                   Text(
                     block.artist.name,
@@ -298,7 +299,7 @@ class _ConfirmWriteState extends State<_ConfirmWrite> {
     final accent = context.watch<ChannelController>().active.color;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,

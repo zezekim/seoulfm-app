@@ -62,7 +62,7 @@ class _SupportScreenState extends State<SupportScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 8, 20, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -155,7 +155,7 @@ class _SupportScreenState extends State<SupportScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
                 child: Text(l.supportFreeWays, style: TextStyle(fontSize: 13.5, color: c.muted, height: 1.5)),
               ),
             ),
@@ -361,7 +361,7 @@ class _Fact extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.sfm;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 6, 20, 12),
+      padding: const EdgeInsetsDirectional.fromSTEB(20, 6, 20, 12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -398,7 +398,7 @@ class _Thanks extends StatelessWidget {
     final accent = Theme.of(context).colorScheme.secondary;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(28, 28, 28, 20),
+        padding: const EdgeInsetsDirectional.fromSTEB(28, 28, 28, 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

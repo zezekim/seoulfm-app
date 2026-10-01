@@ -5,6 +5,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
@@ -369,9 +370,9 @@ class RadioHandler extends BaseAudioHandler {
     mediaItem.add(
       MediaItem(
         id: c.key,
-        title: 'SeoulFM ${c.name}',
-        artist: c.tagline,
-        album: 'SeoulFM ${c.name}',
+        title: isolate('SeoulFM ${c.rawName}'),
+        artist: c.localTagline,
+        album: isolate('SeoulFM ${c.rawName}'),
         artUri: _stationArt(c),
       ),
     );
@@ -387,7 +388,7 @@ class RadioHandler extends BaseAudioHandler {
         id: c.key,
         title: t.displayTitle,
         artist: t.displayArtist,
-        album: 'SeoulFM ${c.name}',
+        album: isolate('SeoulFM ${c.rawName}'),
         artUri: art == null ? null : Uri.parse(art),
         extras: {'track_id': t.id},
       ),
@@ -408,8 +409,8 @@ class RadioHandler extends BaseAudioHandler {
     return MediaItem(
       id: c.key,
       title: c.name,
-      displayTitle: 'SeoulFM ${c.name}',
-      displaySubtitle: np != null ? '${np.displayTitle} · ${np.displayArtist}' : c.tagline,
+      displayTitle: isolate('SeoulFM ${c.rawName}'),
+      displaySubtitle: np != null ? '${np.displayTitle} · ${np.displayArtist}' : c.localTagline,
       artist: np?.displayArtist,
       album: c.genre,
       artUri: _stationArt(c),

@@ -49,11 +49,11 @@ class _Pill extends StatelessWidget {
     final fg = readableOn(accent);
     final playing = status.status == 'playing';
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 0, 16, 8),
       child: Pressable(
         onTap: () => Nav.openSong(status.track),
         child: Container(
-          padding: const EdgeInsets.fromLTRB(6, 6, 14, 6),
+          padding: const EdgeInsetsDirectional.fromSTEB(6, 6, 14, 6),
           decoration: BoxDecoration(
             color: accent,
             borderRadius: BorderRadius.circular(99),

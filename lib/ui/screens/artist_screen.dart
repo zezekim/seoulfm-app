@@ -70,9 +70,9 @@ class ArtistScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  left: 20,
-                  right: 20,
+                PositionedDirectional(
+                  start: 20,
+                  end: 20,
                   bottom: 14,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

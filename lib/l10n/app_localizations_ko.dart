@@ -622,4 +622,10 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get supportSubscriptionTerms =>
       '월간 후원은 스토어 계정 설정에서 해지할 때까지 자동으로 갱신됩니다.';
+
+  @override
+  String get language => '언어';
+
+  @override
+  String get languageSystem => '시스템 언어 사용';
 }
