@@ -103,7 +103,14 @@ class _Hairline extends StatefulWidget {
 }
 
 class _HairlineState extends State<_Hairline> {
-  late final Timer _t = Timer.periodic(const Duration(seconds: 1), (_) => setState(() {}));
+  late final Timer _t;
+
+  @override
+  void initState() {
+    super.initState();
+    _t = Timer.periodic(const Duration(seconds: 1), (_) => setState(() {}));
+  }
+
   @override
   void dispose() {
     _t.cancel();

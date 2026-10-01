@@ -63,7 +63,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get searchIntro => 'Search 58,000+ songs, read the lyrics, and request one to play live.';
+  String get searchIntro =>
+      'Search 58,000+ songs, read the lyrics, and request one to play live.';
 
   @override
   String get newSongs => 'New on SeoulFM';
@@ -155,13 +156,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String plays(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count plays', one: '1 play');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count plays',
+      one: '1 play',
+    );
     return '$_temp0';
   }
 
   @override
   String requestsCount(int count) {
-    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count requests', one: '1 request');
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count requests',
+      one: '1 request',
+    );
     return '$_temp0';
   }
 
@@ -169,7 +180,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newEntry => 'NEW';
 
   @override
-  String get dedicationsEmpty => 'No dedications yet. Request a song and add one.';
+  String get dedicationsEmpty =>
+      'No dedications yet. Request a song and add one.';
 
   @override
   String dedicatedBy(String name) {
@@ -295,7 +307,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get losslessFallbackNotice => 'Lossless audio uses far more data than standard streaming. Use Wi-Fi or an unlimited data plan.';
+  String get losslessFallbackNotice =>
+      'Lossless audio uses far more data than standard streaming. Use Wi-Fi or an unlimited data plan.';
 
   @override
   String get losslessAccept => 'Play lossless';
@@ -304,7 +317,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get losslessDecline => 'Use standard quality';
 
   @override
-  String get losslessFailed => 'Lossless isn’t playing, so standard quality is on.';
+  String get losslessFailed =>
+      'Lossless isn’t playing, so standard quality is on.';
 
   @override
   String get retryFlac => 'Retry FLAC';
@@ -336,13 +350,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marathonVoted => 'Vote counted';
 
   @override
-  String get marathonEmpty => 'No open nominations. Nominate an artist for the next free hour.';
+  String get marathonEmpty =>
+      'No open nominations. Nominate an artist for the next free hour.';
 
   @override
   String get marathonVotedIn => 'Voted in';
 
   @override
-  String get marathonIntro => 'One group, one full hour. Vote an artist into the next free hour.';
+  String get marathonIntro =>
+      'One group, one full hour. Vote an artist into the next free hour.';
 
   @override
   String get seeAll => 'See all';

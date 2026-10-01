@@ -39,7 +39,14 @@ class SleepTimerButton extends StatefulWidget {
 }
 
 class _SleepTimerButtonState extends State<SleepTimerButton> {
-  late final Timer _tick = Timer.periodic(const Duration(seconds: 20), (_) => setState(() {}));
+  late final Timer _tick;
+
+  @override
+  void initState() {
+    super.initState();
+    _tick = Timer.periodic(const Duration(seconds: 20), (_) => setState(() {}));
+  }
+
   @override
   void dispose() {
     _tick.cancel();

@@ -341,7 +341,14 @@ class _HeroProgress extends StatefulWidget {
 }
 
 class _HeroProgressState extends State<_HeroProgress> {
-  late final Timer _t = Timer.periodic(const Duration(seconds: 1), (_) => setState(() {}));
+  late final Timer _t;
+
+  @override
+  void initState() {
+    super.initState();
+    _t = Timer.periodic(const Duration(seconds: 1), (_) => setState(() {}));
+  }
+
   @override
   void dispose() {
     _t.cancel();

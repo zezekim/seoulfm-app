@@ -252,7 +252,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get inTheCar => '차에서 듣기';
 
   @override
-  String get carBody => 'SeoulFM은 Apple CarPlay와 Android Auto를 지원해요. 휴대폰을 연결하고 차량 화면에서 채널을 고르세요. 핸들의 다음/이전 버튼으로 채널을 바꿀 수 있어요.';
+  String get carBody =>
+      'SeoulFM은 Apple CarPlay와 Android Auto를 지원해요. 휴대폰을 연결하고 차량 화면에서 채널을 고르세요. 핸들의 다음/이전 버튼으로 채널을 바꿀 수 있어요.';
 
   @override
   String get about => 'SeoulFM 소개';
@@ -292,7 +293,8 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get losslessFallbackNotice => '무손실 음원은 일반 스트리밍보다 데이터를 훨씬 많이 사용해요. Wi-Fi나 무제한 요금제에서 들어 주세요.';
+  String get losslessFallbackNotice =>
+      '무손실 음원은 일반 스트리밍보다 데이터를 훨씬 많이 사용해요. Wi-Fi나 무제한 요금제에서 들어 주세요.';
 
   @override
   String get losslessAccept => '무손실로 듣기';
