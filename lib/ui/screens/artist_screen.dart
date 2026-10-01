@@ -111,7 +111,7 @@ class ArtistScreen extends StatelessWidget {
           slivers: [
             header(
               p.artist.name.isEmpty ? (name ?? '') : p.artist.name,
-              '${context.l.plays(p.artist.playCount)} · ${p.artist.trackCount} ${context.l.songs.toLowerCase()}',
+              '${context.l.plays(p.artist.playCount)} · ${context.l.songsCount(p.artist.trackCount)}',
               p.artist.artworkUrl,
             ),
             SliverList.list(
@@ -133,7 +133,8 @@ class ArtistScreen extends StatelessWidget {
                 if (p.albums.isNotEmpty) ...[
                   SectionHeader(context.l.albums),
                   SizedBox(
-                    height: 190,
+                    // The cover plus two lines of text, which grow with the system text size.
+                    height: 146 + MediaQuery.textScalerOf(context).scale(44),
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 16),

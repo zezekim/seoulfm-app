@@ -1197,7 +1197,7 @@ abstract class AppLocalizations {
   /// No description provided for @supportUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Support through the store opens soon. Thank you for wanting to help.'**
+  /// **'Support through the store isn’t available right now. Try again later.'**
   String get supportUnavailable;
 
   /// No description provided for @supportThanksTitle.
@@ -1325,6 +1325,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show hidden dedications'**
   String get showHiddenDedications;
+
+  /// No description provided for @verifyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn’t verify. Check your connection and try again.'**
+  String get verifyFailed;
+
+  /// No description provided for @restoreDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Your purchases are restored.'**
+  String get restoreDone;
+
+  /// No description provided for @restoreNothing.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no purchases to restore.'**
+  String get restoreNothing;
+
+  /// No description provided for @playbackFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Can’t reach the stream. Check your connection and try again.'**
+  String get playbackFailed;
+
+  /// No description provided for @audioOutput.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio output'**
+  String get audioOutput;
+
+  /// No description provided for @openPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open player'**
+  String get openPlayer;
+
+  /// No description provided for @songsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 song} other{{count} songs}}'**
+  String songsCount(int count);
+
+  /// No description provided for @stationsFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Stations'**
+  String get stationsFolder;
 }
 
 class _AppLocalizationsDelegate

@@ -622,7 +622,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Tính năng ủng hộ qua cửa hàng sẽ sớm mở. Cảm ơn bạn đã muốn giúp đỡ.';
+      'Hiện chưa thể ủng hộ qua cửa hàng. Hãy thử lại sau.';
 
   @override
   String get supportThanksTitle => 'Cảm ơn bạn';
@@ -696,4 +696,38 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Hiện lại lời nhắn đã ẩn';
+
+  @override
+  String get verifyFailed =>
+      'Không xác minh được. Hãy kiểm tra kết nối và thử lại.';
+
+  @override
+  String get restoreDone => 'Đã khôi phục giao dịch mua của bạn.';
+
+  @override
+  String get restoreNothing => 'Không có giao dịch mua nào để khôi phục.';
+
+  @override
+  String get playbackFailed =>
+      'Không kết nối được luồng phát. Hãy kiểm tra kết nối và thử lại.';
+
+  @override
+  String get audioOutput => 'Đầu ra âm thanh';
+
+  @override
+  String get openPlayer => 'Mở trình phát';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count bài hát',
+      one: '1 bài hát',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Kênh';
 }

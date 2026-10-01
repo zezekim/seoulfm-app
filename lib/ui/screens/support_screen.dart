@@ -20,6 +20,7 @@ class SupportScreen extends StatefulWidget {
 
 class _SupportScreenState extends State<SupportScreen> {
   late final SupportStore _store = context.read<AppState>().support;
+  bool _restoring = false;
 
   @override
   void initState() {
@@ -40,6 +41,20 @@ class _SupportScreenState extends State<SupportScreen> {
     showModalBottomSheet<void>(context: context, useRootNavigator: true, builder: (_) => const _Thanks());
   }
 
+  Future<void> _restore() async {
+    final messenger = ScaffoldMessenger.of(context);
+    final l = context.l;
+    setState(() => _restoring = true);
+    final r = await _store.restore();
+    if (!mounted) return;
+    setState(() => _restoring = false);
+    final text = switch (r) {
+      RestoreResult.restored => l.restoreDone,
+      RestoreResult.nothing => l.restoreNothing,
+      RestoreResult.failed => l.errorGeneric,
+    };
+    messenger.showSnackBar(SnackBar(content: Text(text)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,18 +104,20 @@ class _SupportScreenState extends State<SupportScreen> {
                     const SizedBox(height: 26),
                     if (_store.supporter) _SupporterBadge(accent: accent),
                     _Options(store: _store, accent: accent),
-                    if (_store.error != null)
+                    if (_store.failed)
                       Padding(
                         padding: const EdgeInsets.only(top: 10),
-                        child: Text(_store.error!, style: const TextStyle(color: Color(0xFFFF5A5F), fontSize: 13)),
+                        child: Text(_store.storeMessage ?? l.errorGeneric, style: const TextStyle(color: Color(0xFFFF5A5F), fontSize: 13)),
                       ),
                     // Restore and the subscription's terms only mean something once the store is up.
                     if (_store.available) ...[
                       const SizedBox(height: 10),
                       Center(
                         child: TextButton.icon(
-                          onPressed: _store.available ? _store.restore : null,
-                          icon: const Icon(AppIcons.restore, size: 16),
+                          onPressed: _restoring ? null : _restore,
+                          icon: _restoring
+                              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                              : const Icon(AppIcons.restore, size: 16),
                           label: Text(l.supportRestore),
                         ),
                       ),
@@ -194,9 +211,18 @@ class _Options extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = context.l;
     final c = context.sfm;
-    if (store.started && !store.available) {
+    // Asking the store: hold the monthly card's place so the page doesn't jump.
+    if (store.loading) {
       return Container(
-        padding: const EdgeInsets.all(16),
+        height: 104,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(color: c.surface2, borderRadius: BorderRadius.circular(Radii.lg)),
+        child: const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    }
+    if (!store.available) {
+      return Container(
+        padding: const EdgeInsetsDirectional.fromSTEB(16, 16, 8, 16),
         decoration: BoxDecoration(color: c.surface2, borderRadius: BorderRadius.circular(Radii.lg)),
         child: Row(
           children: [
@@ -205,6 +231,7 @@ class _Options extends StatelessWidget {
             Expanded(
               child: Text(l.supportUnavailable, style: TextStyle(color: c.muted, height: 1.4)),
             ),
+            TextButton(onPressed: store.start, child: Text(l.retry)),
           ],
         ),
       );

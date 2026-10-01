@@ -106,15 +106,12 @@ class _WallScreenState extends State<WallScreen> {
                               ),
                             ),
                             Text(timeAgo(context, w.requestedAtEpoch), style: TextStyle(fontSize: 11, color: c.faint)),
-                            SizedBox(
-                              width: 32,
-                              height: 32,
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                tooltip: context.l.moreOptions,
-                                icon: Icon(AppIcons.more, size: 18, color: c.muted),
-                                onPressed: () => showDedicationActions(context, dedication: w.dedication!, track: w.track, entryId: w.entryId),
-                              ),
+                            // Compact to look, but still a full-size tap target (a 32 pt box was too small to hit).
+                            IconButton(
+                              visualDensity: VisualDensity.compact,
+                              tooltip: context.l.moreOptions,
+                              icon: Icon(AppIcons.more, size: 18, color: c.muted),
+                              onPressed: () => showDedicationActions(context, dedication: w.dedication!, track: w.track, entryId: w.entryId),
                             ),
                           ],
                         ),

@@ -11,6 +11,11 @@ import 'package:seoulfm/api/sse.dart';
 class RequestTracker extends ChangeNotifier {
   final Map<String, RequestStatus> active = {};
   final Map<String, StreamSubscription<SseEvent>> _subs = {};
+  final Map<String, _Follow> _follows = {};
+  bool _disposed = false;
+
+  /// Past this, a request the stream never settled is dropped rather than retried forever.
+  static const _maxAge = Duration(hours: 4);
 
   /// The latest change, for the toast.
   RequestStatus? lastChange;
@@ -25,9 +30,17 @@ class RequestTracker extends ChangeNotifier {
   }
 
   void follow(String requestId, String token) {
-    if (_subs.containsKey(requestId)) return;
-    _subs[requestId] = sseConnect(api.requestEvents(requestId, token)).listen(
+    if (_follows.containsKey(requestId)) return;
+    _follows[requestId] = _Follow(token);
+    _connect(requestId);
+  }
+
+  void _connect(String requestId) {
+    final f = _follows[requestId];
+    if (f == null || _disposed) return;
+    _subs[requestId] = sseConnect(api.requestEvents(requestId, f.token)).listen(
       (e) {
+        f.attempt = 0; // connected: the next drop starts the backoff over
         if (e.name == 'request_status') {
           try {
             final s = RequestStatus.fromJson((jsonDecode(e.data) as Map).cast());
@@ -39,17 +52,33 @@ class RequestTracker extends ChangeNotifier {
               lastChange = s;
               notifyListeners();
             }
+            if (s.isFinal) _end(requestId);
           } catch (_) {}
         } else if (e.name == 'bye') {
           _end(requestId);
         }
       },
-      onError: (_) => _end(requestId),
-      onDone: () => _end(requestId),
+      // A dropped stream (network change, server restart) isn't a verdict: keep the
+      // request and reconnect, backing off 2, 4, 8 … 30 s.
+      onError: (_) => _retry(requestId),
+      onDone: () => _retry(requestId),
+      cancelOnError: true,
     );
   }
 
+  void _retry(String id) {
+    final f = _follows[id];
+    _subs.remove(id)?.cancel();
+    if (f == null || _disposed) return;
+    if (DateTime.now().difference(f.since) > _maxAge) return _end(id);
+    f.retry?.cancel();
+    final wait = Duration(seconds: (2 << f.attempt).clamp(2, 30));
+    if (f.attempt < 5) f.attempt++;
+    f.retry = Timer(wait, () => _connect(id));
+  }
+
   void _end(String id) {
+    _follows.remove(id)?.retry?.cancel();
     _subs.remove(id)?.cancel();
     final s = active[id];
     if (s != null && !s.isFinal) active.remove(id); // the stream ended without a verdict
@@ -58,9 +87,22 @@ class RequestTracker extends ChangeNotifier {
 
   @override
   void dispose() {
+    _disposed = true;
     for (final s in _subs.values) {
       s.cancel();
     }
+    for (final f in _follows.values) {
+      f.retry?.cancel();
+    }
     super.dispose();
   }
+}
+
+/// One followed request: its stream token, when it started, and the reconnect backoff.
+class _Follow {
+  _Follow(this.token);
+  final String token;
+  final DateTime since = DateTime.now();
+  int attempt = 0;
+  Timer? retry;
 }

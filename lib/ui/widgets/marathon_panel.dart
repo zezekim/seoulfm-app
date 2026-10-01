@@ -207,55 +207,58 @@ class _BlockCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final start = DateTime.fromMillisecondsSinceEpoch(block.startsAtEpoch * 1000);
     final time = MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(start));
-    return GestureDetector(
-      onTap: () => Nav.openArtist(block.artist.artistKey, name: block.artist.name),
-      child: Container(
-        margin: big ? const EdgeInsets.symmetric(horizontal: 16) : EdgeInsets.zero,
-        height: big ? 180 : 150,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(Radii.lg)),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            // The artist's photo fades in over the cover (`ArtCard`).
-            Artwork(block.artworkUrl, radius: 0),
-            Artwork('${Config.siteUrl}/api/artist-image/${Uri.encodeComponent(block.artist.artistKey)}/', radius: 0),
-            const DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Color(0x00000000), Color(0xCC000000)],
+    return Semantics(
+      button: true,
+      child: GestureDetector(
+        onTap: () => Nav.openArtist(block.artist.artistKey, name: block.artist.name),
+        child: Container(
+          margin: big ? const EdgeInsets.symmetric(horizontal: 16) : EdgeInsets.zero,
+          height: big ? 180 : 150,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(Radii.lg)),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              // The artist's photo fades in over the cover (`ArtCard`).
+              Artwork(block.artworkUrl, radius: 0),
+              Artwork('${Config.siteUrl}/api/artist-image/${Uri.encodeComponent(block.artist.artistKey)}/', radius: 0),
+              const DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0x00000000), Color(0xCC000000)],
+                  ),
                 ),
               ),
-            ),
-            PositionedDirectional(
-              start: 12,
-              end: 12,
-              bottom: 10,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (block.source == 'votes')
+              PositionedDirectional(
+                start: 12,
+                end: 12,
+                bottom: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (block.source == 'votes')
+                      Text(
+                        context.l.marathonVotedIn.toUpperCase(),
+                        style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: tracking(1.5), color: accent),
+                      ),
                     Text(
-                      context.l.marathonVotedIn.toUpperCase(),
-                      style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: tracking(1.5), color: accent),
+                      block.artist.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: big ? 24 : 15,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFFFFFFFF),
+                      ),
                     ),
-                  Text(
-                    block.artist.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: big ? 24 : 15,
-                      fontWeight: FontWeight.w700,
-                      color: const Color(0xFFFFFFFF),
-                    ),
-                  ),
-                  Text(time, style: const TextStyle(fontSize: 11, color: Color(0xB3FFFFFF))),
-                ],
+                    Text(time, style: const TextStyle(fontSize: 11, color: Color(0xB3FFFFFF))),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -280,6 +283,8 @@ class _ConfirmWrite extends StatefulWidget {
 
 class _ConfirmWriteState extends State<_ConfirmWrite> {
   String? _token;
+  bool _captchaFailed = false;
+  int _captchaRun = 0; // a new key loads the captcha fresh
   bool _sending = false;
 
   Future<void> _go() async {
@@ -314,7 +319,19 @@ class _ConfirmWriteState extends State<_ConfirmWrite> {
               ],
             ),
             const SizedBox(height: 16),
-            Turnstile(action: widget.action, onToken: (t) => setState(() => _token = t)),
+            Turnstile(
+              key: ValueKey(_captchaRun),
+              action: widget.action,
+              onToken: (t) => setState(() => _token = t),
+              onError: () => setState(() => _captchaFailed = true),
+            ),
+            if (Config.captchaEnabled && _captchaFailed)
+              TurnstileFailed(
+                onRetry: () => setState(() {
+                  _captchaFailed = false;
+                  _captchaRun++;
+                }),
+              ),
             const SizedBox(height: 12),
             FilledButton(
               style: FilledButton.styleFrom(
@@ -342,6 +359,7 @@ class _ArtistPicker extends StatefulWidget {
 
 class _ArtistPickerState extends State<_ArtistPicker> {
   Timer? _debounce;
+  String _q = '';
   Future<List<MarathonCandidate>> _f = api.marathonArtists('');
 
   void _search(String q) {
@@ -349,7 +367,8 @@ class _ArtistPickerState extends State<_ArtistPicker> {
     _debounce = Timer(
       const Duration(milliseconds: 300),
       () => setState(() {
-        _f = api.marathonArtists(q.trim());
+        _q = q.trim();
+        _f = api.marathonArtists(_q);
       }),
     );
   }
@@ -380,6 +399,12 @@ class _ArtistPickerState extends State<_ArtistPicker> {
           child: FutureBuilder<List<MarathonCandidate>>(
             future: _f,
             builder: (context, s) {
+              if (s.hasError) {
+                return ErrorRetry(
+                  error: s.error,
+                  onRetry: () => setState(() => _f = api.marathonArtists(_q)),
+                );
+              }
               if (!s.hasData) return const Center(child: CircularProgressIndicator(strokeWidth: 2));
               return ListView(
                 children: [

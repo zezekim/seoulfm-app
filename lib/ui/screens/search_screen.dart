@@ -20,7 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final _q = TextEditingController();
   Timer? _debounce;
   Future<SearchResults>? _results;
-  late final Future<List<Track>> _new = api.newTracks(limit: 30);
+  late Future<List<Track>> _new = api.newTracks(limit: 30);
 
   void _onChanged(String v) {
     _debounce?.cancel();
@@ -71,6 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
           suffixIcon: _q.text.isEmpty
               ? null
               : IconButton(
+                  tooltip: MaterialLocalizations.of(context).clearButtonTooltip,
                   onPressed: () {
                     _q.clear();
                     _onChanged('');
@@ -88,7 +89,11 @@ class _SearchScreenState extends State<SearchScreen> {
             sliver: largeTitleBar(
               context,
               context.l.tabRequest,
-              bottom: PreferredSize(preferredSize: const Size.fromHeight(60), child: field),
+              // The field's line grows with the system text size (bodyLarge: 16 pt, height 1.45).
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(60 + (MediaQuery.textScalerOf(context).scale(16) - 16) * 1.45),
+                child: field,
+              ),
             ),
           ),
         ],
@@ -102,14 +107,23 @@ class _SearchScreenState extends State<SearchScreen> {
                   SectionHeader(context.l.newSongs, icon: AppIcons.fresh),
                   FutureBuilder<List<Track>>(
                     future: _new,
-                    builder: (context, s) => s.data == null && !s.hasError
-                        ? const SkeletonList()
-                        : Column(
-                            children: [
-                              for (final t in s.data ?? const <Track>[])
-                                TrackRow(requestable: true, track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
-                            ],
-                          ),
+                    builder: (context, s) {
+                      // A failed load says so, with a retry, instead of an empty section.
+                      if (s.hasError) {
+                        return InlineError(
+                          onRetry: () => setState(() {
+                            _new = api.newTracks(limit: 30);
+                          }),
+                        );
+                      }
+                      if (s.data == null) return const SkeletonList();
+                      return Column(
+                        children: [
+                          for (final t in s.data!)
+                            TrackRow(requestable: true, track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                        ],
+                      );
+                    },
                   ),
                 ])
               : FutureBuilder<SearchResults>(
@@ -131,7 +145,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       if (r.artists.isNotEmpty) ...[
                         SectionHeader(context.l.artists),
                         SizedBox(
-                          height: 120,
+                          // The avatar plus a line of name, which grows with the text size.
+                          height: 90 + MediaQuery.textScalerOf(context).scale(30),
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             padding: const EdgeInsets.symmetric(horizontal: 16),

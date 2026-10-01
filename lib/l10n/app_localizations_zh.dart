@@ -606,7 +606,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get supportRestore => '恢复购买';
 
   @override
-  String get supportUnavailable => '通过应用商店支持的功能即将开放。谢谢你愿意帮忙。';
+  String get supportUnavailable => '暂时无法通过应用商店支持，请稍后再试。';
 
   @override
   String get supportThanksTitle => '谢谢你';
@@ -673,6 +673,38 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showHiddenDedications => '显示已隐藏的留言';
+
+  @override
+  String get verifyFailed => '验证失败，请检查网络连接后重试。';
+
+  @override
+  String get restoreDone => '购买项目已恢复。';
+
+  @override
+  String get restoreNothing => '没有可恢复的购买项目。';
+
+  @override
+  String get playbackFailed => '无法连接直播流，请检查网络连接后重试。';
+
+  @override
+  String get audioOutput => '音频输出';
+
+  @override
+  String get openPlayer => '打开播放器';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count首歌',
+      one: '$count首歌',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => '电台';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1276,7 +1308,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get supportRestore => '回復購買';
 
   @override
-  String get supportUnavailable => '透過商店支持的功能即將開放。謝謝你願意幫忙。';
+  String get supportUnavailable => '目前無法透過商店支持，請稍後再試。';
 
   @override
   String get supportThanksTitle => '謝謝你';
@@ -1343,4 +1375,36 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get showHiddenDedications => '顯示已隱藏的留言';
+
+  @override
+  String get verifyFailed => '驗證失敗，請檢查網路連線後再試一次。';
+
+  @override
+  String get restoreDone => '購買項目已回復。';
+
+  @override
+  String get restoreNothing => '沒有可回復的購買項目。';
+
+  @override
+  String get playbackFailed => '無法連上串流，請檢查網路連線後再試一次。';
+
+  @override
+  String get audioOutput => '音訊輸出';
+
+  @override
+  String get openPlayer => '開啟播放器';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count首歌',
+      one: '$count首歌',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => '電台';
 }

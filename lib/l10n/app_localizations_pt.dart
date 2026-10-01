@@ -623,7 +623,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'O apoio pela loja abre em breve. Obrigado por querer ajudar.';
+      'O apoio pela loja não está disponível agora. Tente de novo mais tarde.';
 
   @override
   String get supportThanksTitle => 'Obrigado';
@@ -696,4 +696,38 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Mostrar dedicatórias ocultas';
+
+  @override
+  String get verifyFailed =>
+      'Não foi possível verificar. Verifique sua conexão e tente de novo.';
+
+  @override
+  String get restoreDone => 'Suas compras foram restauradas.';
+
+  @override
+  String get restoreNothing => 'Não há compras para restaurar.';
+
+  @override
+  String get playbackFailed =>
+      'Não foi possível conectar à transmissão. Verifique sua conexão e tente de novo.';
+
+  @override
+  String get audioOutput => 'Saída de áudio';
+
+  @override
+  String get openPlayer => 'Abrir player';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count músicas',
+      one: '1 música',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Estações';
 }

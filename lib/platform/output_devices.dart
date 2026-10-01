@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class OutputDeviceButton extends StatelessWidget {
     if (kIsWeb) return const SizedBox.shrink();
     final ios = defaultTargetPlatform == TargetPlatform.iOS;
     return IconButton(
-      tooltip: ios ? 'AirPlay' : MaterialLocalizations.of(context).showMenuTooltip,
+      tooltip: ios ? 'AirPlay' : AppLocalizations.of(context).audioOutput,
       onPressed: () {
         HapticFeedback.selectionClick();
         _channel.invokeMethod<void>('pick').catchError((_) {});

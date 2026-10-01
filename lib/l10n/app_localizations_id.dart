@@ -623,7 +623,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Dukungan lewat store segera dibuka. Terima kasih sudah ingin membantu.';
+      'Dukungan lewat store sedang tidak tersedia. Coba lagi nanti.';
 
   @override
   String get supportThanksTitle => 'Terima kasih';
@@ -696,4 +696,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Tampilkan dedikasi tersembunyi';
+
+  @override
+  String get verifyFailed => 'Verifikasi gagal. Cek koneksimu dan coba lagi.';
+
+  @override
+  String get restoreDone => 'Pembelianmu sudah dipulihkan.';
+
+  @override
+  String get restoreNothing => 'Tidak ada pembelian untuk dipulihkan.';
+
+  @override
+  String get playbackFailed =>
+      'Tidak bisa terhubung ke stream. Cek koneksimu dan coba lagi.';
+
+  @override
+  String get audioOutput => 'Output audio';
+
+  @override
+  String get openPlayer => 'Buka pemutar';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lagu',
+      one: '1 lagu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Stasiun';
 }

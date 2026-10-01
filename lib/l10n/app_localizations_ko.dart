@@ -598,7 +598,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get supportRestore => '구매 복원';
 
   @override
-  String get supportUnavailable => '스토어를 통한 후원이 곧 열립니다. 도와주시려는 마음에 감사드려요.';
+  String get supportUnavailable => '지금은 스토어를 통한 후원을 이용할 수 없어요. 나중에 다시 시도해 주세요.';
 
   @override
   String get supportThanksTitle => '감사합니다';
@@ -666,4 +666,30 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get showHiddenDedications => '숨긴 사연 다시 보기';
+
+  @override
+  String get verifyFailed => '확인하지 못했어요. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get restoreDone => '구매 내역을 복원했어요.';
+
+  @override
+  String get restoreNothing => '복원할 구매 내역이 없어요.';
+
+  @override
+  String get playbackFailed => '스트림에 연결할 수 없어요. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get audioOutput => '오디오 출력';
+
+  @override
+  String get openPlayer => '플레이어 열기';
+
+  @override
+  String songsCount(int count) {
+    return '$count곡';
+  }
+
+  @override
+  String get stationsFolder => '채널';
 }

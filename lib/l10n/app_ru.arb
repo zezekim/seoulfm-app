@@ -177,7 +177,7 @@
   "supportTipMedium": "Обед",
   "supportTipLarge": "Вечер в городе",
   "supportRestore": "Восстановить покупки",
-  "supportUnavailable": "Поддержка через магазин приложений скоро откроется. Спасибо, что хочешь помочь.",
+  "supportUnavailable": "Поддержка через магазин приложений сейчас недоступна. Попробуй позже.",
   "supportThanksTitle": "Спасибо",
   "supportThanksBody": "Ты помогаешь SeoulFM оставаться бесплатным для всех.",
   "supportYouAreSupporter": "Ты поддерживаешь SeoulFM. Спасибо!",
@@ -198,5 +198,13 @@
   "reportDedication": "Пожаловаться",
   "hideDedicationsFrom": "Скрыть посвящения от {name}",
   "reportThanks": "Спасибо, что дал знать. Мы разберёмся.",
-  "showHiddenDedications": "Показать скрытые посвящения"
+  "showHiddenDedications": "Показать скрытые посвящения",
+  "verifyFailed": "Не удалось пройти проверку. Проверь соединение и попробуй ещё раз.",
+  "restoreDone": "Покупки восстановлены.",
+  "restoreNothing": "Нет покупок для восстановления.",
+  "playbackFailed": "Не удаётся подключиться к трансляции. Проверь соединение и попробуй ещё раз.",
+  "audioOutput": "Вывод звука",
+  "openPlayer": "Открыть плеер",
+  "songsCount": "{count, plural, one{{count} песня} few{{count} песни} many{{count} песен} other{{count} песни}}",
+  "stationsFolder": "Станции"
 }

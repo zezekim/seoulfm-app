@@ -91,7 +91,7 @@ class SeoulFmApp extends StatelessWidget {
         // Follow the system text size, within what the layouts hold.
         builder: (context, child) => MediaQuery.withClampedTextScaling(
           minScaleFactor: 0.9,
-          maxScaleFactor: 1.35,
+          maxScaleFactor: 2.0,
           child: Builder(
             builder: (context) {
               // Text built outside the tree (taglines on the lock screen and in the car) and

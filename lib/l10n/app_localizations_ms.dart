@@ -624,7 +624,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Sokongan melalui kedai akan dibuka tidak lama lagi. Terima kasih kerana ingin membantu.';
+      'Sokongan melalui kedai tidak tersedia buat masa ini. Cuba lagi kemudian.';
 
   @override
   String get supportThanksTitle => 'Terima kasih';
@@ -698,4 +698,38 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Tunjukkan dedikasi yang disembunyikan';
+
+  @override
+  String get verifyFailed =>
+      'Pengesahan gagal. Semak sambungan anda dan cuba lagi.';
+
+  @override
+  String get restoreDone => 'Pembelian anda telah dipulihkan.';
+
+  @override
+  String get restoreNothing => 'Tiada pembelian untuk dipulihkan.';
+
+  @override
+  String get playbackFailed =>
+      'Tidak dapat menghubungi strim. Semak sambungan anda dan cuba lagi.';
+
+  @override
+  String get audioOutput => 'Output audio';
+
+  @override
+  String get openPlayer => 'Buka pemain';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lagu',
+      one: '1 lagu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Stesen';
 }

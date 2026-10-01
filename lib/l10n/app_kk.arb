@@ -177,7 +177,7 @@
   "supportTipMedium": "Бір түскі ас",
   "supportTipLarge": "Бір кешкі серуен",
   "supportRestore": "Сатып алуларды қалпына келтіру",
-  "supportUnavailable": "Дүкен арқылы қолдау жақында ашылады. Көмектескің келгені үшін рақмет.",
+  "supportUnavailable": "Дүкен арқылы қолдау қазір қолжетімсіз. Кейінірек қайта байқап көр.",
   "supportThanksTitle": "Рақмет",
   "supportThanksBody": "Сен SeoulFM-нің бәріне тегін болып қалуына көмектесіп жатырсың.",
   "supportYouAreSupporter": "Сен — қолдаушысың. Рақмет.",
@@ -198,5 +198,13 @@
   "reportDedication": "Шағымдану",
   "hideDedicationsFrom": "{name} арнауларын жасыру",
   "reportThanks": "Хабарлағаның үшін рахмет. Қарап шығамыз.",
-  "showHiddenDedications": "Жасырылған арнауларды көрсету"
+  "showHiddenDedications": "Жасырылған арнауларды көрсету",
+  "verifyFailed": "Тексеруден өтпеді. Байланысты тексеріп, қайта байқап көр.",
+  "restoreDone": "Сатып алуларың қалпына келтірілді.",
+  "restoreNothing": "Қалпына келтіретін сатып алу жоқ.",
+  "playbackFailed": "Эфирге қосылу мүмкін болмады. Байланысты тексеріп, қайта байқап көр.",
+  "audioOutput": "Дыбыс шығысы",
+  "openPlayer": "Ойнатқышты ашу",
+  "songsCount": "{count, plural, one{{count} ән} other{{count} ән}}",
+  "stationsFolder": "Станциялар"
 }

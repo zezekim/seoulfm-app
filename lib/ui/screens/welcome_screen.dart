@@ -110,18 +110,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 54,
-                      child: FilledButton(
-                        onPressed: _page < 2 ? _next : _finish,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: const Color(0xFF09090B),
-                          shape: const StadiumBorder(),
-                        ),
-                        child: Text(buttonLabel, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+                    // 54 pt tall at least, taller if large text needs it.
+                    child: FilledButton(
+                      onPressed: _page < 2 ? _next : _finish,
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(54),
+                        backgroundColor: Colors.white,
+                        foregroundColor: const Color(0xFF09090B),
+                        shape: const StadiumBorder(),
                       ),
+                      child: Text(buttonLabel, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                     ),
                   ),
                 ],
@@ -160,21 +158,59 @@ class _Page extends StatelessWidget {
   const _Page({required this.top, required this.title, required this.body});
   final Widget top;
   final String title, body;
+  static const _titleStyle = TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.w800,
+    letterSpacing: -1,
+    height: 1.1,
+    color: Colors.white,
+  );
+  static const _bodyStyle = TextStyle(fontSize: 16, height: 1.45, color: Color(0xB3FFFFFF));
+
+  /// The least the art shrinks to before the page scrolls instead.
+  static const _minArt = 120.0;
+
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 28),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: Center(child: top)),
-        Text(
-          title,
-          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800, letterSpacing: -1, height: 1.1, color: Colors.white),
-        ),
-        const SizedBox(height: 12),
-        Text(body, style: TextStyle(fontSize: 16, height: 1.45, color: Colors.white.withValues(alpha: 0.7))),
-        const SizedBox(height: 28),
-      ],
+    child: LayoutBuilder(
+      builder: (context, box) {
+        // The art takes what the words leave, scaled down on a small phone or at large text;
+        // when even that leaves too little, the page scrolls with the art at its smallest.
+        final base = DefaultTextStyle.of(context).style;
+        double measure(String text, TextStyle style) {
+          final painter = TextPainter(
+            text: TextSpan(text: text, style: base.merge(style)),
+            textDirection: Directionality.of(context),
+            textScaler: MediaQuery.textScalerOf(context),
+          )..layout(maxWidth: box.maxWidth);
+          final height = painter.height;
+          painter.dispose();
+          return height;
+        }
+        final words = measure(title, _titleStyle) + 12 + measure(body, _bodyStyle) + 28;
+        final fits = box.maxHeight - words >= _minArt;
+        final column = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (fits)
+              Expanded(
+                child: Center(child: FittedBox(fit: BoxFit.scaleDown, child: top)),
+              )
+            else
+              SizedBox(
+                height: _minArt,
+                width: double.infinity,
+                child: FittedBox(fit: BoxFit.scaleDown, child: top),
+              ),
+            Text(title, style: _titleStyle),
+            const SizedBox(height: 12),
+            Text(body, style: _bodyStyle),
+            const SizedBox(height: 28),
+          ],
+        );
+        return fits ? column : SingleChildScrollView(child: column);
+      },
     ),
   );
 }

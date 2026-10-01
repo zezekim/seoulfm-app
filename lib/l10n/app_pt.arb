@@ -177,7 +177,7 @@
   "supportTipMedium": "Um almoço",
   "supportTipLarge": "Uma noite fora",
   "supportRestore": "Restaurar compras",
-  "supportUnavailable": "O apoio pela loja abre em breve. Obrigado por querer ajudar.",
+  "supportUnavailable": "O apoio pela loja não está disponível agora. Tente de novo mais tarde.",
   "supportThanksTitle": "Obrigado",
   "supportThanksBody": "Você está ajudando a manter a SeoulFM grátis para todo mundo.",
   "supportYouAreSupporter": "Você é apoiador. Obrigado.",
@@ -198,5 +198,13 @@
   "reportDedication": "Denunciar",
   "hideDedicationsFrom": "Ocultar dedicatórias de {name}",
   "reportThanks": "Obrigado por nos avisar. Vamos dar uma olhada.",
-  "showHiddenDedications": "Mostrar dedicatórias ocultas"
+  "showHiddenDedications": "Mostrar dedicatórias ocultas",
+  "verifyFailed": "Não foi possível verificar. Verifique sua conexão e tente de novo.",
+  "restoreDone": "Suas compras foram restauradas.",
+  "restoreNothing": "Não há compras para restaurar.",
+  "playbackFailed": "Não foi possível conectar à transmissão. Verifique sua conexão e tente de novo.",
+  "audioOutput": "Saída de áudio",
+  "openPlayer": "Abrir player",
+  "songsCount": "{count, plural, =1{1 música} other{{count} músicas}}",
+  "stationsFolder": "Estações"
 }

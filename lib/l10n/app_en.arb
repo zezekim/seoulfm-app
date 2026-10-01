@@ -337,7 +337,7 @@
   "supportTipMedium": "A lunch",
   "supportTipLarge": "A night out",
   "supportRestore": "Restore purchases",
-  "supportUnavailable": "Support through the store opens soon. Thank you for wanting to help.",
+  "supportUnavailable": "Support through the store isn’t available right now. Try again later.",
   "supportThanksTitle": "Thank you",
   "supportThanksBody": "You’re helping keep SeoulFM free for everyone.",
   "supportYouAreSupporter": "You’re a supporter. Thank you.",
@@ -372,5 +372,20 @@
     }
   },
   "reportThanks": "Thanks for telling us. We’ll take a look.",
-  "showHiddenDedications": "Show hidden dedications"
+  "showHiddenDedications": "Show hidden dedications",
+  "verifyFailed": "Couldn’t verify. Check your connection and try again.",
+  "restoreDone": "Your purchases are restored.",
+  "restoreNothing": "There are no purchases to restore.",
+  "playbackFailed": "Can’t reach the stream. Check your connection and try again.",
+  "audioOutput": "Audio output",
+  "openPlayer": "Open player",
+  "songsCount": "{count, plural, =1{1 song} other{{count} songs}}",
+  "@songsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "stationsFolder": "Stations"
 }

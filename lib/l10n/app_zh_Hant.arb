@@ -177,7 +177,7 @@
   "supportTipMedium": "一頓午餐",
   "supportTipLarge": "一次聚餐",
   "supportRestore": "回復購買",
-  "supportUnavailable": "透過商店支持的功能即將開放。謝謝你願意幫忙。",
+  "supportUnavailable": "目前無法透過商店支持，請稍後再試。",
   "supportThanksTitle": "謝謝你",
   "supportThanksBody": "你正在幫助SeoulFM對所有人保持免費。",
   "supportYouAreSupporter": "你已經是支持者了，謝謝你。",
@@ -198,5 +198,13 @@
   "reportDedication": "檢舉",
   "hideDedicationsFrom": "隱藏{name}的留言",
   "reportThanks": "感謝回報，我們會去看看。",
-  "showHiddenDedications": "顯示已隱藏的留言"
+  "showHiddenDedications": "顯示已隱藏的留言",
+  "verifyFailed": "驗證失敗，請檢查網路連線後再試一次。",
+  "restoreDone": "購買項目已回復。",
+  "restoreNothing": "沒有可回復的購買項目。",
+  "playbackFailed": "無法連上串流，請檢查網路連線後再試一次。",
+  "audioOutput": "音訊輸出",
+  "openPlayer": "開啟播放器",
+  "songsCount": "{count, plural, =1{{count}首歌} other{{count}首歌}}",
+  "stationsFolder": "電台"
 }

@@ -627,7 +627,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Поддержка через магазин приложений скоро откроется. Спасибо, что хочешь помочь.';
+      'Поддержка через магазин приложений сейчас недоступна. Попробуй позже.';
 
   @override
   String get supportThanksTitle => 'Спасибо';
@@ -700,4 +700,40 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Показать скрытые посвящения';
+
+  @override
+  String get verifyFailed =>
+      'Не удалось пройти проверку. Проверь соединение и попробуй ещё раз.';
+
+  @override
+  String get restoreDone => 'Покупки восстановлены.';
+
+  @override
+  String get restoreNothing => 'Нет покупок для восстановления.';
+
+  @override
+  String get playbackFailed =>
+      'Не удаётся подключиться к трансляции. Проверь соединение и попробуй ещё раз.';
+
+  @override
+  String get audioOutput => 'Вывод звука';
+
+  @override
+  String get openPlayer => 'Открыть плеер';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count песни',
+      many: '$count песен',
+      few: '$count песни',
+      one: '$count песня',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Станции';
 }

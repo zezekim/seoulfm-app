@@ -5,8 +5,8 @@ import 'package:seoulfm/state/runtime_config.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 
-/// Notices from the control plane (maintenance, stream status, announcements) and,
-/// with [lossless], the FLAC fallback warning.
+/// Notices from the control plane (maintenance, stream status, announcements), the radio's own
+/// "can't reach the stream" and, with [lossless], the FLAC fallback warning.
 class Notices extends StatelessWidget {
   const Notices({super.key, this.lossless = false});
   final bool lossless;
@@ -30,12 +30,18 @@ class Notices extends StatelessWidget {
       items.add(_NoticeCard(text: cfg.streamNotice ?? context.l.offline, level: 'warning'));
     }
     if (cfg.announcement != null) items.add(_NoticeCard(text: cfg.announcement!, level: cfg.announcementLevel));
-    return ValueListenableBuilder<bool>(
-      valueListenable: radio.losslessFailed,
-      builder: (_, failed, _) => Column(
+    return ListenableBuilder(
+      listenable: Listenable.merge([radio.losslessFailed, radio.streamFailing]),
+      builder: (_, _) => Column(
         children: [
           ...items,
-          if (lossless && failed)
+          if (radio.streamFailing.value)
+            _NoticeCard(
+              text: context.l.playbackFailed,
+              level: 'warning',
+              action: TextButton(onPressed: radio.retryNow, child: Text(context.l.retry)),
+            ),
+          if (lossless && radio.losslessFailed.value)
             _NoticeCard(
               text: context.l.losslessFailed,
               level: 'warning',

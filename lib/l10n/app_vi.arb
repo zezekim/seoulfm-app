@@ -177,7 +177,7 @@
   "supportTipMedium": "Một bữa trưa",
   "supportTipLarge": "Một buổi tối đi chơi",
   "supportRestore": "Khôi phục giao dịch mua",
-  "supportUnavailable": "Tính năng ủng hộ qua cửa hàng sẽ sớm mở. Cảm ơn bạn đã muốn giúp đỡ.",
+  "supportUnavailable": "Hiện chưa thể ủng hộ qua cửa hàng. Hãy thử lại sau.",
   "supportThanksTitle": "Cảm ơn bạn",
   "supportThanksBody": "Bạn đang giúp SeoulFM luôn miễn phí cho mọi người.",
   "supportYouAreSupporter": "Bạn là người ủng hộ. Cảm ơn bạn.",
@@ -198,5 +198,13 @@
   "reportDedication": "Báo cáo",
   "hideDedicationsFrom": "Ẩn lời nhắn từ {name}",
   "reportThanks": "Cảm ơn bạn đã báo cho chúng tôi. Chúng tôi sẽ xem xét.",
-  "showHiddenDedications": "Hiện lại lời nhắn đã ẩn"
+  "showHiddenDedications": "Hiện lại lời nhắn đã ẩn",
+  "verifyFailed": "Không xác minh được. Hãy kiểm tra kết nối và thử lại.",
+  "restoreDone": "Đã khôi phục giao dịch mua của bạn.",
+  "restoreNothing": "Không có giao dịch mua nào để khôi phục.",
+  "playbackFailed": "Không kết nối được luồng phát. Hãy kiểm tra kết nối và thử lại.",
+  "audioOutput": "Đầu ra âm thanh",
+  "openPlayer": "Mở trình phát",
+  "songsCount": "{count, plural, =1{1 bài hát} other{{count} bài hát}}",
+  "stationsFolder": "Kênh"
 }

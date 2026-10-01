@@ -177,7 +177,7 @@
   "supportTipMedium": "ランチ1回",
   "supportTipLarge": "ちょっといいディナー",
   "supportRestore": "購入を復元",
-  "supportUnavailable": "ストアでの応援はまもなく始まります。応援しようと思ってくれてありがとうございます。",
+  "supportUnavailable": "現在、ストアでの応援はご利用いただけません。しばらくしてからもう一度お試しください。",
   "supportThanksTitle": "ありがとうございます",
   "supportThanksBody": "SeoulFMを誰でも無料で聴けるように支えてくれています。",
   "supportYouAreSupporter": "あなたはサポーターです。ありがとうございます。",
@@ -198,5 +198,13 @@
   "reportDedication": "報告する",
   "hideDedicationsFrom": "{name}さんのメッセージを非表示",
   "reportThanks": "お知らせありがとうございます。確認しますね。",
-  "showHiddenDedications": "非表示にしたメッセージを再表示"
+  "showHiddenDedications": "非表示にしたメッセージを再表示",
+  "verifyFailed": "認証できませんでした。接続を確認して、もう一度お試しください。",
+  "restoreDone": "購入を復元しました。",
+  "restoreNothing": "復元できる購入はありません。",
+  "playbackFailed": "配信に接続できません。接続を確認して、もう一度お試しください。",
+  "audioOutput": "オーディオ出力",
+  "openPlayer": "プレーヤーを開く",
+  "songsCount": "{count, plural, =1{{count}曲} other{{count}曲}}",
+  "stationsFolder": "ステーション"
 }

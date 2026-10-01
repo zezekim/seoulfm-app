@@ -610,7 +610,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get supportRestore => '購入を復元';
 
   @override
-  String get supportUnavailable => 'ストアでの応援はまもなく始まります。応援しようと思ってくれてありがとうございます。';
+  String get supportUnavailable => '現在、ストアでの応援はご利用いただけません。しばらくしてからもう一度お試しください。';
 
   @override
   String get supportThanksTitle => 'ありがとうございます';
@@ -677,4 +677,36 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get showHiddenDedications => '非表示にしたメッセージを再表示';
+
+  @override
+  String get verifyFailed => '認証できませんでした。接続を確認して、もう一度お試しください。';
+
+  @override
+  String get restoreDone => '購入を復元しました。';
+
+  @override
+  String get restoreNothing => '復元できる購入はありません。';
+
+  @override
+  String get playbackFailed => '配信に接続できません。接続を確認して、もう一度お試しください。';
+
+  @override
+  String get audioOutput => 'オーディオ出力';
+
+  @override
+  String get openPlayer => 'プレーヤーを開く';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count曲',
+      one: '$count曲',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'ステーション';
 }

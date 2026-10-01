@@ -318,13 +318,16 @@ class RatingButtons extends StatelessWidget {
       return Tooltip(
         message: enabled ? label : context.l.startListeningToRate,
         child: IconButton(
+          // A toggle: screen readers announce "selected" on the chosen one.
+          isSelected: active,
           onPressed: enabled
               ? () {
                   HapticFeedback.selectionClick();
                   r.rate(trackId!, active ? null : value);
                 }
               : null,
-          // Outline icons only: the chosen one sits in a soft disc and pops when picked.
+          // Outline icons only (Lucide has no filled thumbs): the chosen one sits in a soft disc
+          // and pops when picked.
           icon: AnimatedScale(
             scale: active ? 1.08 : 1,
             duration: Motion.base,
@@ -385,8 +388,9 @@ class TrackRow extends StatelessWidget {
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          child: SizedBox(
-            height: 52,
+          // At least the cover's height, taller when large text needs the room.
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 52),
             child: Row(
               children: [
                 if (leading != null) ...[leading!, const SizedBox(width: 12)],
@@ -628,6 +632,34 @@ class ErrorRetry extends StatelessWidget {
   }
 }
 
+/// A failed load inside a shelf, where [ErrorRetry]'s full-page state won't fit: one line of
+/// message and a retry.
+class InlineError extends StatelessWidget {
+  const InlineError({super.key, required this.onRetry});
+  final VoidCallback onRetry;
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Row(
+        children: [
+          Icon(AppIcons.offline, size: 18, color: c.muted),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(context.l.errorGeneric, style: TextStyle(fontSize: 14, color: c.muted)),
+          ),
+          TextButton(
+            onPressed: onRetry,
+            style: TextButton.styleFrom(foregroundColor: c.text),
+            child: Text(context.l.retry, style: const TextStyle(fontWeight: FontWeight.w700)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Loads once and rebuilds with the result; `retry` re-runs. [frame], when given, wraps the
 /// loading and error states (e.g. to keep them clear of a pinned header).
 class Loader<T> extends StatefulWidget {
@@ -667,10 +699,20 @@ class _LoaderState<T> extends State<Loader<T>> {
 /// Shrinks a touch while pressed, as Spotify's and Apple Music's cards do, with a light tap
 /// on release. [onTap] null leaves the child inert.
 class Pressable extends StatefulWidget {
-  const Pressable({super.key, required this.child, this.onTap, this.onLongPress, this.scale = 0.96});
+  const Pressable({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.onLongPress,
+    this.scale = 0.96,
+    this.semanticLabel,
+  });
   final Widget child;
   final VoidCallback? onTap, onLongPress;
   final double scale;
+
+  /// What a screen reader says for it, when its text alone doesn't say what a tap does.
+  final String? semanticLabel;
   @override
   State<Pressable> createState() => _PressableState();
 }
@@ -684,23 +726,29 @@ class _PressableState extends State<Pressable> {
   @override
   Widget build(BuildContext context) {
     if (widget.onTap == null && widget.onLongPress == null) return widget.child;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTapDown: (_) => _set(true),
-      onTapUp: (_) => _set(false),
-      onTapCancel: () => _set(false),
-      onTap: widget.onTap == null
-          ? null
-          : () {
-              HapticFeedback.selectionClick();
-              widget.onTap!();
-            },
-      onLongPress: widget.onLongPress,
-      child: AnimatedScale(
-        scale: _down ? widget.scale : 1,
-        duration: Motion.fast,
-        curve: Motion.out,
-        child: widget.child,
+    // A bare GestureDetector is silent to screen readers: say it is a button.
+    return Semantics(
+      button: true,
+      enabled: widget.onTap != null,
+      label: widget.semanticLabel,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) => _set(true),
+        onTapUp: (_) => _set(false),
+        onTapCancel: () => _set(false),
+        onTap: widget.onTap == null
+            ? null
+            : () {
+                HapticFeedback.selectionClick();
+                widget.onTap!();
+              },
+        onLongPress: widget.onLongPress,
+        child: AnimatedScale(
+          scale: _down ? widget.scale : 1,
+          duration: Motion.fast,
+          curve: Motion.out,
+          child: widget.child,
+        ),
       ),
     );
   }
@@ -822,23 +870,34 @@ class PillSegmented<T> extends StatelessWidget {
               children: [
                 for (final k in keys)
                   Expanded(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        if (k == selected) return;
-                        HapticFeedback.selectionClick();
-                        onChanged(k);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
-                        child: AnimatedDefaultTextStyle(
-                          duration: Motion.base,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: k == selected ? c.bg : c.text.withValues(alpha: 0.85),
+                    // The sliding pill shows the choice by colour only; tell screen readers too.
+                    child: Semantics(
+                      button: true,
+                      selected: k == selected,
+                      inMutuallyExclusiveGroup: true,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          if (k == selected) return;
+                          HapticFeedback.selectionClick();
+                          onChanged(k);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
+                          child: AnimatedDefaultTextStyle(
+                            duration: Motion.base,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: k == selected ? c.bg : c.text.withValues(alpha: 0.85),
+                            ),
+                            child: Text(
+                              options[k]!,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                          child: Text(options[k]!, textAlign: TextAlign.center, maxLines: 1),
                         ),
                       ),
                     ),
@@ -904,7 +963,8 @@ class QualityPill extends StatelessWidget {
 /// (a search field, tabs) stays under it.
 SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWidget? bottom, List<Widget>? actions}) {
   final c = context.sfm;
-  const large = 56.0; // room for the big title under the bar
+  // Room for the big title under the bar (a 32 pt line at height 1.15, plus air), more at large text.
+  final large = MediaQuery.textScalerOf(context).scale(32 * 1.15) + 19.2;
   final bottomHeight = bottom?.preferredSize.height ?? 0;
   return SliverAppBar(
     pinned: true,

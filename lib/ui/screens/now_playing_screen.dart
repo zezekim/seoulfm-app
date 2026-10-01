@@ -340,45 +340,60 @@ class _Player extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
-                      child: GestureDetector(
-                        onTap: t == null ? null : () => Nav.openSong(t),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    t?.displayTitle ??
-                                        (np.station?.onAir == false ? context.l.offAir : isolate('SeoulFM ${channel.rawName}')),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Title and artist open the song: a button to screen readers too.
+                          Semantics(
+                            button: t != null,
+                            child: GestureDetector(
+                              onTap: t == null ? null : () => Nav.openSong(t),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          t?.displayTitle ??
+                                              (np.station?.onAir == false
+                                                  ? context.l.offAir
+                                                  : isolate('SeoulFM ${channel.rawName}')),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.w700,
+                                            color: white,
+                                            letterSpacing: -0.4,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      HotChip(trackId: t?.id),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    t?.displayArtist ?? channel.localTagline,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w700,
-                                      color: white,
-                                      letterSpacing: -0.4,
-                                    ),
+                                    style: TextStyle(fontSize: 16, color: white.withValues(alpha: 0.6)),
                                   ),
-                                ),
-                                const SizedBox(width: 8),
-                                HotChip(trackId: t?.id),
-                              ],
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              t?.displayArtist ?? channel.localTagline,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 16, color: white.withValues(alpha: 0.6)),
-                            ),
-                            if (t?.dedication?.name != null && !context.watch<Moderation>().hides(t!.dedication))
-                              // Tap for Report / Hide (the ⋯ says it can be).
-                              GestureDetector(
+                          ),
+                          if (t?.dedication?.name != null && !context.watch<Moderation>().hides(t!.dedication))
+                            // Tap for Report / Hide (the ⋯ says it can be). At least 44 pt tall to
+                            // hit, the small line centred in it.
+                            Semantics(
+                              button: true,
+                              child: GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () => showDedicationActions(context, dedication: t.dedication!, track: t),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4),
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(minHeight: 44),
                                   child: Row(
                                     children: [
                                       Flexible(
@@ -395,8 +410,8 @@ class _Player extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                          ],
-                        ),
+                            ),
+                        ],
                       ),
                     ),
                     RatingButtons(trackId: t?.id, onImage: true, size: 24),
@@ -876,7 +891,8 @@ class _UpNext extends StatelessWidget {
       children: [
         ShelfTitle(context.l.upNext),
         SizedBox(
-          height: cover + 54,
+          // The cover plus two lines of text, which grow with the system text size.
+          height: cover + MediaQuery.textScalerOf(context).scale(54),
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,

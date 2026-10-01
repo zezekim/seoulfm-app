@@ -627,7 +627,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'سيُتاح الدعم عبر المتجر قريبًا. شكرًا لرغبتك في المساعدة.';
+      'الدعم عبر المتجر غير متاح حاليًا. حاول مجددًا لاحقًا.';
 
   @override
   String get supportThanksTitle => 'شكرًا لك';
@@ -697,4 +697,41 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'إظهار الإهداءات المخفية';
+
+  @override
+  String get verifyFailed => 'تعذّر التحقق. تحقّق من اتصالك وحاول مجددًا.';
+
+  @override
+  String get restoreDone => 'تمت استعادة مشترياتك.';
+
+  @override
+  String get restoreNothing => 'لا توجد مشتريات لاستعادتها.';
+
+  @override
+  String get playbackFailed =>
+      'تعذّر الوصول إلى البث. تحقّق من اتصالك وحاول مجددًا.';
+
+  @override
+  String get audioOutput => 'مخرج الصوت';
+
+  @override
+  String get openPlayer => 'فتح المشغّل';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count أغنية',
+      many: '$count أغنية',
+      few: '$count أغانٍ',
+      two: 'أغنيتان',
+      one: 'أغنية واحدة',
+      zero: 'لا أغاني',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'المحطات';
 }

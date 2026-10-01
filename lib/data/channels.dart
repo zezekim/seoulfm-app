@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seoulfm/data/station_genres.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/theme.dart';
@@ -140,6 +141,9 @@ class Channel {
 
   /// The tagline in the app's language (the site's translations), else the registry's.
   String get localTagline => stationTaglines[AppLanguage.tag]?[key] ?? stationTaglines[AppLanguage.language]?[key] ?? tagline;
+
+  /// The genre line in the app's language ("New releases", "Dance · Electronic"), else as configured.
+  String? get localGenre => stationGenres[AppLanguage.tag]?[key] ?? stationGenres[AppLanguage.language]?[key] ?? genre;
   final String? genre, fallbackManifest;
   final Color color;
   final bool lossless, marathon, comingSoon;

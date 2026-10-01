@@ -6,6 +6,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
@@ -118,6 +119,11 @@ class RadioHandler extends BaseAudioHandler {
   /// Lossless failed and the player fell back to AAC ("Retry FLAC").
   final ValueNotifier<bool> losslessFailed = ValueNotifier(false);
 
+  /// The stream has failed to load several times running: the listener pressed play and hears
+  /// nothing, so say so (the radio keeps retrying meanwhile; `retryNow` tries at once).
+  final ValueNotifier<bool> streamFailing = ValueNotifier(false);
+  static const _failingAfter = 3;
+
   /// When uninterrupted playing on this station began (ratings open after 25 s).
   final ValueNotifier<DateTime?> listeningSince = ValueNotifier(null);
   final ValueNotifier<DateTime?> sleepAt = ValueNotifier(null);
@@ -190,6 +196,7 @@ class RadioHandler extends BaseAudioHandler {
           wantPlaying.value && (s.processingState == ProcessingState.loading || s.processingState == ProcessingState.buffering);
       if (s.playing && s.processingState == ProcessingState.ready) {
         _attempt = 0;
+        streamFailing.value = false;
         _freshAt = DateTime.now();
         listeningSince.value ??= DateTime.now();
         if (_startAt != null) {
@@ -327,6 +334,7 @@ class RadioHandler extends BaseAudioHandler {
     _recoverTimer?.cancel();
     final wait = Duration(milliseconds: min(30000, 1000 * pow(2, _attempt).toInt()));
     _attempt++;
+    if (_attempt >= _failingAfter) streamFailing.value = true;
     _recoverTimer = Timer(wait, () async {
       if (!wantPlaying.value) return;
       await _load();
@@ -365,9 +373,20 @@ class RadioHandler extends BaseAudioHandler {
     _heartbeatOnChange(force: true);
   }
 
+  /// The listener's Retry on the "can't reach the stream" notice: try now, not at the next backoff.
+  Future<void> retryNow() async {
+    _recoverTimer?.cancel();
+    _attempt = 0;
+    streamFailing.value = false;
+    if (!wantPlaying.value) return play();
+    await _load();
+    if (_loaded && wantPlaying.value) await _player.play();
+  }
+
   @override
   Future<void> pause() async {
     wantPlaying.value = false;
+    streamFailing.value = false;
     _pausedAt = DateTime.now();
     listeningSince.value = null;
     _recoverTimer?.cancel();
@@ -380,6 +399,7 @@ class RadioHandler extends BaseAudioHandler {
   @override
   Future<void> stop() async {
     wantPlaying.value = false;
+    streamFailing.value = false;
     listeningSince.value = null;
     _recoverTimer?.cancel();
     await _player.stop();
@@ -526,7 +546,7 @@ class RadioHandler extends BaseAudioHandler {
     final live = channels().where((c) => c.tunable).toList();
     switch (parentMediaId) {
       case AudioService.browsableRootId:
-        return [const MediaItem(id: _stationsFolder, title: 'Stations', playable: false)];
+        return [MediaItem(id: _stationsFolder, title: lookupAppLocalizations(AppLanguage.locale).stationsFolder, playable: false)];
       case AudioService.recentRootId:
         return [if (_channel != null) _stationItem(_channel!)];
       case _stationsFolder:

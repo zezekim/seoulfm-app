@@ -177,7 +177,7 @@
   "supportTipMedium": "Makan tengah hari",
   "supportTipLarge": "Keluar malam",
   "supportRestore": "Pulihkan pembelian",
-  "supportUnavailable": "Sokongan melalui kedai akan dibuka tidak lama lagi. Terima kasih kerana ingin membantu.",
+  "supportUnavailable": "Sokongan melalui kedai tidak tersedia buat masa ini. Cuba lagi kemudian.",
   "supportThanksTitle": "Terima kasih",
   "supportThanksBody": "Anda membantu memastikan SeoulFM kekal percuma untuk semua.",
   "supportYouAreSupporter": "Anda seorang penyokong. Terima kasih.",
@@ -198,5 +198,13 @@
   "reportDedication": "Laporkan",
   "hideDedicationsFrom": "Sembunyikan dedikasi daripada {name}",
   "reportThanks": "Terima kasih kerana memberitahu kami. Kami akan menyemaknya.",
-  "showHiddenDedications": "Tunjukkan dedikasi yang disembunyikan"
+  "showHiddenDedications": "Tunjukkan dedikasi yang disembunyikan",
+  "verifyFailed": "Pengesahan gagal. Semak sambungan anda dan cuba lagi.",
+  "restoreDone": "Pembelian anda telah dipulihkan.",
+  "restoreNothing": "Tiada pembelian untuk dipulihkan.",
+  "playbackFailed": "Tidak dapat menghubungi strim. Semak sambungan anda dan cuba lagi.",
+  "audioOutput": "Output audio",
+  "openPlayer": "Buka pemain",
+  "songsCount": "{count, plural, =1{1 lagu} other{{count} lagu}}",
+  "stationsFolder": "Stesen"
 }

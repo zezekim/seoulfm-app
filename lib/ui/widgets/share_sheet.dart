@@ -149,7 +149,8 @@ class _ShareSheetState extends State<_ShareSheet> {
   Widget build(BuildContext context) {
     final pad = MediaQuery.paddingOf(context);
     final hasLyrics = _lines.any((s) => s.isNotEmpty);
-    return Padding(
+    // Scrolls when the card, the switch and the actions don't fit (a small phone, large text).
+    return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: pad.bottom + 12),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -383,7 +384,7 @@ class _LyricsCard extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   letterSpacing: -0.6,
                   color: fg,
-                                  ),
+                ),
               ),
             ),
             _Wordmark(color: fg),
@@ -447,21 +448,35 @@ class _LinePickerState extends State<_LinePicker> {
                 if (text.isEmpty) return const SizedBox(height: 12);
                 final on = _picked.contains(i);
                 final full = !on && _picked.length >= widget.max;
-                return InkWell(
-                  onTap: full ? null : () => setState(() => on ? _picked.remove(i) : _picked.add(i)),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: on ? widget.color : Colors.transparent,
-                      borderRadius: BorderRadius.circular(Radii.sm),
-                    ),
-                    child: Text(
-                      text,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: on ? readableOn(widget.color) : (full ? c.faint : c.text),
+                // Picked shows as a fill and a check, and is announced, not colour alone.
+                return Semantics(
+                  selected: on,
+                  child: InkWell(
+                    onTap: full ? null : () => setState(() => on ? _picked.remove(i) : _picked.add(i)),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: on ? widget.color : Colors.transparent,
+                        borderRadius: BorderRadius.circular(Radii.sm),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              text,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: on ? readableOn(widget.color) : (full ? c.faint : c.text),
+                              ),
+                            ),
+                          ),
+                          if (on) ...[
+                            const SizedBox(width: 8),
+                            Icon(AppIcons.check, size: 20, color: readableOn(widget.color)),
+                          ],
+                        ],
                       ),
                     ),
                   ),

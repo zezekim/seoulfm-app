@@ -9,11 +9,15 @@ abstract final class AppLanguage {
   static String language = 'en';
   static bool rtl = false;
 
+  /// The resolved locale, for strings looked up outside the tree (`lookupAppLocalizations`).
+  static Locale locale = const Locale('en');
+
   /// Scripts whose letters are joined or stacked (Arabic, Thai) or that have no case and are
   /// set solid (CJK): letter spacing breaks them, and upper-casing means nothing.
   static bool get tracks => !const {'ar', 'th', 'ja', 'zh', 'ko'}.contains(language);
 
   static void set(Locale l, TextDirection direction) {
+    locale = l;
     language = l.languageCode;
     tag = l.scriptCode == 'Hant'
         ? 'zh_Hant'

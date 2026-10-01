@@ -619,7 +619,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'การสนับสนุนผ่านสโตร์จะเปิดเร็วๆ นี้ ขอบคุณที่อยากช่วย';
+      'การสนับสนุนผ่านสโตร์ยังใช้ไม่ได้ในขณะนี้ ลองใหม่ภายหลัง';
 
   @override
   String get supportThanksTitle => 'ขอบคุณ';
@@ -690,4 +690,38 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'แสดงข้อความถึงที่ซ่อนไว้';
+
+  @override
+  String get verifyFailed =>
+      'ยืนยันไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง';
+
+  @override
+  String get restoreDone => 'กู้คืนการซื้อของคุณแล้ว';
+
+  @override
+  String get restoreNothing => 'ไม่มีการซื้อที่จะกู้คืน';
+
+  @override
+  String get playbackFailed =>
+      'เชื่อมต่อสตรีมไม่ได้ ตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง';
+
+  @override
+  String get audioOutput => 'เอาต์พุตเสียง';
+
+  @override
+  String get openPlayer => 'เปิดเครื่องเล่น';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count เพลง',
+      one: '1 เพลง',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'สถานี';
 }

@@ -623,7 +623,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Le soutien via les stores arrive bientôt. Merci de vouloir nous aider.';
+      'Le soutien via les stores n’est pas disponible pour le moment. Réessayez plus tard.';
 
   @override
   String get supportThanksTitle => 'Merci';
@@ -697,4 +697,38 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Afficher les dédicaces masquées';
+
+  @override
+  String get verifyFailed =>
+      'Impossible de vérifier. Vérifiez votre connexion et réessayez.';
+
+  @override
+  String get restoreDone => 'Vos achats ont été restaurés.';
+
+  @override
+  String get restoreNothing => 'Aucun achat à restaurer.';
+
+  @override
+  String get playbackFailed =>
+      'Impossible de joindre le flux. Vérifiez votre connexion et réessayez.';
+
+  @override
+  String get audioOutput => 'Sortie audio';
+
+  @override
+  String get openPlayer => 'Ouvrir le lecteur';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count chansons',
+      one: '1 chanson',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Stations';
 }

@@ -341,8 +341,10 @@ class _Tag extends StatelessWidget {
   final Channel channel;
   @override
   Widget build(BuildContext context) {
-    if (channel.lossless && !channel.comingSoon) return const QualityPill(lossless: true, label: 'LOSSLESS · FLAC');
-    final label = channel.comingSoon ? context.l.comingSoon : (channel.genre ?? context.l.live);
+    if (channel.lossless && !channel.comingSoon) {
+      return QualityPill(lossless: true, label: (channel.localGenre ?? 'Lossless · FLAC').toUpperCase());
+    }
+    final label = channel.comingSoon ? context.l.comingSoon : (channel.localGenre ?? context.l.live);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(99)),
@@ -476,7 +478,7 @@ class _GenreTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          channel.comingSoon ? context.l.comingSoon : (channel.genre ?? ''),
+                          channel.comingSoon ? context.l.comingSoon : (channel.localGenre ?? ''),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

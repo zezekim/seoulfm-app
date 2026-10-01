@@ -621,7 +621,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'El apoyo a través de la tienda abre pronto. Gracias por querer ayudar.';
+      'El apoyo a través de la tienda no está disponible ahora. Inténtalo más tarde.';
 
   @override
   String get supportThanksTitle => 'Gracias';
@@ -694,6 +694,40 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Mostrar dedicatorias ocultas';
+
+  @override
+  String get verifyFailed =>
+      'No se pudo verificar. Revisa tu conexión y vuelve a intentarlo.';
+
+  @override
+  String get restoreDone => 'Tus compras se restauraron.';
+
+  @override
+  String get restoreNothing => 'No hay compras para restaurar.';
+
+  @override
+  String get playbackFailed =>
+      'No se puede conectar con el stream. Revisa tu conexión y vuelve a intentarlo.';
+
+  @override
+  String get audioOutput => 'Salida de audio';
+
+  @override
+  String get openPlayer => 'Abrir reproductor';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count canciones',
+      one: '1 canción',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Estaciones';
 }
 
 /// The translations for Spanish Castilian, as used in Spain (`es_ES`).
@@ -1313,7 +1347,7 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
 
   @override
   String get supportUnavailable =>
-      'El apoyo a través de la tienda estará disponible pronto. Gracias por querer ayudar.';
+      'El apoyo a través de la tienda no está disponible ahora mismo. Inténtalo más tarde.';
 
   @override
   String get supportThanksTitle => 'Gracias';
@@ -1386,4 +1420,38 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
 
   @override
   String get showHiddenDedications => 'Mostrar dedicatorias ocultas';
+
+  @override
+  String get verifyFailed =>
+      'No se ha podido verificar. Comprueba tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get restoreDone => 'Se han restaurado tus compras.';
+
+  @override
+  String get restoreNothing => 'No hay compras que restaurar.';
+
+  @override
+  String get playbackFailed =>
+      'No se puede conectar con la emisión. Comprueba tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get audioOutput => 'Salida de audio';
+
+  @override
+  String get openPlayer => 'Abrir reproductor';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count canciones',
+      one: '1 canción',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Emisoras';
 }

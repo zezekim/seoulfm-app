@@ -177,7 +177,7 @@
   "supportTipMedium": "มื้อกลางวัน",
   "supportTipLarge": "ออกไปเที่ยวสักคืน",
   "supportRestore": "กู้คืนการซื้อ",
-  "supportUnavailable": "การสนับสนุนผ่านสโตร์จะเปิดเร็วๆ นี้ ขอบคุณที่อยากช่วย",
+  "supportUnavailable": "การสนับสนุนผ่านสโตร์ยังใช้ไม่ได้ในขณะนี้ ลองใหม่ภายหลัง",
   "supportThanksTitle": "ขอบคุณ",
   "supportThanksBody": "คุณกำลังช่วยให้ SeoulFM ฟรีสำหรับทุกคน",
   "supportYouAreSupporter": "คุณเป็นผู้สนับสนุนแล้ว ขอบคุณ",
@@ -198,5 +198,13 @@
   "reportDedication": "รายงาน",
   "hideDedicationsFrom": "ซ่อนข้อความถึงของ {name}",
   "reportThanks": "ขอบคุณที่แจ้งให้เรารู้ เราจะตรวจสอบ",
-  "showHiddenDedications": "แสดงข้อความถึงที่ซ่อนไว้"
+  "showHiddenDedications": "แสดงข้อความถึงที่ซ่อนไว้",
+  "verifyFailed": "ยืนยันไม่สำเร็จ ตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง",
+  "restoreDone": "กู้คืนการซื้อของคุณแล้ว",
+  "restoreNothing": "ไม่มีการซื้อที่จะกู้คืน",
+  "playbackFailed": "เชื่อมต่อสตรีมไม่ได้ ตรวจสอบการเชื่อมต่อแล้วลองใหม่อีกครั้ง",
+  "audioOutput": "เอาต์พุตเสียง",
+  "openPlayer": "เปิดเครื่องเล่น",
+  "songsCount": "{count, plural, =1{1 เพลง} other{{count} เพลง}}",
+  "stationsFolder": "สถานี"
 }

@@ -177,7 +177,7 @@
   "supportTipMedium": "Bir öğle yemeği",
   "supportTipLarge": "Dışarıda bir akşam",
   "supportRestore": "Satın alımları geri yükle",
-  "supportUnavailable": "Mağaza üzerinden destek yakında açılıyor. Yardım etmek istediğin için teşekkürler.",
+  "supportUnavailable": "Mağaza üzerinden destek şu anda kullanılamıyor. Daha sonra tekrar dene.",
   "supportThanksTitle": "Teşekkürler",
   "supportThanksBody": "SeoulFM’in herkes için ücretsiz kalmasına yardım ediyorsun.",
   "supportYouAreSupporter": "Destekçisin. Teşekkürler.",
@@ -198,5 +198,13 @@
   "reportDedication": "Bildir",
   "hideDedicationsFrom": "{name} kişisinin ithaflarını gizle",
   "reportThanks": "Bildirdiğin için teşekkürler. Bir göz atacağız.",
-  "showHiddenDedications": "Gizlenen ithafları göster"
+  "showHiddenDedications": "Gizlenen ithafları göster",
+  "verifyFailed": "Doğrulanamadı. Bağlantını kontrol edip tekrar dene.",
+  "restoreDone": "Satın alımların geri yüklendi.",
+  "restoreNothing": "Geri yüklenecek satın alım yok.",
+  "playbackFailed": "Yayına ulaşılamıyor. Bağlantını kontrol edip tekrar dene.",
+  "audioOutput": "Ses çıkışı",
+  "openPlayer": "Oynatıcıyı aç",
+  "songsCount": "{count, plural, one{{count} şarkı} other{{count} şarkı}}",
+  "stationsFolder": "İstasyonlar"
 }

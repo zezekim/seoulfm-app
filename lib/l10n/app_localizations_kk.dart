@@ -621,7 +621,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Дүкен арқылы қолдау жақында ашылады. Көмектескің келгені үшін рақмет.';
+      'Дүкен арқылы қолдау қазір қолжетімсіз. Кейінірек қайта байқап көр.';
 
   @override
   String get supportThanksTitle => 'Рақмет';
@@ -693,4 +693,38 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Жасырылған арнауларды көрсету';
+
+  @override
+  String get verifyFailed =>
+      'Тексеруден өтпеді. Байланысты тексеріп, қайта байқап көр.';
+
+  @override
+  String get restoreDone => 'Сатып алуларың қалпына келтірілді.';
+
+  @override
+  String get restoreNothing => 'Қалпына келтіретін сатып алу жоқ.';
+
+  @override
+  String get playbackFailed =>
+      'Эфирге қосылу мүмкін болмады. Байланысты тексеріп, қайта байқап көр.';
+
+  @override
+  String get audioOutput => 'Дыбыс шығысы';
+
+  @override
+  String get openPlayer => 'Ойнатқышты ашу';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ән',
+      one: '$count ән',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'Станциялар';
 }

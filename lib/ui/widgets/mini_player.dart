@@ -37,6 +37,7 @@ class MiniPlayer extends StatelessWidget {
       padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 6),
       child: Pressable(
         scale: 0.98,
+        semanticLabel: context.l.openPlayer,
         onTap: () => Nav.showNowPlaying(context),
         child: AnimatedContainer(
           duration: Motion.slow,

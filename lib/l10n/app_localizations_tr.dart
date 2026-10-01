@@ -622,7 +622,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get supportUnavailable =>
-      'Mağaza üzerinden destek yakında açılıyor. Yardım etmek istediğin için teşekkürler.';
+      'Mağaza üzerinden destek şu anda kullanılamıyor. Daha sonra tekrar dene.';
 
   @override
   String get supportThanksTitle => 'Teşekkürler';
@@ -694,4 +694,38 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get showHiddenDedications => 'Gizlenen ithafları göster';
+
+  @override
+  String get verifyFailed =>
+      'Doğrulanamadı. Bağlantını kontrol edip tekrar dene.';
+
+  @override
+  String get restoreDone => 'Satın alımların geri yüklendi.';
+
+  @override
+  String get restoreNothing => 'Geri yüklenecek satın alım yok.';
+
+  @override
+  String get playbackFailed =>
+      'Yayına ulaşılamıyor. Bağlantını kontrol edip tekrar dene.';
+
+  @override
+  String get audioOutput => 'Ses çıkışı';
+
+  @override
+  String get openPlayer => 'Oynatıcıyı aç';
+
+  @override
+  String songsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count şarkı',
+      one: '$count şarkı',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get stationsFolder => 'İstasyonlar';
 }

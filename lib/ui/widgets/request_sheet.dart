@@ -37,6 +37,8 @@ class _RequestSheetState extends State<_RequestSheet> {
   final _message = TextEditingController();
   late final Future<TrackAvailability> _availability = api.requestEta(widget.track.id ?? '');
   String? _token;
+  bool _captchaFailed = false;
+  int _captchaRun = 0; // a new key loads the captcha fresh
   bool _sending = false;
   RequestSubmission? _result;
   String? _error;
@@ -69,18 +71,26 @@ class _RequestSheetState extends State<_RequestSheet> {
       if (r.accepted) HapticFeedback.heavyImpact();
       setState(() => _result = r);
     } on ApiError catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = e.message;
-        _token = null;
+        _resetCaptcha(); // the token was spent
       });
     } catch (_) {
+      if (!mounted) return;
       setState(() {
         _error = context.l.errorGeneric;
-        _token = null;
+        _resetCaptcha();
       });
     } finally {
       if (mounted) setState(() => _sending = false);
     }
+  }
+
+  void _resetCaptcha() {
+    _token = null;
+    _captchaFailed = false;
+    _captchaRun++;
   }
 
   String? _eta(RequestEta eta) {
@@ -155,8 +165,15 @@ class _RequestSheetState extends State<_RequestSheet> {
                         decoration: InputDecoration(hintText: context.l.dedication),
                       ),
                       const SizedBox(height: 8),
-                      Turnstile(action: 'v3_request', onToken: (t) => setState(() => _token = t)),
-                      if (Config.captchaEnabled && _token == null)
+                      Turnstile(
+                        key: ValueKey(_captchaRun),
+                        action: 'v3_request',
+                        onToken: (t) => setState(() => _token = t),
+                        onError: () => setState(() => _captchaFailed = true),
+                      ),
+                      if (Config.captchaEnabled && _captchaFailed)
+                        TurnstileFailed(onRetry: () => setState(_resetCaptcha))
+                      else if (Config.captchaEnabled && _token == null)
                         Padding(
                           padding: const EdgeInsets.only(top: 6),
                           child: Text(

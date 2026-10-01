@@ -4,6 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:seoulfm/state/session.dart';
 
+/// What a restore found, for the page's snack bar.
+enum RestoreResult { restored, nothing, failed }
+
 /// Listener support through the App Store and Google Play: one-off tips (consumables) and a
 /// monthly supporter subscription. Nothing is unlocked by either; supporting changes nothing
 /// about how anyone listens (the site's promise).
@@ -18,7 +21,8 @@ class SupportStore extends ChangeNotifier {
   final InAppPurchase _iap = InAppPurchase.instance;
   StreamSubscription<List<PurchaseDetails>>? _sub;
 
-  bool started = false;
+  /// Asking the store for the products; the page shows a spinner meanwhile.
+  bool loading = false;
 
   /// The store answered and has at least one of our products.
   bool available = false;
@@ -33,25 +37,56 @@ class SupportStore extends ChangeNotifier {
   /// Bumped when a purchase goes through, for the thank-you.
   final ValueNotifier<int> thanked = ValueNotifier(0);
 
-  /// The store's message when a purchase fails (not when the listener cancels).
-  String? error;
+  /// A purchase failed (not when the listener cancels); the page says so.
+  bool failed = false;
 
-  Future<void> start() async {
-    if (started) return;
-    started = true;
+  /// The store's own words for the failure, when it gave readable ones.
+  String? storeMessage;
+
+  /// Completed by the first restored purchase while [restore] waits.
+  Completer<void>? _restoring;
+
+  /// Listens for transactions from launch, not only once Support is open: a purchase can
+  /// finish later (Ask to Buy, a pending payment), and Google refunds one that isn't
+  /// acknowledged within three days.
+  void listen() {
     try {
-      _sub = _iap.purchaseStream.listen(_onPurchases, onError: (Object _) {});
-      if (!await _iap.isAvailable()) return _done();
-      final r = await _iap.queryProductDetails({...tips, monthly});
-      products = {for (final p in r.productDetails) p.id: p};
-      available = products.isNotEmpty;
+      _sub ??= _iap.purchaseStream.listen(_onPurchases, onError: _onStreamError);
+    } catch (_) {}
+  }
+
+  /// Asks the store for the products. Runs again after a failure or an empty answer (offline,
+  /// products not approved yet), so reopening the page or Retry can bring them back.
+  Future<void> start() async {
+    if (loading || available) return;
+    loading = true;
+    notifyListeners();
+    try {
+      listen();
+      if (await _iap.isAvailable()) {
+        final r = await _iap.queryProductDetails({...tips, monthly});
+        products = {for (final p in r.productDetails) p.id: p};
+        available = products.isNotEmpty;
+      }
     } catch (_) {
       available = false;
     }
-    _done();
+    loading = false;
+    notifyListeners();
   }
 
-  void _done() => notifyListeners();
+  void _fail([String? message]) {
+    failed = true;
+    // Both plugins put codes here ("SKErrorDomain", "BillingResponse.error", or nothing);
+    // only a sentence is worth showing as is.
+    storeMessage = message != null && message.trim().contains(' ') ? message.trim() : null;
+  }
+
+  void _onStreamError(Object _) {
+    pending = null;
+    _fail();
+    notifyListeners();
+  }
 
   ProductDetails? product(String id) => products[id];
 
@@ -59,7 +94,8 @@ class SupportStore extends ChangeNotifier {
     final p = products[id];
     if (p == null || pending != null) return;
     pending = id;
-    error = null;
+    failed = false;
+    storeMessage = null;
     notifyListeners();
     final param = PurchaseParam(productDetails: p);
     try {
@@ -68,17 +104,29 @@ class SupportStore extends ChangeNotifier {
         pending = null;
         notifyListeners();
       }
-    } catch (e) {
+    } catch (_) {
+      // A PlatformException (a pending transaction, a store error): its text is for developers.
       pending = null;
-      error = '$e';
+      _fail();
       notifyListeners();
     }
   }
 
-  Future<void> restore() async {
+  /// Restored purchases arrive on the purchase stream, around when restorePurchases returns
+  /// (and with nothing at all when there are none), so wait a moment for the first one.
+  Future<RestoreResult> restore() async {
+    final found = _restoring = Completer<void>();
     try {
       await _iap.restorePurchases();
-    } catch (_) {}
+      await found.future.timeout(const Duration(seconds: 3));
+      return RestoreResult.restored;
+    } on TimeoutException {
+      return RestoreResult.nothing;
+    } catch (_) {
+      return found.isCompleted ? RestoreResult.restored : RestoreResult.failed;
+    } finally {
+      _restoring = null;
+    }
   }
 
   Future<void> _onPurchases(List<PurchaseDetails> list) async {
@@ -90,9 +138,11 @@ class SupportStore extends ChangeNotifier {
         case PurchaseStatus.restored:
           if (p.productID == monthly) _setSupporter(true);
           if (p.status == PurchaseStatus.purchased) thanked.value++;
+          final r = _restoring;
+          if (p.status == PurchaseStatus.restored && r != null && !r.isCompleted) r.complete();
           pending = null;
         case PurchaseStatus.error:
-          error = p.error?.message;
+          _fail(p.error?.message);
           pending = null;
         case PurchaseStatus.canceled:
           pending = null;

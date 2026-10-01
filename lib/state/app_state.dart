@@ -111,6 +111,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.wantPlaying.addListener(_syncWidgets);
     radio.wantPlaying.addListener(_syncStationsPolling);
     ratings.start();
+    support.listen();
     carPlay.start();
     WidgetsBinding.instance.addObserver(this);
     _onChannels();

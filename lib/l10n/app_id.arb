@@ -177,7 +177,7 @@
   "supportTipMedium": "Makan siang",
   "supportTipLarge": "Malam di luar",
   "supportRestore": "Pulihkan pembelian",
-  "supportUnavailable": "Dukungan lewat store segera dibuka. Terima kasih sudah ingin membantu.",
+  "supportUnavailable": "Dukungan lewat store sedang tidak tersedia. Coba lagi nanti.",
   "supportThanksTitle": "Terima kasih",
   "supportThanksBody": "Kamu membantu SeoulFM tetap gratis untuk semua.",
   "supportYouAreSupporter": "Kamu seorang pendukung. Terima kasih.",
@@ -198,5 +198,13 @@
   "reportDedication": "Laporkan",
   "hideDedicationsFrom": "Sembunyikan dedikasi dari {name}",
   "reportThanks": "Terima kasih sudah memberi tahu kami. Kami akan memeriksanya.",
-  "showHiddenDedications": "Tampilkan dedikasi tersembunyi"
+  "showHiddenDedications": "Tampilkan dedikasi tersembunyi",
+  "verifyFailed": "Verifikasi gagal. Cek koneksimu dan coba lagi.",
+  "restoreDone": "Pembelianmu sudah dipulihkan.",
+  "restoreNothing": "Tidak ada pembelian untuk dipulihkan.",
+  "playbackFailed": "Tidak bisa terhubung ke stream. Cek koneksimu dan coba lagi.",
+  "audioOutput": "Output audio",
+  "openPlayer": "Buka pemutar",
+  "songsCount": "{count, plural, =1{1 lagu} other{{count} lagu}}",
+  "stationsFolder": "Stasiun"
 }

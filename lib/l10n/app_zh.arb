@@ -177,7 +177,7 @@
   "supportTipMedium": "一顿午饭",
   "supportTipLarge": "一次聚餐",
   "supportRestore": "恢复购买",
-  "supportUnavailable": "通过应用商店支持的功能即将开放。谢谢你愿意帮忙。",
+  "supportUnavailable": "暂时无法通过应用商店支持，请稍后再试。",
   "supportThanksTitle": "谢谢你",
   "supportThanksBody": "你正在帮助SeoulFM对所有人保持免费。",
   "supportYouAreSupporter": "你已成为支持者，谢谢你。",
@@ -198,5 +198,13 @@
   "reportDedication": "举报",
   "hideDedicationsFrom": "隐藏{name}的留言",
   "reportThanks": "感谢反馈，我们会去看看。",
-  "showHiddenDedications": "显示已隐藏的留言"
+  "showHiddenDedications": "显示已隐藏的留言",
+  "verifyFailed": "验证失败，请检查网络连接后重试。",
+  "restoreDone": "购买项目已恢复。",
+  "restoreNothing": "没有可恢复的购买项目。",
+  "playbackFailed": "无法连接直播流，请检查网络连接后重试。",
+  "audioOutput": "音频输出",
+  "openPlayer": "打开播放器",
+  "songsCount": "{count, plural, =1{{count}首歌} other{{count}首歌}}",
+  "stationsFolder": "电台"
 }

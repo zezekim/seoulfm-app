@@ -41,11 +41,15 @@ class SongScreen extends StatelessWidget {
                   children: [
                     Text(t.displayTitle, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: -0.4)),
                     const SizedBox(height: 4),
-                    GestureDetector(
-                      onTap: t.artistKey == null ? null : () => Nav.openArtist(t.artistKey!, name: t.artist),
-                      child: Text(
-                        t.displayArtist,
-                        style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.w600),
+                    // A link to the artist: a button to screen readers too.
+                    Semantics(
+                      button: t.artistKey != null,
+                      child: GestureDetector(
+                        onTap: t.artistKey == null ? null : () => Nav.openArtist(t.artistKey!, name: t.artist),
+                        child: Text(
+                          t.displayArtist,
+                          style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                     if (meta.isNotEmpty) ...[const SizedBox(height: 6), Text(meta, style: TextStyle(color: c.muted, fontSize: 13))],
