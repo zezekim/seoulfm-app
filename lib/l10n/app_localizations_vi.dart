@@ -268,7 +268,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get carBody =>
-      'SeoulFM hoạt động với Apple CarPlay và Android Auto. Kết nối điện thoại và chọn kênh trên màn hình xe; nút chuyển bài trên vô lăng dùng để đổi kênh.';
+      'SeoulFM hoạt động với Android Auto. Kết nối điện thoại và chọn kênh trên màn hình xe; nút chuyển bài trên vô lăng dùng để đổi kênh.';
 
   @override
   String get about => 'Về SeoulFM';

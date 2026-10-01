@@ -10,7 +10,7 @@ site's (`seoulfm-site`) tokens and API contract, laid out like Spotify and Apple
 showcases the stations (featured cards, then genre tiles, each with what it plays now); the player
 bar opens a full-screen player with lyrics, Up Next, requests and history. The tabs are Home,
 Request (search the library to request), Charts and More (dedications, settings). On top of the site
-it adds **Apple CarPlay**, **Android Auto**, lock-screen and Bluetooth controls, background play,
+it adds **Android Auto** (CarPlay later), lock-screen and Bluetooth controls, background play,
 station skip from the steering wheel or headset, and a sleep timer.
 
 ## Run
@@ -130,10 +130,14 @@ same metadata as the lock screen). Picking a station tunes and plays it through 
 engine. Both scenes use one `FlutterEngine` started in `AppDelegate`: CarPlay can launch the app
 with no phone screen, and two engines would mean two radios.
 
-**Before it shows in a car:** request the CarPlay audio entitlement from Apple
-(developer.apple.com/carplay), then regenerate the provisioning profile.
-`Runner/Runner.entitlements` already declares `com.apple.developer.carplay-audio`. Signing fails
-until the profile includes it. Test in Xcode's CarPlay simulator (I/O → External Displays → CarPlay).
+**Off in 3.0.** The code is in place but not registered, so nothing in the app mentions
+CarPlay (More's "In the car" shows on Android only). To turn it on in an update: get the CarPlay
+audio entitlement from Apple (developer.apple.com/carplay) and regenerate the profile; add
+`com.apple.developer.carplay-audio` back to `Runner/Runner.entitlements`; add the
+`CPTemplateApplicationSceneSessionRoleApplication` scene (`CarPlaySceneDelegate`) back to
+`Info.plist`'s scene manifest, with `UIApplicationSupportsMultipleScenes` true; show "In the car"
+on iOS again and put CarPlay back in `carBody`. Test in Xcode's CarPlay simulator (I/O →
+External Displays → CarPlay).
 
 ### Android Auto
 
@@ -151,8 +155,10 @@ here: the car shows only system templates.
 2. **Turnstile.** Check that the site key accepts tokens from the in-app web view (its hostname is
    seoul.fm through the base URL). If the API should verify app writes another way, that is in
    the same section.
-3. **Signing.** Android: `android/key.properties` (not committed) with the existing Play upload
-   key. iOS: the team that owns `com.seoulfm.seoulfm`. Raise `version` in `pubspec.yaml` above
+3. **Signing.** Android: `android/key.properties` (not committed) points at the upload key.
+   The old app's key is lost, so a new upload key was made; Play Console → Test and release →
+   App integrity → App signing → "Request upload key reset", with its `upload_certificate.pem`.
+   Keep the key and its passwords backed up outside this machine. iOS: the team that owns `com.seoulfm.seoulfm`. Raise `version` in `pubspec.yaml` above
    the current store build numbers (it is `3.0.0+300`).
 4. **Widgets and Live Activity (iOS).** Register the App Group `group.com.seoulfm.seoulfm` for the
    team, and create an App ID and profile for the extension `com.seoulfm.seoulfm.NowPlayingWidget`;

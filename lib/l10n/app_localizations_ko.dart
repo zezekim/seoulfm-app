@@ -253,7 +253,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get carBody =>
-      'SeoulFM은 Apple CarPlay와 Android Auto를 지원해요. 휴대폰을 연결하고 차량 화면에서 채널을 고르세요. 핸들의 다음/이전 버튼으로 채널을 바꿀 수 있어요.';
+      'SeoulFM은 Android Auto를 지원해요. 휴대폰을 연결하고 차량 화면에서 채널을 고르세요. 핸들의 다음/이전 버튼으로 채널을 바꿀 수 있어요.';
 
   @override
   String get about => 'SeoulFM 소개';

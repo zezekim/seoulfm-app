@@ -102,6 +102,11 @@ class RadioHandler extends BaseAudioHandler {
   void Function(String key) onTune = (_) {};
   Map<String, NowPlaying> Function() stationsNowPlaying = () => const {};
 
+  /// The listener's position in the heard song, ms (`NowPlayingController.positionMs`): the
+  /// lock screen's progress and time left. The player's own clock is the stream's, not the song's.
+  int? Function() songPositionMs = () => null;
+  String? _publishedTrack;
+
   // ── State the UI listens to ─────────────────────────────────────────────
   /// The listener wants sound (play pressed and not paused since).
   final ValueNotifier<bool> wantPlaying = ValueNotifier(false);
@@ -446,6 +451,8 @@ class RadioHandler extends BaseAudioHandler {
         androidCompactActionIndices: const [0, 1, 2],
         processingState: _channel == null ? AudioProcessingState.idle : processing,
         playing: wantPlaying.value,
+        // The system runs the clock on from here while playing; each event re-anchors it.
+        updatePosition: Duration(milliseconds: songPositionMs() ?? 0),
       ),
     );
   }
@@ -467,7 +474,10 @@ class RadioHandler extends BaseAudioHandler {
   /// The heard track on the tuned channel (from `NowPlayingController`).
   void updateTrack(Channel c, Track? t) {
     if (_channel?.key != c.key) return;
-    if (t == null) return _publishIdleItem();
+    if (t == null) {
+      _publishedTrack = null;
+      return _publishIdleItem();
+    }
     final art = t.artworkUrl ?? _stationArt(c)?.toString();
     mediaItem.add(
       MediaItem(
@@ -476,9 +486,16 @@ class RadioHandler extends BaseAudioHandler {
         artist: t.displayArtist,
         album: isolate('SeoulFM ${c.rawName}'),
         artUri: art == null ? null : Uri.parse(art),
+        duration: t.durationMs == null ? null : Duration(milliseconds: t.durationMs!),
         extras: {'track_id': t.id},
       ),
     );
+    // A new song restarts the lock screen's progress at the heard position.
+    final key = '${c.key}/${t.id}/${t.durationMs}';
+    if (key != _publishedTrack) {
+      _publishedTrack = key;
+      _broadcast();
+    }
   }
 
   Uri? _stationArt(Channel c) {

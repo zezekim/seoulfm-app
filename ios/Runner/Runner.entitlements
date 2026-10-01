@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- CarPlay audio app. Apple grants this on request (developer.apple.com/carplay);
-	     the provisioning profile must include it or signing fails. -->
-	<key>com.apple.developer.carplay-audio</key>
-	<true/>
 	<!-- Shared with the home-screen widget (NowPlayingWidget), which reads what is on air. -->
 	<key>com.apple.security.application-groups</key>
 	<array>

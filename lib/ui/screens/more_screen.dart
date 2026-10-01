@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/config.dart';
@@ -100,11 +101,14 @@ class MoreScreen extends StatelessWidget {
                   onTap: () => pickQuality(context),
                 ),
               ),
-              SectionHeader(l.inTheCar, icon: AppIcons.car),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(l.carBody, style: TextStyle(color: c.muted, height: 1.45)),
-              ),
+              // Android Auto only: CarPlay waits for Apple's entitlement (see the README).
+              if (defaultTargetPlatform == TargetPlatform.android) ...[
+                SectionHeader(l.inTheCar, icon: AppIcons.car),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(l.carBody, style: TextStyle(color: c.muted, height: 1.45)),
+                ),
+              ],
               SectionHeader(l.about),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

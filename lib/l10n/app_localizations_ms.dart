@@ -270,7 +270,7 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get carBody =>
-      'SeoulFM berfungsi dengan Apple CarPlay dan Android Auto. Sambungkan telefon anda dan pilih stesen pada skrin kereta; butang langkau pada stereng menukar stesen.';
+      'SeoulFM berfungsi dengan Android Auto. Sambungkan telefon anda dan pilih stesen pada skrin kereta; butang langkau pada stereng menukar stesen.';
 
   @override
   String get about => 'Tentang SeoulFM';

@@ -72,7 +72,7 @@
   "sleepMinutes": "{minutes}分钟",
   "sleepStopsIn": "{minutes}分钟后停止",
   "inTheCar": "车载收听",
-  "carBody": "SeoulFM支持Apple CarPlay和Android Auto。连接手机后，在车载屏幕上选择电台；方向盘上的切歌键可以切换电台。",
+  "carBody": "SeoulFM支持Android Auto。连接手机后，在车载屏幕上选择电台；方向盘上的切歌键可以切换电台。",
   "about": "关于SeoulFM",
   "aboutBody": "SeoulFM是免费的24小时K-POP电台，也是韩国音乐流媒体平台：十二个直播电台，加上每天都在增长的曲库，每首都配有歌词，可以搜索和点播。被点的歌会直播给所有人听。自2009年开播，一直免费。",
   "website": "官网",

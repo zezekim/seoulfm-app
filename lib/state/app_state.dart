@@ -98,6 +98,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.channels = () => channels.channels;
     radio.onTune = (key) => tuneIn(key, fromCar: true);
     radio.stationsNowPlaying = () => stations.byStation;
+    radio.songPositionMs = nowPlaying.positionMs;
 
     runtime.start();
     channels.addListener(_onChannels);

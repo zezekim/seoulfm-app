@@ -72,7 +72,7 @@
   "sleepMinutes": "{minutes} min",
   "sleepStopsIn": "Arrêt dans {minutes} min",
   "inTheCar": "En voiture",
-  "carBody": "SeoulFM fonctionne avec Apple CarPlay et Android Auto. Connectez votre téléphone et choisissez une station sur l’écran de la voiture ; les boutons suivant/précédent du volant changent de station.",
+  "carBody": "SeoulFM fonctionne avec Android Auto. Connectez votre téléphone et choisissez une station sur l’écran de la voiture ; les boutons suivant/précédent du volant changent de station.",
   "about": "À propos de SeoulFM",
   "aboutBody": "SeoulFM est une radio K-pop gratuite 24h/24 et une plateforme de streaming de musique coréenne : douze stations en direct et une bibliothèque de chansons qui s’agrandit chaque jour, toutes avec leurs paroles, que vous pouvez chercher et demander. Une chanson demandée passe en direct pour tous. À l’antenne depuis 2009, toujours gratuit.",
   "website": "Site web",

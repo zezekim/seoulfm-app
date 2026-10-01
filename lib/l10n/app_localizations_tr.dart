@@ -268,7 +268,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get carBody =>
-      'SeoulFM, Apple CarPlay ve Android Auto ile çalışır. Telefonunu bağla ve aracının ekranından bir istasyon seç; direksiyondaki ileri/geri tuşları istasyonu değiştirir.';
+      'SeoulFM, Android Auto ile çalışır. Telefonunu bağla ve aracının ekranından bir istasyon seç; direksiyondaki ileri/geri tuşları istasyonu değiştirir.';
 
   @override
   String get about => 'SeoulFM hakkında';

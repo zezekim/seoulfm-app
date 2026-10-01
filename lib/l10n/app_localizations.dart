@@ -567,7 +567,7 @@ abstract class AppLocalizations {
   /// No description provided for @carBody.
   ///
   /// In en, this message translates to:
-  /// **'SeoulFM works with Apple CarPlay and Android Auto. Connect your phone and pick a station on the car’s screen; the steering-wheel skip buttons change station.'**
+  /// **'SeoulFM works with Android Auto. Connect your phone and pick a station on the car’s screen; the steering-wheel skip buttons change station.'**
   String get carBody;
 
   /// No description provided for @about.

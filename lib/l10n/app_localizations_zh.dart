@@ -265,7 +265,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get carBody =>
-      'SeoulFM支持Apple CarPlay和Android Auto。连接手机后，在车载屏幕上选择电台；方向盘上的切歌键可以切换电台。';
+      'SeoulFM支持Android Auto。连接手机后，在车载屏幕上选择电台；方向盘上的切歌键可以切换电台。';
 
   @override
   String get about => '关于SeoulFM';
@@ -918,7 +918,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get carBody =>
-      'SeoulFM支援Apple CarPlay和Android Auto。連接手機後，在車上的螢幕選擇電台；方向盤上的跳轉鍵可以切換電台。';
+      'SeoulFM支援Android Auto。連接手機後，在車上的螢幕選擇電台；方向盤上的跳轉鍵可以切換電台。';
 
   @override
   String get about => '關於SeoulFM';

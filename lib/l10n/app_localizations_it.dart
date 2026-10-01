@@ -269,7 +269,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get carBody =>
-      'SeoulFM funziona con Apple CarPlay e Android Auto. Collega il telefono e scegli una stazione sullo schermo dell’auto; i tasti avanti/indietro sul volante cambiano stazione.';
+      'SeoulFM funziona con Android Auto. Collega il telefono e scegli una stazione sullo schermo dell’auto; i tasti avanti/indietro sul volante cambiano stazione.';
 
   @override
   String get about => 'Informazioni su SeoulFM';
