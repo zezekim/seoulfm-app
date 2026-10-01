@@ -44,10 +44,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   String? _tunedKey;
   String? _heardTrackId;
 
-  /// Native HLS players start ~12 s behind live (`EXT-X-START:TIME-OFFSET=-12`) and can't
+  /// The radio plays [RadioHandler.liveOffset] behind the live edge, and native players can't
   /// report their program date, so while playing the listener is at least that far behind;
   /// the dashboard's `lyrics.delay_ms` (per station) wins when it says more.
-  static const _playerOffsetMs = 12000;
+  static final _playerOffsetMs = RadioHandler.liveOffset.inMilliseconds;
   int _delayMs(String station) {
     final configured = runtime.config.delayFor(station);
     return radio.wantPlaying.value ? (configured > _playerOffsetMs ? configured : _playerOffsetMs) : configured;

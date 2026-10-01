@@ -27,17 +27,27 @@ class RadioHandler extends BaseAudioHandler {
     _init();
   }
 
+  /// How far behind the live edge the listener plays: the playlist's `EXT-X-START` (and its
+  /// `HOLD-BACK`, once the server sends one). The players honour it natively.
+  static const liveOffset = Duration(seconds: 12);
+
   final AudioPlayer _player = AudioPlayer(
     audioLoadConfiguration: const AudioLoadConfiguration(
       androidLoadControl: AndroidLoadControl(
-        minBufferDuration: Duration(seconds: 15),
-        maxBufferDuration: Duration(seconds: 45),
-        // The server starts 12 s behind live: play once a segment is in hand, and after a stall
-        // wait for two, so playback doesn't stutter in and out.
+        minBufferDuration: Duration(seconds: 20),
+        maxBufferDuration: Duration(seconds: 50),
+        // Play once a segment is in hand; after a stall, wait for two.
         bufferForPlaybackDuration: Duration(milliseconds: 3000),
-        bufferForPlaybackAfterRebufferDuration: Duration(seconds: 7),
+        bufferForPlaybackAfterRebufferDuration: Duration(seconds: 8),
       ),
-      darwinLoadControl: DarwinLoadControl(preferredForwardBufferDuration: Duration(seconds: 20)),
+      // ExoPlayer otherwise speeds up (up to 3%) toward the live edge, where it has nothing
+      // buffered and every late segment is a stall. Hold real time; after a stall, back off.
+      androidLivePlaybackSpeedControl: AndroidLivePlaybackSpeedControl(
+        fallbackMinPlaybackSpeed: 1.0,
+        fallbackMaxPlaybackSpeed: 1.0,
+        targetLiveOffsetIncrementOnRebuffer: Duration(seconds: 4),
+      ),
+      darwinLoadControl: DarwinLoadControl(preferredForwardBufferDuration: Duration(seconds: 30)),
     ),
   );
 
@@ -95,6 +105,12 @@ class RadioHandler extends BaseAudioHandler {
   String? _loadedUrl;
 
   Channel? get channel => _channel;
+
+  /// How much audio is buffered ahead of what is heard (diagnostics and tests).
+  Duration get bufferAhead => _player.bufferedPosition - _player.position;
+
+  /// Raw player clock, for diagnostics: position, buffered position, speed.
+  String get debugClock => 'pos=${_player.position.inMilliseconds} buf=${_player.bufferedPosition.inMilliseconds} window=${_player.duration?.inMilliseconds}';
 
   Future<void> _init() async {
     final session = await AudioSession.instance;
