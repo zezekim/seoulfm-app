@@ -11,7 +11,8 @@ import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/nav.dart';
 
 /// The player bar above the tabs (`PlayerBar` on phones): glass, the heard song, its
-/// progress as a hairline in the accent, play. Tap the song for the full-screen player.
+/// progress as a hairline in the accent, play. Tap the song for the full-screen player, where
+/// the thumbs are.
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({super.key});
 
@@ -74,7 +75,6 @@ class MiniPlayer extends StatelessWidget {
                           ],
                         ),
                       ),
-                      RatingButtons(trackId: t?.id, size: 20),
                       ValueListenableBuilder<bool>(
                         valueListenable: radio.wantPlaying,
                         builder: (_, playing, _) => ValueListenableBuilder<bool>(
