@@ -37,5 +37,7 @@ while kill -0 "$PID" 2>/dev/null; do
 done
 wait "$PID" || true
 grep -E "tests passed|Some tests" "$LOG" || true
+# Keep the whole log when a language fails, to see why.
+if grep -q "Some tests failed" "$LOG"; then cp "$LOG" "$OUT/$LOCALE-failure.log"; echo "log: $OUT/$LOCALE-failure.log"; fi
 rm -f "$LOG"
 if [ "$ANDROID" = 1 ]; then "$ADB" -s "$DEVICE" shell am broadcast -a com.android.systemui.demo -e command exit >/dev/null; fi
