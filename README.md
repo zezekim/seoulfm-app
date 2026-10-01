@@ -64,6 +64,14 @@ xcrun devicectl device install app --device <device udid> ../build/device/Build/
 Then trust the developer on the phone (Settings → General → VPN & Device Management). Free
 builds expire after 7 days.
 
+## Store screenshots
+
+`tool/store_screenshots.sh <simulator udid | adb serial> <locale> <dir>` drives the real app
+(`integration_test/store_test.dart`) and captures six screens with a clean 9:41 status bar;
+`python3 tool/compose_store.py <dir> <out> <locale> [WxH]` frames them with a headline. Use the
+iPhone 18 Pro Max simulator for the App Store (1320 x 2868, 6.9-inch) and an Android emulator with
+`1080x1920` for Google Play (which allows at most 2:1). Headlines are in the script (en, ko).
+
 ## Languages
 
 The app speaks the site's 20 languages: English, Korean, Spanish (Latin America and Spain),

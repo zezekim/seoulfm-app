@@ -20,7 +20,8 @@ import 'package:seoulfm/ui/icons.dart';
 /// still being read, the station's accent a shade deeper. [watch] rebuilds when it arrives.
 Color lyricsColor(BuildContext context, Track? track, Color stationAccent, {bool watch = true}) {
   final covers = watch ? context.watch<CoverColors>() : context.read<CoverColors>();
-  return covers.of(track?.artworkUrl) ?? Color.lerp(stationAccent, Colors.black, 0.22)!;
+  // Deep enough for white lyrics (Spotify's are deep, saturated colours, never neon).
+  return forWhiteText(covers.of(track?.artworkUrl) ?? Color.lerp(stationAccent, Colors.black, 0.22)!, ratio: 4.5);
 }
 
 /// Text colours on a lyrics background: the lines already sung (and the one being sung)

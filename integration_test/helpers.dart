@@ -6,7 +6,13 @@ import 'package:seoulfm/main.dart' as app;
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Starts the app past the welcome (unless [welcome]), ready for screenshots on either platform.
-Future<void> launch(IntegrationTestWidgetsFlutterBinding binding, {bool welcome = false}) async {
+/// [inAppShots] false leaves Android's surface alone, for captures taken from outside the app
+/// (adb screencap reads a converted surface as black).
+Future<void> launch(
+  IntegrationTestWidgetsFlutterBinding binding, {
+  bool welcome = false,
+  bool inAppShots = true,
+}) async {
   final prefs = await SharedPreferences.getInstance();
   if (welcome) {
     await prefs.remove('seoulfm-onboarded');
@@ -17,7 +23,7 @@ Future<void> launch(IntegrationTestWidgetsFlutterBinding binding, {bool welcome 
   await prefs.setString('seoulfm-channel', 'seoulfm');
   app.main();
   // Android draws to a surface the screenshot can't read until it's converted; iOS needs nothing.
-  if (Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
+  if (inAppShots && Platform.isAndroid) await binding.convertFlutterSurfaceToImage();
 }
 
 /// Pumps for [seconds] of real time (the app streams and polls; pumpAndSettle never settles).

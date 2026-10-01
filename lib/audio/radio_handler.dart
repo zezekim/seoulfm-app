@@ -49,6 +49,8 @@ class RadioHandler extends BaseAudioHandler {
   static const ladder = [320, 192, 128, 48];
   static const _stallWindow = Duration(seconds: 60);
   static const _retryUpAfter = Duration(minutes: 5);
+  static const _settle = Duration(seconds: 20);
+  DateTime? _loadedAt;
   int _rung = 0;
   DateTime? _steppedDownAt;
   final List<DateTime> _stalls = [];
@@ -184,6 +186,9 @@ class RadioHandler extends BaseAudioHandler {
   /// connection, so reload a rung lower (quietly, without a fade).
   void _onStall() {
     final now = DateTime.now();
+    // The first seconds after a load settle the buffer; stalls there say nothing about the
+    // connection (and were stepping the quality down on start-up).
+    if (_loadedAt != null && now.difference(_loadedAt!) < _settle) return;
     _stalls
       ..add(now)
       ..removeWhere((t) => now.difference(t) > _stallWindow);
@@ -216,6 +221,7 @@ class RadioHandler extends BaseAudioHandler {
     if (_channel == null) return;
     final url = _url();
     _loadedUrl = url;
+    _loadedAt = DateTime.now();
     losslessActive.value = url == _channel!.losslessManifest;
     aacKbps.value = url == _channel!.variant(ladder[_rung]) ? ladder[_rung] : null;
     _startAt = DateTime.now();
