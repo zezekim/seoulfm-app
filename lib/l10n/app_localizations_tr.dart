@@ -65,7 +65,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      '58.000’den fazla şarkıda ara, sözlerini oku ve canlı çalması için bir şarkı iste.';
+      'Kütüphanede ara, sözleri oku ve canlı çalması için bir şarkı iste.';
 
   @override
   String get newSongs => 'SeoulFM’de yeni';
@@ -275,7 +275,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM, ücretsiz 7/24 K-pop radyosu ve bir Kore müziği streaming platformu: on iki canlı istasyon ve her biri şarkı sözleriyle birlikte, arayıp isteyebileceğin 58.000’den fazla şarkılık bir kütüphane. İstenen şarkı herkes için canlı çalar. 2009’dan beri yayında, her zaman ücretsiz.';
+      'SeoulFM, ücretsiz 7/24 K-pop radyosu ve bir Kore müziği streaming platformu: on iki canlı istasyon ve her biri şarkı sözleriyle birlikte, arayıp isteyebileceğin, her gün büyüyen bir şarkı kütüphanesi. İstenen şarkı herkes için canlı çalar. 2009’dan beri yayında, her zaman ücretsiz.';
 
   @override
   String get website => 'Web sitesi';
@@ -401,7 +401,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quality => 'Kalite';
 
   @override
-  String get qualityAuto => 'Otomatik (AAC)';
+  String get qualityAuto => 'Otomatik';
 
   @override
   String get comingSoon => 'Çok yakında';
@@ -503,7 +503,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'On iki istasyon, 7/24 yayında ve sözleriyle 58.000’den fazla şarkı. Bir şarkı iste, herkes için canlı çalsın.';
+      'On iki istasyon, 7/24 yayında ve sözleriyle birlikte her gün büyüyen bir şarkı kütüphanesi. Bir şarkı iste, herkes için canlı çalsın.';
 
   @override
   String get continueLabel => 'Devam';
@@ -654,4 +654,27 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get languageSystem => 'Sistem dilini kullan';
+
+  @override
+  String get qualityAutoBody =>
+      'Bağlantının kaldırabildiği en iyi kalite. Zorlanırsa düşer.';
+
+  @override
+  String get qualityVeryHigh => 'Çok yüksek';
+
+  @override
+  String get qualityHigh => 'Yüksek';
+
+  @override
+  String get qualityNormal => 'Normal';
+
+  @override
+  String get qualityDataSaver => 'Veri tasarrufu';
+
+  @override
+  String get qualityFixedBody => 'Bağlantı zayıf olsa bile hep bu kalite.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI, uyarısını kabul ettiğinde kayıpsız FLAC çalar.';
 }

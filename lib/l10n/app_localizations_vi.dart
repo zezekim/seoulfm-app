@@ -65,7 +65,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'Tìm trong hơn 58.000 bài hát, đọc lời và yêu cầu một bài để phát trực tiếp.';
+      'Tìm trong thư viện, đọc lời và yêu cầu một bài để phát trực tiếp.';
 
   @override
   String get newSongs => 'Mới trên SeoulFM';
@@ -275,7 +275,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM là radio K-pop miễn phí 24/7 và nền tảng streaming nhạc Hàn Quốc: mười hai kênh phát trực tiếp, cùng thư viện hơn 58.000 bài hát, bài nào cũng có lời, để bạn tìm và yêu cầu. Bài được yêu cầu sẽ phát trực tiếp cho mọi người. Phát sóng từ năm 2009, luôn miễn phí.';
+      'SeoulFM là radio K-pop miễn phí 24/7 và nền tảng streaming nhạc Hàn Quốc: mười hai kênh phát trực tiếp, cùng thư viện bài hát mỗi ngày một lớn, bài nào cũng có lời, để bạn tìm và yêu cầu. Bài được yêu cầu sẽ phát trực tiếp cho mọi người. Phát sóng từ năm 2009, luôn miễn phí.';
 
   @override
   String get website => 'Trang web';
@@ -401,7 +401,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get quality => 'Chất lượng';
 
   @override
-  String get qualityAuto => 'Tự động (AAC)';
+  String get qualityAuto => 'Tự động';
 
   @override
   String get comingSoon => 'Sắp ra mắt';
@@ -503,7 +503,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Mười hai kênh, 24/7, và hơn 58.000 bài hát kèm lời. Yêu cầu một bài và bài sẽ phát trực tiếp cho mọi người.';
+      'Mười hai kênh, 24/7, và thư viện bài hát kèm lời mỗi ngày một lớn. Yêu cầu một bài và bài sẽ phát trực tiếp cho mọi người.';
 
   @override
   String get continueLabel => 'Tiếp tục';
@@ -654,4 +654,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get languageSystem => 'Dùng ngôn ngữ hệ thống';
+
+  @override
+  String get qualityAutoBody =>
+      'Chất lượng tốt nhất kết nối của bạn chịu được. Tự giảm khi mạng chập chờn.';
+
+  @override
+  String get qualityVeryHigh => 'Rất cao';
+
+  @override
+  String get qualityHigh => 'Cao';
+
+  @override
+  String get qualityNormal => 'Bình thường';
+
+  @override
+  String get qualityDataSaver => 'Tiết kiệm dữ liệu';
+
+  @override
+  String get qualityFixedBody =>
+      'Luôn ở chất lượng này, kể cả khi kết nối yếu.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI phát FLAC lossless khi bạn chấp nhận thông báo của nó.';
 }

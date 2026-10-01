@@ -1,3 +1,5 @@
+import 'package:package_info_plus/package_info_plus.dart';
+
 /// Build-time configuration. Pass values with `--dart-define` (see README):
 ///
 ///   flutter run --dart-define=SEOULFM_API_KEY=pk_... --dart-define=TURNSTILE_SITE_KEY=0x...
@@ -23,4 +25,28 @@ class Config {
   static const sentryDsn = String.fromEnvironment('SENTRY_DSN');
 
   static const appVersion = String.fromEnvironment('SEOULFM_APP_VERSION', defaultValue: '3.0.0');
+
+  /// The commit the build came from (`--dart-define=GIT_COMMIT=$(git rev-parse --short HEAD)`).
+  static const gitCommit = String.fromEnvironment('GIT_COMMIT');
+}
+
+/// The installed build: version and build number from the app itself (pubspec's
+/// `version: 3.0.0+300` becomes 3.0.0 and 300), plus the commit. Loaded once at launch.
+abstract final class AppBuild {
+  static String version = Config.appVersion;
+  static String number = '';
+
+  static Future<void> load() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (info.version.isNotEmpty) version = info.version;
+      number = info.buildNumber;
+    } catch (_) {}
+  }
+
+  /// "3.0.0 (300) · 4cbd3c3", as More shows it.
+  static String get label => [
+    number.isEmpty ? version : '$version ($number)',
+    if (Config.gitCommit.isNotEmpty) Config.gitCommit,
+  ].join(' · ');
 }

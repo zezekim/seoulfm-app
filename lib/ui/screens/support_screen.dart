@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:seoulfm/config.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/support_store.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/icons.dart';
+import 'package:seoulfm/ui/site_pages.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// Support: the site's page (no ads, no paywall, where it goes, what stays the same), with the
 /// ways to give through the App Store or Google Play: monthly, or a one-time tip. Nothing is
@@ -41,8 +40,6 @@ class _SupportScreenState extends State<SupportScreen> {
     showModalBottomSheet<void>(context: context, useRootNavigator: true, builder: (_) => const _Thanks());
   }
 
-  Future<void> _open(String path) =>
-      launchUrl(Uri.parse('${Config.siteUrl}$path'), mode: LaunchMode.externalApplication);
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +113,12 @@ class _SupportScreenState extends State<SupportScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextButton(
-                            onPressed: () => _open('/terms/'),
+                            onPressed: () => openSitePage('/terms/'),
                             child: Text(l.terms, style: const TextStyle(fontSize: 12)),
                           ),
                           Text('·', style: TextStyle(color: c.faint)),
                           TextButton(
-                            onPressed: () => _open('/privacy/'),
+                            onPressed: () => openSitePage('/privacy/'),
                             child: Text(l.privacy, style: const TextStyle(fontSize: 12)),
                           ),
                         ],

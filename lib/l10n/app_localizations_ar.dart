@@ -64,7 +64,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'ابحث في أكثر من 58,000 أغنية، واقرأ كلماتها، واطلب واحدة لتُذاع مباشرة.';
+      'ابحث في المكتبة، واقرأ كلمات الأغاني، واطلب أغنية لتُذاع مباشرة.';
 
   @override
   String get newSongs => 'جديد SeoulFM';
@@ -281,7 +281,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM راديو K-pop مجاني على مدار الساعة ومنصة لبث الموسيقى الكورية: اثنتا عشرة محطة مباشرة، ومكتبة تضم أكثر من 58,000 أغنية، لكلٍّ منها كلماتها، يمكنك البحث فيها وطلبها. تُذاع الأغنية المطلوبة مباشرة للجميع. على الهواء منذ 2009، ومجاني دائمًا.';
+      'SeoulFM راديو K-pop مجاني على مدار الساعة ومنصة لبث الموسيقى الكورية: اثنتا عشرة محطة مباشرة، ومكتبة أغانٍ تكبر كل يوم، لكلٍّ منها كلماتها، يمكنك البحث فيها وطلبها. تُذاع الأغنية المطلوبة مباشرة للجميع. على الهواء منذ 2009، ومجاني دائمًا.';
 
   @override
   String get website => 'الموقع';
@@ -407,7 +407,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get quality => 'الجودة';
 
   @override
-  String get qualityAuto => 'تلقائي (AAC)';
+  String get qualityAuto => 'تلقائي';
 
   @override
   String get comingSoon => 'قريبًا';
@@ -509,7 +509,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'اثنتا عشرة محطة على مدار الساعة، وأكثر من 58,000 أغنية مع كلماتها. اطلب أغنية لتُذاع مباشرة للجميع.';
+      'اثنتا عشرة محطة على مدار الساعة، ومكتبة أغانٍ مع كلماتها تكبر كل يوم. اطلب أغنية لتُذاع مباشرة للجميع.';
 
   @override
   String get continueLabel => 'متابعة';
@@ -658,4 +658,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get languageSystem => 'استخدام لغة النظام';
+
+  @override
+  String get qualityAutoBody => 'أفضل جودة يتحملها اتصالك. تنخفض إذا تعثّر.';
+
+  @override
+  String get qualityVeryHigh => 'عالية جدًا';
+
+  @override
+  String get qualityHigh => 'عالية';
+
+  @override
+  String get qualityNormal => 'عادية';
+
+  @override
+  String get qualityDataSaver => 'توفير البيانات';
+
+  @override
+  String get qualityFixedBody => 'هذه الجودة دائمًا، حتى مع اتصال ضعيف.';
+
+  @override
+  String get qualityLosslessNote =>
+      'يُشغّل HIFI ملفات FLAC بلا فقدان عند قبولك تنبيهه.';
 }

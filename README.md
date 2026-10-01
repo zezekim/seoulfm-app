@@ -1,7 +1,7 @@
 # SeoulFM app (iOS and Android)
 
 SeoulFM is free 24/7 K-pop radio and a Korean music streaming platform: twelve live stations,
-and a library of 58,000+ songs with lyrics that listeners search and request. A requested song
+and a song library, growing every day, with lyrics that listeners search and request. A requested song
 plays live for everyone.
 
 This Flutter app replaces the earlier apps. It ships under the existing Play Store id
@@ -18,7 +18,7 @@ station skip from the steering wheel or headset, and a sleep timer.
 ```bash
 cp dart-defines.example.json dart-defines.json   # then fill in the keys; it is gitignored
 flutter pub get
-flutter run --dart-define-from-file=dart-defines.json
+flutter run --dart-define-from-file=dart-defines.json --dart-define=GIT_COMMIT=$(git rev-parse --short HEAD)
 ```
 
 Each define can also be passed alone, e.g. `--dart-define=SEOULFM_API_KEY=…`. Without the key,
@@ -31,7 +31,7 @@ every REST call returns 401 and only the tuned station's live feed works.
 | `SEOULFM_API_URL` | `https://api.seoul.fm/v3` | |
 | `SEOULFM_SITE_URL` | `https://seoul.fm` | Artwork copies (`/api/art/`), artist photos, share links. |
 | `SEOULFM_RUNTIME_CONFIG_URL` | dash-api runtime config | Operators' notices and listener delay. |
-| `SEOULFM_APP_VERSION` | `3.0.0` | Sent with heartbeats. |
+| `GIT_COMMIT` | none | The commit, shown after the version in More (`$(git rev-parse --short HEAD)`). The version and build number come from `pubspec.yaml`. |
 | `SENTRY_DSN` | none (off) | Crash and error reports to Sentry. Nothing is sent without it. |
 
 `flutter analyze` and `flutter test` must pass. `flutter gen-l10n` runs on `pub get`. CI (`.github/workflows/ci.yml`)
@@ -54,7 +54,8 @@ A personal team can't use the real bundle id, CarPlay or the App Group, so build
 personal id and no entitlements (the widget then shows placeholder data):
 
 ```bash
-flutter build ios --config-only --release --dart-define-from-file=dart-defines.json
+flutter build ios --config-only --release --dart-define-from-file=dart-defines.json \
+  --dart-define=GIT_COMMIT=$(git rev-parse --short HEAD)
 cd ios && xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release \
   -destination 'id=<device udid>' -derivedDataPath ../build/device -allowProvisioningUpdates \
   DEVELOPMENT_TEAM=<team id> SFM_BUNDLE_ID=com.seoulfm.dev.<you> CODE_SIGN_ENTITLEMENTS=Runner/Dev.entitlements build

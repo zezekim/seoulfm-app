@@ -65,7 +65,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'Busque entre mais de 58.000 músicas, leia a letra e peça uma para tocar ao vivo.';
+      'Busque na biblioteca, leia a letra e peça uma música para tocar ao vivo.';
 
   @override
   String get newSongs => 'Novidades na SeoulFM';
@@ -276,7 +276,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'A SeoulFM é uma rádio K-pop grátis 24/7 e uma plataforma de streaming de música coreana: doze estações ao vivo e uma biblioteca com mais de 58.000 músicas, todas com letra, que você pode buscar e pedir. Uma música pedida toca ao vivo para todo mundo. No ar desde 2009, sempre grátis.';
+      'A SeoulFM é uma rádio K-pop grátis 24/7 e uma plataforma de streaming de música coreana: doze estações ao vivo e uma biblioteca de músicas que cresce todo dia, todas com letra, que você pode buscar e pedir. Uma música pedida toca ao vivo para todo mundo. No ar desde 2009, sempre grátis.';
 
   @override
   String get website => 'Site';
@@ -402,7 +402,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get quality => 'Qualidade';
 
   @override
-  String get qualityAuto => 'Automática (AAC)';
+  String get qualityAuto => 'Automática';
 
   @override
   String get comingSoon => 'Em breve';
@@ -504,7 +504,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Doze estações, 24/7, e mais de 58.000 músicas com letra. Peça uma música e ela toca ao vivo para todo mundo.';
+      'Doze estações, 24/7, e uma biblioteca de músicas com letra que cresce todo dia. Peça uma música e ela toca ao vivo para todo mundo.';
 
   @override
   String get continueLabel => 'Continuar';
@@ -655,4 +655,28 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get languageSystem => 'Usar o idioma do sistema';
+
+  @override
+  String get qualityAutoBody =>
+      'A melhor que sua conexão aguenta. Diminui se ela oscilar.';
+
+  @override
+  String get qualityVeryHigh => 'Muito alta';
+
+  @override
+  String get qualityHigh => 'Alta';
+
+  @override
+  String get qualityNormal => 'Normal';
+
+  @override
+  String get qualityDataSaver => 'Economia de dados';
+
+  @override
+  String get qualityFixedBody =>
+      'Sempre nesta qualidade, mesmo com conexão fraca.';
+
+  @override
+  String get qualityLosslessNote =>
+      'O HIFI toca FLAC sem perdas quando você aceita o aviso dele.';
 }

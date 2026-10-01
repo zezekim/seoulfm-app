@@ -16,11 +16,14 @@ import 'package:seoulfm/ui/root_shell.dart';
 import 'package:seoulfm/ui/widgets/launch_curtain.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppBuild.load();
   // Crash and error reports go to Sentry when a DSN is configured; otherwise straight to the app.
   if (Config.sentryDsn.isEmpty) return _start();
   await SentryFlutter.init((o) {
     o.dsn = Config.sentryDsn;
-    o.release = 'seoulfm@${Config.appVersion}';
+    o.release = 'seoulfm@${AppBuild.version}+${AppBuild.number}';
+    if (Config.gitCommit.isNotEmpty) o.dist = Config.gitCommit;
     o.environment = kReleaseMode ? 'production' : 'development';
     o.tracesSampleRate = 0.1;
     // Listeners are anonymous: no IPs, no request bodies, no screenshots.

@@ -237,7 +237,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchIntro.
   ///
   /// In en, this message translates to:
-  /// **'Search 58,000+ songs, read the lyrics, and request one to play live.'**
+  /// **'Search the library, read the lyrics, and request a song to play live.'**
   String get searchIntro;
 
   /// No description provided for @newSongs.
@@ -579,7 +579,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutBody.
   ///
   /// In en, this message translates to:
-  /// **'SeoulFM is free 24/7 K-pop radio and a Korean music streaming platform: twelve live stations, and a library of 58,000+ songs, each with lyrics, that you can search and request. A requested song plays live for everyone. On air since 2009, always free.'**
+  /// **'SeoulFM is free 24/7 K-pop radio and a Korean music streaming platform: twelve live stations, and a library of songs that grows every day, each with lyrics, that you can search and request. A requested song plays live for everyone. On air since 2009, always free.'**
   String get aboutBody;
 
   /// No description provided for @website.
@@ -795,7 +795,7 @@ abstract class AppLocalizations {
   /// No description provided for @qualityAuto.
   ///
   /// In en, this message translates to:
-  /// **'Auto (AAC)'**
+  /// **'Auto'**
   String get qualityAuto;
 
   /// No description provided for @comingSoon.
@@ -987,7 +987,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Twelve stations, 24/7, and 58,000+ songs with lyrics. Request a song and it plays live for everyone.'**
+  /// **'Twelve stations, 24/7, and a library of songs with lyrics that grows every day. Request a song and it plays live for everyone.'**
   String get welcomeBody;
 
   /// No description provided for @continueLabel.
@@ -1253,6 +1253,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use system language'**
   String get languageSystem;
+
+  /// No description provided for @qualityAutoBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The best your connection holds. Steps down if it struggles.'**
+  String get qualityAutoBody;
+
+  /// No description provided for @qualityVeryHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Very high'**
+  String get qualityVeryHigh;
+
+  /// No description provided for @qualityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get qualityHigh;
+
+  /// No description provided for @qualityNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get qualityNormal;
+
+  /// No description provided for @qualityDataSaver.
+  ///
+  /// In en, this message translates to:
+  /// **'Data saver'**
+  String get qualityDataSaver;
+
+  /// No description provided for @qualityFixedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Always this quality, even on a weak connection.'**
+  String get qualityFixedBody;
+
+  /// No description provided for @qualityLosslessNote.
+  ///
+  /// In en, this message translates to:
+  /// **'HIFI plays lossless FLAC when you accept its notice.'**
+  String get qualityLosslessNote;
 }
 
 class _AppLocalizationsDelegate

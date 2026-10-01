@@ -36,7 +36,7 @@ class Api {
   Map<String, String> get _headers => {
     if (Config.apiKey.isNotEmpty) 'X-API-Key': Config.apiKey,
     'Accept': 'application/json',
-    'User-Agent': 'SeoulFM-App/${Config.appVersion}',
+    'User-Agent': 'SeoulFM-App/${AppBuild.version}',
   };
 
   Uri url(String endpoint, [Map<String, Object?>? params]) {

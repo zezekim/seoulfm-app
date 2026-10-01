@@ -65,7 +65,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'Cerca tra oltre 58.000 brani, leggi i testi e richiedine uno da far andare in onda in diretta.';
+      'Cerca nella libreria, leggi i testi e richiedi un brano da far andare in onda in diretta.';
 
   @override
   String get newSongs => 'Novità su SeoulFM';
@@ -276,7 +276,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM è una radio K-pop gratis 24/7 e una piattaforma di streaming di musica coreana: dodici stazioni in diretta e una libreria di oltre 58.000 brani, ciascuno con il suo testo, che puoi cercare e richiedere. Un brano richiesto va in onda in diretta per tutti. In onda dal 2009, sempre gratis.';
+      'SeoulFM è una radio K-pop gratis 24/7 e una piattaforma di streaming di musica coreana: dodici stazioni in diretta e una libreria di brani che cresce ogni giorno, ciascuno con il suo testo, che puoi cercare e richiedere. Un brano richiesto va in onda in diretta per tutti. In onda dal 2009, sempre gratis.';
 
   @override
   String get website => 'Sito web';
@@ -402,7 +402,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get quality => 'Qualità';
 
   @override
-  String get qualityAuto => 'Auto (AAC)';
+  String get qualityAuto => 'Auto';
 
   @override
   String get comingSoon => 'In arrivo';
@@ -504,7 +504,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Dodici stazioni, 24/7, e oltre 58.000 brani con i testi. Richiedi un brano e va in onda in diretta per tutti.';
+      'Dodici stazioni, 24/7, e una libreria di brani con i testi che cresce ogni giorno. Richiedi un brano e va in onda in diretta per tutti.';
 
   @override
   String get continueLabel => 'Continua';
@@ -655,4 +655,28 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get languageSystem => 'Usa la lingua del sistema';
+
+  @override
+  String get qualityAutoBody =>
+      'Il massimo che regge la tua connessione. Scende se fa fatica.';
+
+  @override
+  String get qualityVeryHigh => 'Molto alta';
+
+  @override
+  String get qualityHigh => 'Alta';
+
+  @override
+  String get qualityNormal => 'Normale';
+
+  @override
+  String get qualityDataSaver => 'Risparmio dati';
+
+  @override
+  String get qualityFixedBody =>
+      'Sempre questa qualità, anche con una connessione debole.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI riproduce FLAC senza perdita quando accetti il suo avviso.';
 }

@@ -68,6 +68,32 @@ class RadioHandler extends BaseAudioHandler {
 
   /// The AAC quality playing, in kbps (null while lossless or on the fallback manifest).
   final ValueNotifier<int?> aacKbps = ValueNotifier(null);
+
+  /// The listener's quality setting: null for Auto (the ladder above), or one of its rungs,
+  /// held whatever the connection does. Kept on the device.
+  final ValueNotifier<int?> quality = ValueNotifier(_storedQuality());
+  static const _qualityKey = 'seoulfm-quality';
+
+  static int? _storedQuality() {
+    final q = Session.prefs.getInt(_qualityKey);
+    return ladder.contains(q) ? q : null;
+  }
+
+  /// Sets [quality] (null for Auto). While AAC plays, it switches at once.
+  Future<void> setQuality(int? kbps) async {
+    if (kbps != null && !ladder.contains(kbps)) return;
+    if (kbps == quality.value) return;
+    quality.value = kbps;
+    kbps == null ? await Session.prefs.remove(_qualityKey) : await Session.prefs.setInt(_qualityKey, kbps);
+    _rung = 0;
+    _steppedDownAt = null;
+    _stalls.clear();
+    if (!wantPlaying.value || losslessActive.value) return;
+    await _load();
+    if (_loaded && wantPlaying.value) await _player.play();
+  }
+
+  int get _kbps => quality.value ?? ladder[_rung];
   static const _fadeIn = Duration(milliseconds: 600);
   static const _fadeOut = Duration(milliseconds: 300);
 
@@ -223,7 +249,7 @@ class RadioHandler extends BaseAudioHandler {
     final c = _channel!;
     if (_losslessWanted && !losslessFailed.value) return c.losslessManifest;
     if (_useFallback && c.fallbackManifest != null) return c.fallbackManifest!;
-    return c.variant(ladder[_rung]);
+    return c.variant(_kbps);
   }
 
   /// A stall while playing: two within a minute means this quality is too much for the
@@ -245,9 +271,9 @@ class RadioHandler extends BaseAudioHandler {
     }());
   }
 
-  /// One rung lower, if there is one (AAC only).
+  /// One rung lower, if there is one (AAC on Auto only).
   bool _stepDown() {
-    if (losslessActive.value || _rung >= ladder.length - 1) return false;
+    if (quality.value != null || losslessActive.value || _rung >= ladder.length - 1) return false;
     _rung++;
     _steppedDownAt = DateTime.now();
     return true;
@@ -267,7 +293,7 @@ class RadioHandler extends BaseAudioHandler {
     _loadedUrl = url;
     _loadedAt = DateTime.now();
     losslessActive.value = url == _channel!.losslessManifest;
-    aacKbps.value = url == _channel!.variant(ladder[_rung]) ? ladder[_rung] : null;
+    aacKbps.value = url == _channel!.variant(_kbps) ? _kbps : null;
     _startAt = DateTime.now();
     try {
       await _player.setAudioSource(HlsAudioSource(Uri.parse(url)), preload: true);
@@ -598,7 +624,7 @@ class RadioHandler extends BaseAudioHandler {
         'station': c.key,
         'state': state ?? _beatState,
         'player': _playerName[defaultTargetPlatform] ?? 'flutter-${defaultTargetPlatform.name.toLowerCase()}',
-        'app_version': Config.appVersion,
+        'app_version': AppBuild.version,
         // The AAC rung playing (one variant, not the adaptive master); none for lossless.
         'bitrate_kbps': losslessActive.value ? null : aacKbps.value,
         'net_type': _netType,

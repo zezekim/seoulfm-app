@@ -65,7 +65,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'Cherchez parmi plus de 58 000 chansons, lisez les paroles et demandez-en une pour qu’elle passe en direct.';
+      'Cherchez dans la bibliothèque, lisez les paroles et demandez une chanson pour qu’elle passe en direct.';
 
   @override
   String get newSongs => 'Nouveautés sur SeoulFM';
@@ -276,7 +276,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM est une radio K-pop gratuite 24h/24 et une plateforme de streaming de musique coréenne : douze stations en direct et une bibliothèque de plus de 58 000 chansons, toutes avec leurs paroles, que vous pouvez chercher et demander. Une chanson demandée passe en direct pour tous. À l’antenne depuis 2009, toujours gratuit.';
+      'SeoulFM est une radio K-pop gratuite 24h/24 et une plateforme de streaming de musique coréenne : douze stations en direct et une bibliothèque de chansons qui s’agrandit chaque jour, toutes avec leurs paroles, que vous pouvez chercher et demander. Une chanson demandée passe en direct pour tous. À l’antenne depuis 2009, toujours gratuit.';
 
   @override
   String get website => 'Site web';
@@ -402,7 +402,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get quality => 'Qualité';
 
   @override
-  String get qualityAuto => 'Auto (AAC)';
+  String get qualityAuto => 'Auto';
 
   @override
   String get comingSoon => 'Bientôt';
@@ -504,7 +504,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Douze stations, 24h/24, et plus de 58 000 chansons avec paroles. Demandez une chanson : elle passe en direct pour tous.';
+      'Douze stations, 24h/24, et une bibliothèque de chansons avec paroles qui s’agrandit chaque jour. Demandez une chanson : elle passe en direct pour tous.';
 
   @override
   String get continueLabel => 'Continuer';
@@ -655,4 +655,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageSystem => 'Utiliser la langue du système';
+
+  @override
+  String get qualityAutoBody =>
+      'La meilleure qualité que tient votre connexion. Baisse si elle faiblit.';
+
+  @override
+  String get qualityVeryHigh => 'Très haute';
+
+  @override
+  String get qualityHigh => 'Haute';
+
+  @override
+  String get qualityNormal => 'Normale';
+
+  @override
+  String get qualityDataSaver => 'Économie de données';
+
+  @override
+  String get qualityFixedBody =>
+      'Toujours cette qualité, même avec une connexion faible.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI diffuse en FLAC sans perte quand vous acceptez son avertissement.';
 }

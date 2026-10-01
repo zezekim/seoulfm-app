@@ -42,7 +42,7 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
       # Built without keys: the app builds and runs; the API answers 401 until a key is set.
-      - run: flutter build apk --debug
+      - run: flutter build apk --debug --dart-define=GIT_COMMIT=${GITHUB_SHA::7}
 
   ios:
     needs: check
@@ -53,4 +53,4 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
-      - run: flutter build ios --simulator --debug
+      - run: flutter build ios --simulator --debug --dart-define=GIT_COMMIT=${GITHUB_SHA::7}

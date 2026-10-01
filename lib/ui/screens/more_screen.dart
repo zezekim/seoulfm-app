@@ -10,14 +10,13 @@ import 'package:seoulfm/ui/widgets/language_picker.dart';
 import 'package:seoulfm/ui/widgets/support_card.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 import 'package:seoulfm/ui/icons.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:seoulfm/ui/site_pages.dart';
+import 'package:seoulfm/ui/widgets/quality_sheet.dart';
 
 /// Dedications, settings, the car, and about.
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
-  Future<void> _open(String path) =>
-      launchUrl(Uri.parse('${Config.siteUrl}$path'), mode: LaunchMode.externalApplication);
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +81,23 @@ class MoreScreen extends StatelessWidget {
                   onTap: () => pickSleepTimer(context),
                 ),
               ),
-              ValueListenableBuilder<bool>(
-                valueListenable: app.radio.losslessActive,
-                builder: (_, lossless, _) => ListTile(
+              ListenableBuilder(
+                listenable: Listenable.merge([app.radio.losslessActive, app.radio.quality]),
+                builder: (_, _) => ListTile(
                   leading: const Icon(AppIcons.quality),
                   title: Text(l.quality),
-                  trailing: Text(lossless ? 'FLAC' : l.qualityAuto, style: TextStyle(color: c.muted)),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        app.radio.losslessActive.value ? 'FLAC' : qualityName(l, app.radio.quality.value),
+                        style: TextStyle(color: c.muted, fontSize: 13),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(AppIcons.next, color: c.muted, size: 18),
+                    ],
+                  ),
+                  onTap: () => pickQuality(context),
                 ),
               ),
               SectionHeader(l.inTheCar, icon: AppIcons.car),
@@ -101,26 +111,26 @@ class MoreScreen extends StatelessWidget {
                 child: Text(l.aboutBody, style: TextStyle(color: c.muted, height: 1.45)),
               ),
               const SizedBox(height: 8),
-              ListTile(leading: const Icon(AppIcons.website), title: Text(l.website), onTap: () => _open('/')),
+              ListTile(leading: const Icon(AppIcons.website), title: Text(l.website), onTap: openSite),
               ListTile(
                 leading: const Icon(AppIcons.privacy),
                 title: Text(l.privacy),
-                onTap: () => _open('/privacy/'),
+                onTap: () => openSitePage('/privacy/'),
               ),
               ListTile(
                 leading: const Icon(AppIcons.terms),
                 title: Text(l.terms),
-                onTap: () => _open('/terms/'),
+                onTap: () => openSitePage('/terms/'),
               ),
               ListTile(
                 leading: const Icon(AppIcons.mail),
                 title: Text(l.contact),
-                onTap: () => _open('/contact/'),
+                onTap: () => openSitePage('/contact/'),
               ),
               Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  l.version(Config.appVersion),
+                  l.version(AppBuild.label),
                   textAlign: TextAlign.center,
                   style: TextStyle(color: c.faint, fontSize: 12),
                 ),

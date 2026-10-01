@@ -64,7 +64,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      '58 000-нан астам әннен ізде, ән мәтінін оқы және тікелей эфирде ойнауы үшін тапсырыс бер.';
+      'Кітапханадан ізде, ән мәтінін оқы және тікелей эфирде ойнауы үшін тапсырыс бер.';
 
   @override
   String get newSongs => 'SeoulFM-дегі жаңа әндер';
@@ -274,7 +274,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM — тәулік бойы тегін K-pop радиосы және корей музыкасы стриминг платформасы: он екі тікелей станция және іздеп, тапсырыс беруге болатын 58 000-нан астам әннен тұратын кітапхана, әр әннің мәтіні бар. Тапсырыс берілген ән бәріне тікелей эфирде ойнайды. 2009 жылдан бері эфирде, әрқашан тегін.';
+      'SeoulFM — тәулік бойы тегін K-pop радиосы және корей музыкасы стриминг платформасы: он екі тікелей станция және іздеп, тапсырыс беруге болатын, күн сайын толығып отыратын ән кітапханасы, әр әннің мәтіні бар. Тапсырыс берілген ән бәріне тікелей эфирде ойнайды. 2009 жылдан бері эфирде, әрқашан тегін.';
 
   @override
   String get website => 'Веб-сайт';
@@ -400,7 +400,7 @@ class AppLocalizationsKk extends AppLocalizations {
   String get quality => 'Сапа';
 
   @override
-  String get qualityAuto => 'Авто (AAC)';
+  String get qualityAuto => 'Авто';
 
   @override
   String get comingSoon => 'Жақында';
@@ -502,7 +502,7 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Он екі станция, тәулік бойы, ән мәтіні бар 58 000-нан астам ән. Әнге тапсырыс бер — ол бәріне тікелей эфирде ойнайды.';
+      'Он екі станция, тәулік бойы, ән мәтіні бар, күн сайын толығып отыратын ән кітапханасы. Әнге тапсырыс бер — ол бәріне тікелей эфирде ойнайды.';
 
   @override
   String get continueLabel => 'Жалғастыру';
@@ -653,4 +653,27 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get languageSystem => 'Жүйе тілін қолдану';
+
+  @override
+  String get qualityAutoBody =>
+      'Байланысың көтеретін ең жақсы сапа. Нашарласа, төмендейді.';
+
+  @override
+  String get qualityVeryHigh => 'Өте жоғары';
+
+  @override
+  String get qualityHigh => 'Жоғары';
+
+  @override
+  String get qualityNormal => 'Қалыпты';
+
+  @override
+  String get qualityDataSaver => 'Трафикті үнемдеу';
+
+  @override
+  String get qualityFixedBody => 'Байланыс әлсіз болса да, әрқашан осы сапа.';
+
+  @override
+  String get qualityLosslessNote =>
+      'Ескертуін қабылдасаң, HIFI шығынсыз FLAC форматында ойнайды.';
 }

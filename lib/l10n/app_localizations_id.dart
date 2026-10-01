@@ -65,7 +65,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'Cari di 58.000+ lagu, baca liriknya, dan request satu untuk diputar live.';
+      'Cari di perpustakaan, baca liriknya, dan request lagu untuk diputar live.';
 
   @override
   String get newSongs => 'Baru di SeoulFM';
@@ -275,7 +275,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM adalah radio K-pop gratis 24/7 sekaligus platform streaming musik Korea: dua belas stasiun live, dan perpustakaan 58.000+ lagu, masing-masing lengkap dengan lirik, yang bisa kamu cari dan request. Lagu yang di-request diputar live untuk semua. Mengudara sejak 2009, selalu gratis.';
+      'SeoulFM adalah radio K-pop gratis 24/7 sekaligus platform streaming musik Korea: dua belas stasiun live, dan perpustakaan lagu yang terus bertambah setiap hari, masing-masing lengkap dengan lirik, yang bisa kamu cari dan request. Lagu yang di-request diputar live untuk semua. Mengudara sejak 2009, selalu gratis.';
 
   @override
   String get website => 'Situs web';
@@ -401,7 +401,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get quality => 'Kualitas';
 
   @override
-  String get qualityAuto => 'Otomatis (AAC)';
+  String get qualityAuto => 'Otomatis';
 
   @override
   String get comingSoon => 'Segera hadir';
@@ -503,7 +503,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Dua belas stasiun, 24/7, dan 58.000+ lagu lengkap dengan lirik. Request lagu dan lagunya diputar live untuk semua.';
+      'Dua belas stasiun, 24/7, dan perpustakaan lagu lengkap dengan lirik yang bertambah setiap hari. Request lagu dan lagunya diputar live untuk semua.';
 
   @override
   String get continueLabel => 'Lanjut';
@@ -655,4 +655,27 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get languageSystem => 'Gunakan bahasa sistem';
+
+  @override
+  String get qualityAutoBody =>
+      'Kualitas terbaik yang sanggup ditahan koneksimu. Turun kalau koneksi tersendat.';
+
+  @override
+  String get qualityVeryHigh => 'Sangat tinggi';
+
+  @override
+  String get qualityHigh => 'Tinggi';
+
+  @override
+  String get qualityNormal => 'Normal';
+
+  @override
+  String get qualityDataSaver => 'Hemat data';
+
+  @override
+  String get qualityFixedBody => 'Selalu kualitas ini, meski koneksi lemah.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI memutar FLAC lossless setelah kamu menyetujui pemberitahuannya.';
 }

@@ -64,7 +64,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get searchIntro =>
-      'Busca entre más de 58,000 canciones, lee la letra y pide una para que suene en vivo.';
+      'Busca en la biblioteca, lee la letra y pide una canción para que suene en vivo.';
 
   @override
   String get newSongs => 'Nuevo en SeoulFM';
@@ -274,7 +274,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM es radio K-pop gratis 24/7 y una plataforma de streaming de música coreana: doce estaciones en vivo y una biblioteca de más de 58,000 canciones, cada una con su letra, que puedes buscar y pedir. Una canción pedida suena en vivo para todos. Al aire desde 2009, siempre gratis.';
+      'SeoulFM es radio K-pop gratis 24/7 y una plataforma de streaming de música coreana: doce estaciones en vivo y una biblioteca de canciones que crece cada día, cada una con su letra, que puedes buscar y pedir. Una canción pedida suena en vivo para todos. Al aire desde 2009, siempre gratis.';
 
   @override
   String get website => 'Sitio web';
@@ -400,7 +400,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quality => 'Calidad';
 
   @override
-  String get qualityAuto => 'Auto (AAC)';
+  String get qualityAuto => 'Auto';
 
   @override
   String get comingSoon => 'Muy pronto';
@@ -502,7 +502,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'Doce estaciones, 24/7, y más de 58,000 canciones con letra. Pide una canción y sonará en vivo para todos.';
+      'Doce estaciones, 24/7, y una biblioteca de canciones con letra que crece cada día. Pide una canción y sonará en vivo para todos.';
 
   @override
   String get continueLabel => 'Continuar';
@@ -653,6 +653,30 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get languageSystem => 'Usar el idioma del sistema';
+
+  @override
+  String get qualityAutoBody =>
+      'La mejor calidad que aguante tu conexión. Baja si falla.';
+
+  @override
+  String get qualityVeryHigh => 'Muy alta';
+
+  @override
+  String get qualityHigh => 'Alta';
+
+  @override
+  String get qualityNormal => 'Normal';
+
+  @override
+  String get qualityDataSaver => 'Ahorro de datos';
+
+  @override
+  String get qualityFixedBody =>
+      'Siempre esta calidad, aunque la conexión sea débil.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI reproduce FLAC sin pérdida cuando aceptas su aviso.';
 }
 
 /// The translations for Spanish Castilian, as used in Spain (`es_ES`).
@@ -714,7 +738,7 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
 
   @override
   String get searchIntro =>
-      'Busca entre más de 58.000 canciones, lee la letra y pide una para que suene en directo.';
+      'Busca en la biblioteca, lee la letra y pide una canción para que suene en directo.';
 
   @override
   String get newSongs => 'Novedades en SeoulFM';
@@ -925,7 +949,7 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
 
   @override
   String get aboutBody =>
-      'SeoulFM es radio K-pop gratis 24/7 y una plataforma de streaming de música coreana: doce emisoras en directo y una biblioteca de más de 58.000 canciones, todas con letra, que puedes buscar y pedir. Una canción pedida suena en directo para todos. En antena desde 2009, siempre gratis.';
+      'SeoulFM es radio K-pop gratis 24/7 y una plataforma de streaming de música coreana: doce emisoras en directo y una biblioteca de canciones que crece cada día, todas con letra, que puedes buscar y pedir. Una canción pedida suena en directo para todos. En antena desde 2009, siempre gratis.';
 
   @override
   String get website => 'Web';
@@ -1051,7 +1075,7 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
   String get quality => 'Calidad';
 
   @override
-  String get qualityAuto => 'Automática (AAC)';
+  String get qualityAuto => 'Automática';
 
   @override
   String get comingSoon => 'Próximamente';
@@ -1153,7 +1177,7 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
 
   @override
   String get welcomeBody =>
-      'Doce emisoras, 24/7, y más de 58.000 canciones con letra. Pide una canción y sonará en directo para todos.';
+      'Doce emisoras, 24/7, y una biblioteca de canciones con letra que crece cada día. Pide una canción y sonará en directo para todos.';
 
   @override
   String get continueLabel => 'Continuar';
@@ -1304,4 +1328,28 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
 
   @override
   String get languageSystem => 'Usar el idioma del sistema';
+
+  @override
+  String get qualityAutoBody =>
+      'La mejor calidad que aguante tu conexión. Baja si falla.';
+
+  @override
+  String get qualityVeryHigh => 'Muy alta';
+
+  @override
+  String get qualityHigh => 'Alta';
+
+  @override
+  String get qualityNormal => 'Normal';
+
+  @override
+  String get qualityDataSaver => 'Ahorro de datos';
+
+  @override
+  String get qualityFixedBody =>
+      'Siempre esta calidad, aunque la conexión sea débil.';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI reproduce FLAC sin pérdidas cuando aceptas su aviso.';
 }

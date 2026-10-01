@@ -63,8 +63,7 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get searchIntro =>
-      'ค้นหากว่า 58,000 เพลง อ่านเนื้อเพลง และขอเพลงให้เล่นสด';
+  String get searchIntro => 'ค้นหาในคลังเพลง อ่านเนื้อเพลง และขอเพลงให้เล่นสด';
 
   @override
   String get newSongs => 'ใหม่บน SeoulFM';
@@ -274,7 +273,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM คือวิทยุ K-pop ฟรี 24/7 และแพลตฟอร์มสตรีมมิงเพลงเกาหลี มีสิบสองสถานีสด และคลังกว่า 58,000 เพลงพร้อมเนื้อเพลงทุกเพลง ที่คุณค้นหาและขอได้ เพลงที่ขอจะเล่นสดให้ทุกคนฟัง ออนแอร์มาตั้งแต่ปี 2009 และฟรีเสมอ';
+      'SeoulFM คือวิทยุ K-pop ฟรี 24/7 และแพลตฟอร์มสตรีมมิงเพลงเกาหลี มีสิบสองสถานีสด และคลังเพลงที่เพิ่มขึ้นทุกวัน พร้อมเนื้อเพลงทุกเพลง ที่คุณค้นหาและขอได้ เพลงที่ขอจะเล่นสดให้ทุกคนฟัง ออนแอร์มาตั้งแต่ปี 2009 และฟรีเสมอ';
 
   @override
   String get website => 'เว็บไซต์';
@@ -400,7 +399,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get quality => 'คุณภาพเสียง';
 
   @override
-  String get qualityAuto => 'อัตโนมัติ (AAC)';
+  String get qualityAuto => 'อัตโนมัติ';
 
   @override
   String get comingSoon => 'เร็วๆ นี้';
@@ -502,7 +501,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      'สิบสองสถานี 24/7 และกว่า 58,000 เพลงพร้อมเนื้อเพลง ขอเพลงแล้วเพลงจะเล่นสดให้ทุกคนฟัง';
+      'สิบสองสถานี 24/7 และคลังเพลงพร้อมเนื้อเพลงที่เพิ่มขึ้นทุกวัน ขอเพลงแล้วเพลงจะเล่นสดให้ทุกคนฟัง';
 
   @override
   String get continueLabel => 'ต่อไป';
@@ -651,4 +650,27 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get languageSystem => 'ใช้ภาษาของระบบ';
+
+  @override
+  String get qualityAutoBody =>
+      'คุณภาพดีที่สุดที่การเชื่อมต่อรองรับได้ ลดลงเมื่อสัญญาณไม่ดี';
+
+  @override
+  String get qualityVeryHigh => 'สูงมาก';
+
+  @override
+  String get qualityHigh => 'สูง';
+
+  @override
+  String get qualityNormal => 'ปกติ';
+
+  @override
+  String get qualityDataSaver => 'ประหยัดดาต้า';
+
+  @override
+  String get qualityFixedBody => 'ใช้คุณภาพนี้เสมอ แม้สัญญาณจะอ่อน';
+
+  @override
+  String get qualityLosslessNote =>
+      'HIFI เล่น FLAC แบบไม่สูญเสียคุณภาพเมื่อคุณยอมรับประกาศ';
 }

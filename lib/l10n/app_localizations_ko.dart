@@ -63,7 +63,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get searchIntro => '58,000곡 이상을 검색하고, 가사를 보고, 신청해서 라이브로 들어 보세요.';
+  String get searchIntro => '라이브러리를 검색하고, 가사를 보고, 곡을 신청해 라이브로 들어 보세요.';
 
   @override
   String get newSongs => 'SeoulFM 신곡';
@@ -260,7 +260,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM은 무료 24시간 K-pop 라디오이자 한국 음악 스트리밍 플랫폼이에요. 12개의 라이브 채널과, 가사와 함께 검색하고 신청할 수 있는 58,000곡 이상의 라이브러리가 있어요. 신청한 곡은 모두에게 라이브로 재생돼요. 2009년부터 방송 중이며 언제나 무료예요.';
+      'SeoulFM은 24시간 무료 K-pop 라디오이자 한국 음악 스트리밍 플랫폼이에요. 열두 개의 라이브 채널과 매일 늘어나는 가사 포함 곡 라이브러리에서 곡을 찾아 신청할 수 있어요. 신청한 곡은 모두에게 라이브로 재생돼요. 2009년부터 방송, 언제나 무료.';
 
   @override
   String get website => '웹사이트';
@@ -383,7 +383,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get quality => '음질';
 
   @override
-  String get qualityAuto => '자동 (AAC)';
+  String get qualityAuto => '자동';
 
   @override
   String get comingSoon => '곧 공개';
@@ -484,7 +484,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get welcomeBody =>
-      '열두 개의 채널이 24시간, 가사가 있는 58,000곡 이상. 곡을 신청하면 모두에게 라이브로 재생돼요.';
+      '열두 개의 채널이 24시간, 가사가 있는 곡 라이브러리는 매일 늘어나요. 곡을 신청하면 모두에게 라이브로 재생돼요.';
 
   @override
   String get continueLabel => '계속';
@@ -628,4 +628,25 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get languageSystem => '시스템 언어 사용';
+
+  @override
+  String get qualityAutoBody => '연결 상태에 맞는 최고 음질. 불안정하면 낮춰요.';
+
+  @override
+  String get qualityVeryHigh => '매우 높음';
+
+  @override
+  String get qualityHigh => '높음';
+
+  @override
+  String get qualityNormal => '보통';
+
+  @override
+  String get qualityDataSaver => '데이터 절약';
+
+  @override
+  String get qualityFixedBody => '연결이 약해도 항상 이 음질로 재생해요.';
+
+  @override
+  String get qualityLosslessNote => 'HIFI는 안내에 동의하면 무손실 FLAC으로 재생돼요.';
 }

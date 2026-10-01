@@ -63,7 +63,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get searchIntro => '搜索58,000多首歌曲，查看歌词，点一首歌直播给所有人听。';
+  String get searchIntro => '搜索曲库，查看歌词，点一首歌直播给所有人听。';
 
   @override
   String get newSongs => 'SeoulFM新歌';
@@ -272,7 +272,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aboutBody =>
-      'SeoulFM是免费的24小时K-POP电台，也是韩国音乐流媒体平台：十二个直播电台，加上58,000多首歌曲的曲库，每首都配有歌词，可以搜索和点播。被点的歌会直播给所有人听。自2009年开播，一直免费。';
+      'SeoulFM是免费的24小时K-POP电台，也是韩国音乐流媒体平台：十二个直播电台，加上每天都在增长的曲库，每首都配有歌词，可以搜索和点播。被点的歌会直播给所有人听。自2009年开播，一直免费。';
 
   @override
   String get website => '官网';
@@ -394,7 +394,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quality => '音质';
 
   @override
-  String get qualityAuto => '自动（AAC）';
+  String get qualityAuto => '自动';
 
   @override
   String get comingSoon => '即将推出';
@@ -494,7 +494,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get welcomeTitle => 'K-POP电台，免费直播';
 
   @override
-  String get welcomeBody => '十二个电台，24小时不间断，58,000多首带歌词的歌曲。点一首歌，它会直播给所有人听。';
+  String get welcomeBody => '十二个电台，24小时不间断，带歌词的曲库每天都在增长。点一首歌，它会直播给所有人听。';
 
   @override
   String get continueLabel => '继续';
@@ -635,6 +635,27 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get languageSystem => '使用系统语言';
+
+  @override
+  String get qualityAutoBody => '以网络能承受的最佳音质播放，网络不稳时自动降低。';
+
+  @override
+  String get qualityVeryHigh => '极高';
+
+  @override
+  String get qualityHigh => '高';
+
+  @override
+  String get qualityNormal => '标准';
+
+  @override
+  String get qualityDataSaver => '省流量';
+
+  @override
+  String get qualityFixedBody => '始终使用此音质，即使网络较弱。';
+
+  @override
+  String get qualityLosslessNote => '接受HIFI的提示后，即可播放无损FLAC。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -695,7 +716,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get searchIntro => '搜尋超過58,000首歌，看歌詞，點一首歌直播給所有人聽。';
+  String get searchIntro => '搜尋曲庫，看歌詞，點一首歌直播給所有人聽。';
 
   @override
   String get newSongs => 'SeoulFM新歌';
@@ -904,7 +925,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get aboutBody =>
-      'SeoulFM是免費的24小時K-POP電台，也是韓國音樂串流平台：十二個直播電台，加上超過58,000首歌的曲庫，每首都有歌詞，可以搜尋和點播。被點播的歌會直播給所有人聽。2009年開播至今，永遠免費。';
+      'SeoulFM是免費的24小時K-POP電台，也是韓國音樂串流平台：十二個直播電台，加上每天持續增加的曲庫，每首都有歌詞，可以搜尋和點播。被點播的歌會直播給所有人聽。2009年開播至今，永遠免費。';
 
   @override
   String get website => '官方網站';
@@ -1026,7 +1047,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get quality => '音質';
 
   @override
-  String get qualityAuto => '自動（AAC）';
+  String get qualityAuto => '自動';
 
   @override
   String get comingSoon => '即將推出';
@@ -1126,7 +1147,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get welcomeTitle => 'K-POP電台，免費直播';
 
   @override
-  String get welcomeBody => '十二個電台，24小時不間斷，超過58,000首附歌詞的歌。點一首歌，它就會直播給所有人聽。';
+  String get welcomeBody => '十二個電台，24小時不間斷，附歌詞的曲庫每天持續增加。點一首歌，它就會直播給所有人聽。';
 
   @override
   String get continueLabel => '繼續';
@@ -1267,4 +1288,25 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get languageSystem => '使用系統語言';
+
+  @override
+  String get qualityAutoBody => '以連線能承受的最佳音質播放，連線不穩時自動調降。';
+
+  @override
+  String get qualityVeryHigh => '極高';
+
+  @override
+  String get qualityHigh => '高';
+
+  @override
+  String get qualityNormal => '標準';
+
+  @override
+  String get qualityDataSaver => '節省數據';
+
+  @override
+  String get qualityFixedBody => '一律使用此音質，即使連線不佳。';
+
+  @override
+  String get qualityLosslessNote => '接受HIFI的提示後，即可播放無損FLAC。';
 }
