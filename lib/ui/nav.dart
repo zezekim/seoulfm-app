@@ -3,6 +3,7 @@ import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/ui/screens/artist_screen.dart';
 import 'package:seoulfm/ui/screens/now_playing_screen.dart';
 import 'package:seoulfm/ui/screens/song_screen.dart';
+import 'package:seoulfm/ui/screens/support_screen.dart';
 
 /// The tabs, in bar order.
 enum AppTab { home, request, charts, more }
@@ -51,6 +52,8 @@ class Nav {
     );
     _player = null;
   }
+
+  static void openSupport() => push(const SupportScreen());
 
   static void openSong(Track t) {
     if (t.id != null) push(SongScreen(track: t));

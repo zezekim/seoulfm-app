@@ -310,5 +310,46 @@
   "requestsBody": "Find any song and request it. When it plays, everyone listening hears it — and sees your dedication.",
   "startListening": "Start listening",
   "skip": "Skip",
-  "yourStations": "Your stations"
+  "yourStations": "Your stations",
+  "support": "Support",
+  "supportEyebrow": "Listener-supported",
+  "supportH1": "No ads. No paywall.",
+  "supportH1Sub": "Kept on air by the people who listen.",
+  "supportLead": "SeoulFM is free, and it is going to stay free. There is nothing to sell you and nobody to sell you to. If the station is part of your day, you can help keep it running.",
+  "supportWhereItGoes": "Where it goes",
+  "supportCostStreamTitle": "The stream",
+  "supportCostStreamBody": "Twelve channels, on air every hour of every day, delivered worldwide. Lossless audio on HIFI is the most expensive thing we send, and we send it free.",
+  "supportCostLibraryTitle": "The library",
+  "supportCostLibraryBody": "Tens of thousands of tracks, stored, tagged and kept in order, with artwork, synced lyrics and broadcast-grade processing on every one.",
+  "supportCostWorkTitle": "The work",
+  "supportCostWorkBody": "The site, the apps, requests, the wall and the chat, plus the ongoing cost of music licensing. Built and run by a very small team.",
+  "supportStaysTheSame": "What stays the same",
+  "supportPromiseNoAds": "No audio ads and no banners. Not now, not later.",
+  "supportPromiseNothingLocked": "Nothing is locked. Every channel, request and feature stays free for everyone.",
+  "supportPromiseOptional": "Supporting is optional and changes nothing about how you listen.",
+  "supportBecome": "Become a supporter",
+  "supportBecomeBody": "Once, or monthly. Payments go through the App Store or Google Play; we never see your card details.",
+  "supportMonthly": "Monthly supporter",
+  "supportMonthlyBody": "Keep a channel on air, every month. Cancel any time.",
+  "supportPerMonth": "{price} / month",
+  "supportOnce": "One-time tip",
+  "supportTipSmall": "A coffee",
+  "supportTipMedium": "A lunch",
+  "supportTipLarge": "A night out",
+  "supportRestore": "Restore purchases",
+  "supportUnavailable": "Support through the store opens soon. Thank you for wanting to help.",
+  "supportThanksTitle": "Thank you",
+  "supportThanksBody": "You’re helping keep SeoulFM free for everyone.",
+  "supportYouAreSupporter": "You’re a supporter. Thank you.",
+  "supportFreeWays": "Not in a position to give? Listening counts. So does requesting a song, leaving a note on the wall, or sending the station to one friend who would love it.",
+  "supportCardTitle": "Keep SeoulFM free",
+  "supportCardBody": "No ads, no paywall — kept on air by listeners like you.",
+  "supportSubscriptionTerms": "Monthly support renews automatically until cancelled in your store account settings.",
+  "@supportPerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  }
 }

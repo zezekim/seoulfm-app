@@ -123,7 +123,13 @@ here: the car shows only system templates.
 4. **Widgets and Live Activity (iOS).** Register the App Group `group.com.seoulfm.seoulfm` for the
    team, and create an App ID and profile for the extension `com.seoulfm.seoulfm.NowPlayingWidget`;
    both the app's and the extension's profiles need the group. Signing fails until they do.
-5. **Icons.** Generated from the site's wordmark (`dart run flutter_launcher_icons`). The iOS
+5. **Support (in-app purchase).** Create these products in App Store Connect and the Play
+   Console (prices are yours to set; the app shows the store's, in the listener's currency):
+   consumable tips `seoulfm.tip.small`, `seoulfm.tip.medium`, `seoulfm.tip.large`, and the
+   auto-renewing subscription `seoulfm.supporter.monthly`. Until they exist, Support says it
+   opens soon. Apple doesn't allow linking to Ko-fi from the app (that is for registered
+   non-profits), so the app sells support only through the stores.
+6. **Icons.** Generated from the site's wordmark (`dart run flutter_launcher_icons`). The iOS
    1024 px icon is upscaled from the site's 512 px file: replace `assets/icon/app-icon-1024.png`
    with a real 1024 px master and regenerate.
 

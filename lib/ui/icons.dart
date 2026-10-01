@@ -13,6 +13,12 @@ abstract final class AppIcons {
   static const IconData close = LucideIcons.x;
   static const IconData collapse = LucideIcons.chevronDown;
   static const IconData dedications = LucideIcons.heart;
+  static const IconData support = LucideIcons.heartHandshake;
+  static const IconData supporter = LucideIcons.sparkles;
+  static const IconData coffee = LucideIcons.coffee;
+  static const IconData gift = LucideIcons.gift;
+  static const IconData star = LucideIcons.star;
+  static const IconData restore = LucideIcons.refreshCw;
   static const IconData dislike = LucideIcons.thumbsDown;
   static const IconData done = LucideIcons.circleCheck;
   static const IconData edit = LucideIcons.pencil;

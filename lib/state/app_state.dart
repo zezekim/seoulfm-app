@@ -13,6 +13,7 @@ import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/state/runtime_config.dart';
 import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/state/stations_now_playing.dart';
+import 'package:seoulfm/state/support_store.dart';
 
 /// The pending lossless notice for a tune-in (the API requires it every time).
 class LosslessPrompt {
@@ -35,6 +36,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   late final RatingsController ratings = RatingsController(listeningSince: radio.listeningSince, station: () => channels.active.key);
   final requests = RequestTracker();
   final covers = CoverColors();
+  final support = SupportStore();
   late final CarPlayBridge carPlay = CarPlayBridge(onTune: (key) => tuneIn(key, play: true, fromCar: true));
 
   final ValueNotifier<LosslessPrompt?> losslessPrompt = ValueNotifier(null);

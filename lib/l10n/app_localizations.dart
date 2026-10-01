@@ -1003,6 +1003,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your stations'**
   String get yourStations;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @supportEyebrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Listener-supported'**
+  String get supportEyebrow;
+
+  /// No description provided for @supportH1.
+  ///
+  /// In en, this message translates to:
+  /// **'No ads. No paywall.'**
+  String get supportH1;
+
+  /// No description provided for @supportH1Sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept on air by the people who listen.'**
+  String get supportH1Sub;
+
+  /// No description provided for @supportLead.
+  ///
+  /// In en, this message translates to:
+  /// **'SeoulFM is free, and it is going to stay free. There is nothing to sell you and nobody to sell you to. If the station is part of your day, you can help keep it running.'**
+  String get supportLead;
+
+  /// No description provided for @supportWhereItGoes.
+  ///
+  /// In en, this message translates to:
+  /// **'Where it goes'**
+  String get supportWhereItGoes;
+
+  /// No description provided for @supportCostStreamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The stream'**
+  String get supportCostStreamTitle;
+
+  /// No description provided for @supportCostStreamBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Twelve channels, on air every hour of every day, delivered worldwide. Lossless audio on HIFI is the most expensive thing we send, and we send it free.'**
+  String get supportCostStreamBody;
+
+  /// No description provided for @supportCostLibraryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The library'**
+  String get supportCostLibraryTitle;
+
+  /// No description provided for @supportCostLibraryBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tens of thousands of tracks, stored, tagged and kept in order, with artwork, synced lyrics and broadcast-grade processing on every one.'**
+  String get supportCostLibraryBody;
+
+  /// No description provided for @supportCostWorkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The work'**
+  String get supportCostWorkTitle;
+
+  /// No description provided for @supportCostWorkBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The site, the apps, requests, the wall and the chat, plus the ongoing cost of music licensing. Built and run by a very small team.'**
+  String get supportCostWorkBody;
+
+  /// No description provided for @supportStaysTheSame.
+  ///
+  /// In en, this message translates to:
+  /// **'What stays the same'**
+  String get supportStaysTheSame;
+
+  /// No description provided for @supportPromiseNoAds.
+  ///
+  /// In en, this message translates to:
+  /// **'No audio ads and no banners. Not now, not later.'**
+  String get supportPromiseNoAds;
+
+  /// No description provided for @supportPromiseNothingLocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is locked. Every channel, request and feature stays free for everyone.'**
+  String get supportPromiseNothingLocked;
+
+  /// No description provided for @supportPromiseOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Supporting is optional and changes nothing about how you listen.'**
+  String get supportPromiseOptional;
+
+  /// No description provided for @supportBecome.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a supporter'**
+  String get supportBecome;
+
+  /// No description provided for @supportBecomeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Once, or monthly. Payments go through the App Store or Google Play; we never see your card details.'**
+  String get supportBecomeBody;
+
+  /// No description provided for @supportMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly supporter'**
+  String get supportMonthly;
+
+  /// No description provided for @supportMonthlyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep a channel on air, every month. Cancel any time.'**
+  String get supportMonthlyBody;
+
+  /// No description provided for @supportPerMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'{price} / month'**
+  String supportPerMonth(String price);
+
+  /// No description provided for @supportOnce.
+  ///
+  /// In en, this message translates to:
+  /// **'One-time tip'**
+  String get supportOnce;
+
+  /// No description provided for @supportTipSmall.
+  ///
+  /// In en, this message translates to:
+  /// **'A coffee'**
+  String get supportTipSmall;
+
+  /// No description provided for @supportTipMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'A lunch'**
+  String get supportTipMedium;
+
+  /// No description provided for @supportTipLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'A night out'**
+  String get supportTipLarge;
+
+  /// No description provided for @supportRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get supportRestore;
+
+  /// No description provided for @supportUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Support through the store opens soon. Thank you for wanting to help.'**
+  String get supportUnavailable;
+
+  /// No description provided for @supportThanksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you'**
+  String get supportThanksTitle;
+
+  /// No description provided for @supportThanksBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re helping keep SeoulFM free for everyone.'**
+  String get supportThanksBody;
+
+  /// No description provided for @supportYouAreSupporter.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re a supporter. Thank you.'**
+  String get supportYouAreSupporter;
+
+  /// No description provided for @supportFreeWays.
+  ///
+  /// In en, this message translates to:
+  /// **'Not in a position to give? Listening counts. So does requesting a song, leaving a note on the wall, or sending the station to one friend who would love it.'**
+  String get supportFreeWays;
+
+  /// No description provided for @supportCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep SeoulFM free'**
+  String get supportCardTitle;
+
+  /// No description provided for @supportCardBody.
+  ///
+  /// In en, this message translates to:
+  /// **'No ads, no paywall — kept on air by listeners like you.'**
+  String get supportCardBody;
+
+  /// No description provided for @supportSubscriptionTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly support renews automatically until cancelled in your store account settings.'**
+  String get supportSubscriptionTerms;
 }
 
 class _AppLocalizationsDelegate

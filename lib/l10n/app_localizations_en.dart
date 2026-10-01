@@ -529,4 +529,122 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourStations => 'Your stations';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get supportEyebrow => 'Listener-supported';
+
+  @override
+  String get supportH1 => 'No ads. No paywall.';
+
+  @override
+  String get supportH1Sub => 'Kept on air by the people who listen.';
+
+  @override
+  String get supportLead =>
+      'SeoulFM is free, and it is going to stay free. There is nothing to sell you and nobody to sell you to. If the station is part of your day, you can help keep it running.';
+
+  @override
+  String get supportWhereItGoes => 'Where it goes';
+
+  @override
+  String get supportCostStreamTitle => 'The stream';
+
+  @override
+  String get supportCostStreamBody =>
+      'Twelve channels, on air every hour of every day, delivered worldwide. Lossless audio on HIFI is the most expensive thing we send, and we send it free.';
+
+  @override
+  String get supportCostLibraryTitle => 'The library';
+
+  @override
+  String get supportCostLibraryBody =>
+      'Tens of thousands of tracks, stored, tagged and kept in order, with artwork, synced lyrics and broadcast-grade processing on every one.';
+
+  @override
+  String get supportCostWorkTitle => 'The work';
+
+  @override
+  String get supportCostWorkBody =>
+      'The site, the apps, requests, the wall and the chat, plus the ongoing cost of music licensing. Built and run by a very small team.';
+
+  @override
+  String get supportStaysTheSame => 'What stays the same';
+
+  @override
+  String get supportPromiseNoAds =>
+      'No audio ads and no banners. Not now, not later.';
+
+  @override
+  String get supportPromiseNothingLocked =>
+      'Nothing is locked. Every channel, request and feature stays free for everyone.';
+
+  @override
+  String get supportPromiseOptional =>
+      'Supporting is optional and changes nothing about how you listen.';
+
+  @override
+  String get supportBecome => 'Become a supporter';
+
+  @override
+  String get supportBecomeBody =>
+      'Once, or monthly. Payments go through the App Store or Google Play; we never see your card details.';
+
+  @override
+  String get supportMonthly => 'Monthly supporter';
+
+  @override
+  String get supportMonthlyBody =>
+      'Keep a channel on air, every month. Cancel any time.';
+
+  @override
+  String supportPerMonth(String price) {
+    return '$price / month';
+  }
+
+  @override
+  String get supportOnce => 'One-time tip';
+
+  @override
+  String get supportTipSmall => 'A coffee';
+
+  @override
+  String get supportTipMedium => 'A lunch';
+
+  @override
+  String get supportTipLarge => 'A night out';
+
+  @override
+  String get supportRestore => 'Restore purchases';
+
+  @override
+  String get supportUnavailable =>
+      'Support through the store opens soon. Thank you for wanting to help.';
+
+  @override
+  String get supportThanksTitle => 'Thank you';
+
+  @override
+  String get supportThanksBody =>
+      'You’re helping keep SeoulFM free for everyone.';
+
+  @override
+  String get supportYouAreSupporter => 'You’re a supporter. Thank you.';
+
+  @override
+  String get supportFreeWays =>
+      'Not in a position to give? Listening counts. So does requesting a song, leaving a note on the wall, or sending the station to one friend who would love it.';
+
+  @override
+  String get supportCardTitle => 'Keep SeoulFM free';
+
+  @override
+  String get supportCardBody =>
+      'No ads, no paywall — kept on air by listeners like you.';
+
+  @override
+  String get supportSubscriptionTerms =>
+      'Monthly support renews automatically until cancelled in your store account settings.';
 }

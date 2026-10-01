@@ -6,6 +6,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/wall_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/widgets/support_card.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,6 +29,7 @@ class MoreScreen extends StatelessWidget {
           largeTitleBar(context, l.tabMore),
           SliverList.list(
             children: [
+              const SupportCard(),
               ListTile(
                 leading: const Icon(AppIcons.dedications),
                 title: Text(l.tabWall),

@@ -510,4 +510,116 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get yourStations => '내 채널';
+
+  @override
+  String get support => '후원';
+
+  @override
+  String get supportEyebrow => '청취자 후원';
+
+  @override
+  String get supportH1 => '광고 없이. 유료 결제 없이.';
+
+  @override
+  String get supportH1Sub => '듣는 분들 덕분에 방송을 이어 갑니다.';
+
+  @override
+  String get supportLead =>
+      'SeoulFM은 무료이고, 앞으로도 무료입니다. 여러분에게 팔 것도 없고, 여러분을 팔아넘길 곳도 없습니다. SeoulFM이 하루의 일부라면, 방송이 계속되도록 힘을 보태 주세요.';
+
+  @override
+  String get supportWhereItGoes => '후원금이 쓰이는 곳';
+
+  @override
+  String get supportCostStreamTitle => '스트림';
+
+  @override
+  String get supportCostStreamBody =>
+      '열두 개 채널이 하루도 빠짐없이 매시간 방송되며 전 세계로 전달됩니다. HIFI의 무손실 오디오는 저희가 보내는 것 중 가장 비용이 많이 들지만, 무료로 보내 드립니다.';
+
+  @override
+  String get supportCostLibraryTitle => '라이브러리';
+
+  @override
+  String get supportCostLibraryBody =>
+      '수만 곡을 저장하고, 태그를 달고, 정리해 둡니다. 곡마다 앨범 아트, 싱크 가사, 방송 품질의 음향 처리가 적용됩니다.';
+
+  @override
+  String get supportCostWorkTitle => '운영';
+
+  @override
+  String get supportCostWorkBody =>
+      '사이트, 앱, 신청곡, 사연 월, 채팅, 그리고 계속 드는 음악 라이선스 비용까지. 아주 작은 팀이 만들고 운영합니다.';
+
+  @override
+  String get supportStaysTheSame => '변하지 않는 것';
+
+  @override
+  String get supportPromiseNoAds => '오디오 광고도, 배너도 없습니다. 지금도, 앞으로도.';
+
+  @override
+  String get supportPromiseNothingLocked =>
+      '잠긴 기능은 없습니다. 모든 채널, 신청곡, 기능은 누구에게나 계속 무료입니다.';
+
+  @override
+  String get supportPromiseOptional => '후원은 선택이며, 듣는 방식은 아무것도 달라지지 않습니다.';
+
+  @override
+  String get supportBecome => '후원자 되기';
+
+  @override
+  String get supportBecomeBody =>
+      '한 번, 또는 매월. 결제는 App Store나 Google Play를 통해 이루어지며, 저희는 카드 정보를 볼 수 없습니다.';
+
+  @override
+  String get supportMonthly => '월간 후원자';
+
+  @override
+  String get supportMonthlyBody => '매달 한 채널의 방송을 지켜 주세요. 언제든 해지할 수 있어요.';
+
+  @override
+  String supportPerMonth(String price) {
+    return '월 $price';
+  }
+
+  @override
+  String get supportOnce => '일회성 후원';
+
+  @override
+  String get supportTipSmall => '커피 한 잔';
+
+  @override
+  String get supportTipMedium => '점심 한 끼';
+
+  @override
+  String get supportTipLarge => '근사한 저녁';
+
+  @override
+  String get supportRestore => '구매 복원';
+
+  @override
+  String get supportUnavailable => '스토어를 통한 후원이 곧 열립니다. 도와주시려는 마음에 감사드려요.';
+
+  @override
+  String get supportThanksTitle => '감사합니다';
+
+  @override
+  String get supportThanksBody => '모두를 위해 SeoulFM이 무료로 남을 수 있도록 도와주셨어요.';
+
+  @override
+  String get supportYouAreSupporter => '후원자이시네요. 감사합니다.';
+
+  @override
+  String get supportFreeWays =>
+      '후원이 어려우신가요? 듣는 것만으로도 힘이 됩니다. 곡을 신청하고, 사연을 남기고, 좋아할 친구 한 명에게 SeoulFM을 알려 주세요.';
+
+  @override
+  String get supportCardTitle => 'SeoulFM을 무료로 지켜 주세요';
+
+  @override
+  String get supportCardBody => '광고도, 유료 결제도 없이 — 여러분 같은 청취자 덕분에 방송합니다.';
+
+  @override
+  String get supportSubscriptionTerms =>
+      '월간 후원은 스토어 계정 설정에서 해지할 때까지 자동으로 갱신됩니다.';
 }

@@ -12,9 +12,11 @@ import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/state/stations_now_playing.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/notices.dart';
+import 'package:seoulfm/ui/widgets/support_card.dart';
 
 /// The home tab is the stations' shop window: a greeting, the featured stations as large
 /// cards, then every other station as a genre tile. Each shows what it is playing right now.
@@ -41,10 +43,11 @@ class HomeScreen extends StatelessWidget {
               slivers: [
                 const SliverToBoxAdapter(child: _Header()),
                 const SliverToBoxAdapter(child: Notices()),
-            const SliverToBoxAdapter(child: _YourStations()),
+                const SliverToBoxAdapter(child: _YourStations()),
                 SliverToBoxAdapter(child: ShelfTitle(context.l.featuredStations)),
                 SliverToBoxAdapter(child: _FeaturedCarousel(channels: featured)),
                 if (rest.isNotEmpty) ...[
+                  const SliverToBoxAdapter(child: SupportCard()),
                   SliverToBoxAdapter(child: ShelfTitle(context.l.genresAndEras)),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -127,26 +130,38 @@ class _Header extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // The wordmark: "seoul" heavy, "fm" light.
-          Semantics(
-            label: 'SeoulFM',
-            child: Text.rich(
-              const TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'seoul',
-                    style: TextStyle(fontWeight: FontWeight.w800),
+          Row(
+            children: [
+              // The wordmark: "seoul" heavy, "fm" light.
+              Semantics(
+                label: 'SeoulFM',
+                child: Text.rich(
+                  const TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'seoul',
+                        style: TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                      TextSpan(
+                        text: 'fm',
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: 'fm',
-                    style: TextStyle(fontWeight: FontWeight.w300),
-                  ),
-                ],
+                  style: TextStyle(color: c.text, fontSize: 19, letterSpacing: -0.6),
+                ),
               ),
-              style: TextStyle(color: c.text, fontSize: 19, letterSpacing: -0.6),
-            ),
+              const Spacer(),
+              // Support, always a tap away.
+              IconButton(
+                tooltip: context.l.support,
+                onPressed: Nav.openSupport,
+                style: IconButton.styleFrom(backgroundColor: c.text.withValues(alpha: 0.08)),
+                icon: Icon(AppIcons.support, size: 20, color: c.text),
+              ),
+            ],
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 8),
           Text(
             _greeting(context),
             style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -1, height: 1.1),
@@ -564,7 +579,10 @@ class _StationBubble extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(3),
-                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: ring, width: 2.5)),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: ring, width: 2.5),
+                ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
