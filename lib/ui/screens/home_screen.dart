@@ -17,7 +17,7 @@ import 'package:seoulfm/ui/widgets/notices.dart';
 
 /// The home tab is the stations' shop window: a greeting, the featured stations as large
 /// cards, then every other station as a genre tile. Each shows what it is playing right now.
-/// Tapping a station tunes and plays it; tapping the one already playing opens Now Playing.
+/// Tapping a station tunes and plays it; tapping the one already playing opens the player.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -93,12 +93,12 @@ Track? _onAir(BuildContext context, Channel ch) {
   return context.watch<StationsNowPlaying>().byStation[ch.key]?.current;
 }
 
-/// Tune and play; on the station already playing, open Now Playing instead.
+/// Tune and play; on the station already playing, open the player instead.
 void _listen(BuildContext context, Channel ch) {
   if (!ch.tunable) return;
   final radio = context.read<RadioHandler>();
   if (context.read<ChannelController>().active.key == ch.key && radio.wantPlaying.value) {
-    Nav.showNowPlaying();
+    Nav.showNowPlaying(context);
     return;
   }
   context.read<AppState>().tuneIn(ch.key, play: true);

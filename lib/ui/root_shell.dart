@@ -7,7 +7,6 @@ import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/charts_screen.dart';
 import 'package:seoulfm/ui/screens/home_screen.dart';
 import 'package:seoulfm/ui/screens/more_screen.dart';
-import 'package:seoulfm/ui/screens/now_playing_screen.dart';
 import 'package:seoulfm/ui/screens/search_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/lossless_sheet.dart';
@@ -15,8 +14,8 @@ import 'package:seoulfm/ui/widgets/mini_player.dart';
 
 final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-/// Five tabs, each with its own navigator, over the player bar. The bar hides on the
-/// Now Playing tab, which is the player itself.
+/// Four tabs, each with its own navigator, under the player bar; the bar opens the
+/// full-screen player.
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
   @override
@@ -28,8 +27,7 @@ class _RootShellState extends State<RootShell> {
 
   static const _pages = <AppTab, Widget>{
     AppTab.home: HomeScreen(),
-    AppTab.nowPlaying: NowPlayingScreen(),
-    AppTab.search: SearchScreen(),
+    AppTab.request: SearchScreen(),
     AppTab.charts: ChartsScreen(),
     AppTab.more: MoreScreen(),
   };
@@ -121,7 +119,7 @@ class _RootShellState extends State<RootShell> {
         bottomNavigationBar: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (Nav.tab.value != AppTab.nowPlaying) const MiniPlayer(),
+            const MiniPlayer(),
             NavigationBarTheme(
               data: NavigationBarThemeData(
                 backgroundColor: c.bg,
@@ -140,12 +138,7 @@ class _RootShellState extends State<RootShell> {
                     selectedIcon: const Icon(Icons.home_rounded),
                     label: l.tabHome,
                   ),
-                  NavigationDestination(
-                    icon: const Icon(Icons.play_circle_outline_rounded),
-                    selectedIcon: const Icon(Icons.play_circle_rounded),
-                    label: l.tabNowPlaying,
-                  ),
-                  NavigationDestination(icon: const Icon(Icons.search_rounded), label: l.tabSearch),
+                  NavigationDestination(icon: const Icon(Icons.queue_music_rounded), label: l.tabRequest),
                   NavigationDestination(icon: const Icon(Icons.bar_chart_rounded), label: l.tabCharts),
                   NavigationDestination(icon: const Icon(Icons.more_horiz_rounded), label: l.tabMore),
                 ],

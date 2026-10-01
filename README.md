@@ -7,8 +7,9 @@ plays live for everyone.
 This Flutter app replaces the earlier apps. It ships under the existing Play Store id
 (`com.seoulfm.seoulfm`, also the iOS bundle id) so it installs as an update. It shares the mobile
 site's (`seoulfm-site`) tokens and API contract, laid out like Spotify and Apple Music: Home
-showcases the stations (featured cards, then genre tiles, each with what it plays now), and a Now
-Playing tab holds the player, lyrics, Up Next, requests and history. Dedications sit under More. On top of the site
+showcases the stations (featured cards, then genre tiles, each with what it plays now); the player
+bar opens a full-screen player with lyrics, Up Next, requests and history. The tabs are Home,
+Request (search the library to request), Charts and More (dedications, settings). On top of the site
 it adds **Apple CarPlay**, **Android Auto**, lock-screen and Bluetooth controls, background play,
 station skip from the steering wheel or headset, and a sleep timer.
 

@@ -16,7 +16,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tabHome => '홈';
 
   @override
-  String get tabSearch => '검색';
+  String get tabRequest => '신청';
 
   @override
   String get tabCharts => '차트';
@@ -390,9 +390,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get captchaFailed => '확인하지 못했어요. 다시 시도해 주세요.';
-
-  @override
-  String get tabNowPlaying => '재생 중';
 
   @override
   String get goodMorning => '좋은 아침이에요';

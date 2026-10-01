@@ -110,11 +110,11 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get tabHome;
 
-  /// No description provided for @tabSearch.
+  /// No description provided for @tabRequest.
   ///
   /// In en, this message translates to:
-  /// **'Search'**
-  String get tabSearch;
+  /// **'Request'**
+  String get tabRequest;
 
   /// No description provided for @tabCharts.
   ///
@@ -775,12 +775,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn’t verify. Try again.'**
   String get captchaFailed;
-
-  /// No description provided for @tabNowPlaying.
-  ///
-  /// In en, this message translates to:
-  /// **'Now Playing'**
-  String get tabNowPlaying;
 
   /// No description provided for @goodMorning.
   ///

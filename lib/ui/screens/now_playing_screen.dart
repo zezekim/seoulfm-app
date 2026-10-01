@@ -23,9 +23,10 @@ import 'package:seoulfm/ui/widgets/notices.dart';
 import 'package:seoulfm/ui/widgets/request_shelf.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 
-/// The Now Playing tab: the player fills the first screen (the cover over its own blurred
-/// glow, the song, progress and controls); scrolling up brings the station's lyrics, Up Next,
-/// requests (Marathon: the vote) and history. Always dark: the text sits on artwork.
+/// The full-screen player, opened from the player bar (`Nav.showNowPlaying`). The player fills
+/// the first screen (the cover over its own blurred glow, the song, progress and controls);
+/// scrolling up brings the station's lyrics, Up Next, requests (Marathon: the vote) and history.
+/// Always dark: the text sits on artwork.
 class NowPlayingScreen extends StatelessWidget {
   const NowPlayingScreen({super.key});
 
@@ -197,18 +198,18 @@ class _Player extends StatelessWidget {
     const white = Colors.white;
 
     return Padding(
-      padding: EdgeInsets.only(top: top + 4, bottom: 8),
+      padding: EdgeInsets.only(top: top + 4, bottom: MediaQuery.paddingOf(context).bottom + 8),
       child: Column(
         children: [
-          // Share · "Playing from SeoulFM Pop!" (tap to switch station) · lyrics.
+          // Close · "Playing from SeoulFM Pop!" (tap to switch station) · lyrics.
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
                 IconButton(
-                  tooltip: context.l.share,
-                  onPressed: () => t != null ? shareSong(context, t) : shareStation(context, channel),
-                  icon: Icon(Icons.ios_share_rounded, color: white.withValues(alpha: 0.75), size: 22),
+                  tooltip: context.l.close,
+                  onPressed: () => Navigator.maybePop(context),
+                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: white.withValues(alpha: 0.8), size: 30),
                 ),
                 Expanded(
                   child: Semantics(
@@ -427,7 +428,17 @@ class _Player extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 4),
-                const Align(alignment: AlignmentDirectional.centerStart, child: SleepTimerButton(onImage: true)),
+                Row(
+                  children: [
+                    const SleepTimerButton(onImage: true),
+                    const Spacer(),
+                    IconButton(
+                      tooltip: context.l.share,
+                      onPressed: () => t != null ? shareSong(context, t) : shareStation(context, channel),
+                      icon: Icon(Icons.ios_share_rounded, color: white.withValues(alpha: 0.75), size: 22),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

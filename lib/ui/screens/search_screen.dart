@@ -46,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final c = context.sfm;
     return Scaffold(
-      appBar: AppBar(title: Text(context.l.tabSearch)),
+      appBar: AppBar(title: Text(context.l.tabRequest)),
       body: Column(
         children: [
           Padding(

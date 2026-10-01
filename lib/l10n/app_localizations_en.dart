@@ -16,7 +16,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabHome => 'Home';
 
   @override
-  String get tabSearch => 'Search';
+  String get tabRequest => 'Request';
 
   @override
   String get tabCharts => 'Charts';
@@ -407,9 +407,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get captchaFailed => 'Couldn’t verify. Try again.';
-
-  @override
-  String get tabNowPlaying => 'Now Playing';
 
   @override
   String get goodMorning => 'Good morning';
