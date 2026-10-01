@@ -7,6 +7,7 @@ import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/wall_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
+import 'package:seoulfm/ui/icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Dedications, settings, the car, and about.
@@ -28,9 +29,9 @@ class MoreScreen extends StatelessWidget {
           SliverList.list(
             children: [
               ListTile(
-                leading: const Icon(Icons.favorite_border_rounded),
+                leading: const Icon(AppIcons.dedications),
                 title: Text(l.tabWall),
-                trailing: Icon(Icons.chevron_right_rounded, color: c.muted),
+                trailing: Icon(AppIcons.next, color: c.muted),
                 onTap: () => Nav.push(const WallScreen()),
               ),
               SectionHeader(l.settings),
@@ -50,21 +51,30 @@ class MoreScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              ListTile(
-                leading: const Icon(Icons.bedtime_outlined),
-                title: Text(l.sleepTimer),
-                trailing: const SleepTimerButton(),
-                onTap: () => pickSleepTimer(context),
+              // The time left when a timer runs, nothing (and no repeated label) when not.
+              ValueListenableBuilder<DateTime?>(
+                valueListenable: app.radio.sleepAt,
+                builder: (_, at, _) => ListTile(
+                  leading: Icon(at == null ? AppIcons.sleep : AppIcons.sleepOn),
+                  title: Text(l.sleepTimer),
+                  trailing: at == null
+                      ? Icon(AppIcons.next, color: c.muted, size: 18)
+                      : Text(
+                          l.sleepStopsIn((at.difference(DateTime.now()).inSeconds / 60).ceil()),
+                          style: TextStyle(color: c.muted, fontSize: 13),
+                        ),
+                  onTap: () => pickSleepTimer(context),
+                ),
               ),
               ValueListenableBuilder<bool>(
                 valueListenable: app.radio.losslessActive,
                 builder: (_, lossless, _) => ListTile(
-                  leading: const Icon(Icons.graphic_eq_rounded),
+                  leading: const Icon(AppIcons.quality),
                   title: Text(l.quality),
                   trailing: Text(lossless ? 'FLAC' : l.qualityAuto, style: TextStyle(color: c.muted)),
                 ),
               ),
-              SectionHeader(l.inTheCar, icon: Icons.directions_car_outlined),
+              SectionHeader(l.inTheCar, icon: AppIcons.car),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(l.carBody, style: TextStyle(color: c.muted, height: 1.45)),
@@ -75,19 +85,19 @@ class MoreScreen extends StatelessWidget {
                 child: Text(l.aboutBody, style: TextStyle(color: c.muted, height: 1.45)),
               ),
               const SizedBox(height: 8),
-              ListTile(leading: const Icon(Icons.public_rounded), title: Text(l.website), onTap: () => _open('/')),
+              ListTile(leading: const Icon(AppIcons.website), title: Text(l.website), onTap: () => _open('/')),
               ListTile(
-                leading: const Icon(Icons.shield_outlined),
+                leading: const Icon(AppIcons.privacy),
                 title: Text(l.privacy),
                 onTap: () => _open('/privacy/'),
               ),
               ListTile(
-                leading: const Icon(Icons.description_outlined),
+                leading: const Icon(AppIcons.terms),
                 title: Text(l.terms),
                 onTap: () => _open('/terms/'),
               ),
               ListTile(
-                leading: const Icon(Icons.mail_outline_rounded),
+                leading: const Icon(AppIcons.mail),
                 title: Text(l.contact),
                 onTap: () => _open('/contact/'),
               ),

@@ -28,6 +28,7 @@ import 'package:seoulfm/ui/widgets/player_progress.dart';
 import 'package:seoulfm/ui/widgets/request_shelf.dart';
 import 'package:seoulfm/ui/widgets/share_sheet.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// The full-screen player, opened from the player bar (`Nav.showNowPlaying`). The player fills
 /// the first screen (the cover over its own blurred glow, the song, progress and controls);
@@ -258,7 +259,7 @@ class _Player extends StatelessWidget {
                 IconButton(
                   tooltip: context.l.close,
                   onPressed: () => Navigator.maybePop(context),
-                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: white.withValues(alpha: 0.8), size: 30),
+                  icon: Icon(AppIcons.collapse, color: white.withValues(alpha: 0.8), size: 30),
                 ),
                 Expanded(
                   child: Semantics(
@@ -295,7 +296,7 @@ class _Player extends StatelessWidget {
                                     style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: white),
                                   ),
                                 ),
-                                Icon(Icons.keyboard_arrow_down_rounded, size: 18, color: white.withValues(alpha: 0.7)),
+                                Icon(AppIcons.collapse, size: 18, color: white.withValues(alpha: 0.7)),
                               ],
                             ),
                           ],
@@ -310,7 +311,7 @@ class _Player extends StatelessWidget {
                   child: IconButton(
                     onPressed: hasLyrics ? onOpenLyrics : null,
                     tooltip: context.l.lyrics,
-                    icon: Icon(Icons.lyrics_outlined, color: white.withValues(alpha: 0.85)),
+                    icon: Icon(AppIcons.lyrics, color: white.withValues(alpha: 0.85)),
                   ),
                 ),
               ],
@@ -413,7 +414,7 @@ class _Player extends StatelessWidget {
                     IconButton(
                       tooltip: context.l.previousStation,
                       onPressed: radio.skipToPrevious,
-                      icon: Icon(Icons.skip_previous_rounded, color: white.withValues(alpha: 0.9), size: 38),
+                      icon: Icon(AppIcons.skipPrevious, color: white.withValues(alpha: 0.9), size: 38),
                     ),
                     ValueListenableBuilder<bool>(
                       valueListenable: radio.wantPlaying,
@@ -432,7 +433,7 @@ class _Player extends StatelessWidget {
                     IconButton(
                       tooltip: context.l.nextStation,
                       onPressed: radio.skipToNext,
-                      icon: Icon(Icons.skip_next_rounded, color: white.withValues(alpha: 0.9), size: 38),
+                      icon: Icon(AppIcons.skipNext, color: white.withValues(alpha: 0.9), size: 38),
                     ),
                     const SizedBox(width: 48, child: Center(child: OutputDeviceButton())),
                   ],
@@ -454,7 +455,7 @@ class _Player extends StatelessWidget {
                         child: IconButton(
                           tooltip: context.l.share,
                           onPressed: onShare,
-                          icon: Icon(Icons.ios_share_rounded, color: white.withValues(alpha: 0.75), size: 22),
+                          icon: Icon(AppIcons.share, color: white.withValues(alpha: 0.75), size: 22),
                         ),
                       ),
                     ),
@@ -611,7 +612,7 @@ class _QualityBadge extends StatelessWidget {
             return IconButton(
               tooltip: context.l.retryFlac,
               onPressed: radio.retryLossless,
-              icon: const Icon(Icons.warning_amber_rounded, size: 20, color: Color(0xFFF5B73C)),
+              icon: const Icon(AppIcons.warning, size: 20, color: Color(0xFFF5B73C)),
             );
           }
           return ValueListenableBuilder<int?>(
@@ -819,9 +820,9 @@ class _LyricsCard extends StatelessWidget {
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: fg),
                       ),
                     ),
-                    round(Icons.ios_share_rounded, context.l.share, onShare),
+                    round(AppIcons.share, context.l.share, onShare),
                     const SizedBox(width: 8),
-                    round(Icons.open_in_full_rounded, context.l.showLyrics, onExpand),
+                    round(AppIcons.expand, context.l.showLyrics, onExpand),
                   ],
                 ),
               ),

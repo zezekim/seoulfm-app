@@ -128,5 +128,8 @@
   "linkCopied": "복사됨",
   "shareImage": "이미지 공유",
   "done": "완료",
-  "pickLines": "최대 {count}줄까지 고를 수 있어요"
+  "pickLines": "최대 {count}줄까지 고를 수 있어요",
+  "goToSong": "곡 보기",
+  "goToArtist": "아티스트 보기",
+  "swipeToRequest": "신청"
 }

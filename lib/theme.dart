@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// The site's design tokens (`app/globals.css`): a neutral base, near-black surfaces,
 /// hairline borders, off-white type, and one accent (the tuned channel's colour, or
@@ -94,19 +93,30 @@ extension SfmTheme on BuildContext {
   SfmColors get sfm => Theme.of(this).extension<SfmColors>()!;
 }
 
-/// Inter for Latin, Cyrillic and Vietnamese; Hangul falls to Pretendard when the
-/// device has it, then the system's Korean face.
-const _fallback = ['Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Noto Sans CJK KR'];
+/// Pretendard (bundled, variable): Inter's Latin drawn together with Hangul, so a title like
+/// "AHOF(아홉)" is one face at one weight. Scripts it lacks fall to the system.
+const fontFamily = 'Pretendard';
+const _fallback = ['Apple SD Gothic Neo', 'Hiragino Sans', 'PingFang SC', 'Noto Sans CJK KR', 'Noto Sans'];
 
 ThemeData buildTheme(Brightness brightness, Color accent) {
   final c = brightness == Brightness.dark ? SfmColors.dark : SfmColors.light;
   final base = ThemeData(brightness: brightness, useMaterial3: true);
-  final inter = GoogleFonts.interTextTheme(base.textTheme).apply(bodyColor: c.text, displayColor: c.text, fontFamilyFallback: _fallback);
-  // Large titles (headlineMedium, expanded) heavy and tight like Apple's and Spotify's; the
-  // collapsed title (titleLarge) a step lighter.
-  final text = inter.copyWith(
-    headlineMedium: inter.headlineMedium?.copyWith(fontSize: 32, fontWeight: FontWeight.w800, letterSpacing: -1),
-    titleLarge: inter.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w700, letterSpacing: -0.3),
+  final p = base.textTheme.apply(bodyColor: c.text, displayColor: c.text, fontFamily: fontFamily, fontFamilyFallback: _fallback);
+  // One scale for the app. Pretendard reads best tracked in a little.
+  TextStyle? s(TextStyle? t, double size, FontWeight w, {double track = -0.2, double? height}) =>
+      t?.copyWith(fontSize: size, fontWeight: w, letterSpacing: track, height: height);
+  final text = p.copyWith(
+    headlineMedium: s(p.headlineMedium, 32, FontWeight.w800, track: -1),
+    headlineSmall: s(p.headlineSmall, 24, FontWeight.w800, track: -0.6),
+    titleLarge: s(p.titleLarge, 18, FontWeight.w700, track: -0.3),
+    titleMedium: s(p.titleMedium, 16, FontWeight.w600),
+    titleSmall: s(p.titleSmall, 14, FontWeight.w600),
+    bodyLarge: s(p.bodyLarge, 16, FontWeight.w400, height: 1.45),
+    bodyMedium: s(p.bodyMedium, 14, FontWeight.w400, height: 1.4),
+    bodySmall: s(p.bodySmall, 12.5, FontWeight.w400, track: -0.1),
+    labelLarge: s(p.labelLarge, 14, FontWeight.w600, track: -0.1),
+    labelMedium: s(p.labelMedium, 12, FontWeight.w600, track: 0),
+    labelSmall: s(p.labelSmall, 11, FontWeight.w600, track: 0.2),
   );
   return base.copyWith(
     scaffoldBackgroundColor: c.bg,
@@ -121,6 +131,15 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
     ),
     textTheme: text,
     dividerColor: c.border,
+    dividerTheme: DividerThemeData(color: c.border, thickness: 0.5, space: 0.5),
+    listTileTheme: ListTileThemeData(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+      minVerticalPadding: 10,
+      iconColor: c.muted,
+      titleTextStyle: text.bodyLarge?.copyWith(fontWeight: FontWeight.w500, height: 1.25),
+      subtitleTextStyle: text.bodySmall?.copyWith(color: c.muted),
+    ),
+    iconTheme: IconThemeData(color: c.text, size: 22),
     // iOS apps don't ripple; Android keeps its sparkle.
     splashFactory: defaultTargetPlatform == TargetPlatform.iOS ? NoSplash.splashFactory : InkSparkle.splashFactory,
     appBarTheme: AppBarTheme(

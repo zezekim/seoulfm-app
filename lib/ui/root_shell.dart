@@ -14,6 +14,7 @@ import 'package:seoulfm/ui/screens/search_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/lossless_sheet.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -164,21 +165,21 @@ class _RootShellState extends State<RootShell> {
                       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
                       destinations: [
                         NavigationDestination(
-                          icon: const Icon(Icons.home_outlined),
-                          selectedIcon: const Icon(Icons.home_rounded),
+                          icon: const Icon(AppIcons.home),
+                          selectedIcon: const Icon(AppIcons.home),
                           label: l.tabHome,
                         ),
                         NavigationDestination(
-                          icon: const Icon(Icons.queue_music_outlined),
-                          selectedIcon: const Icon(Icons.queue_music_rounded),
+                          icon: const Icon(AppIcons.request),
+                          selectedIcon: const Icon(AppIcons.request),
                           label: l.tabRequest,
                         ),
                         NavigationDestination(
-                          icon: const Icon(Icons.leaderboard_outlined),
-                          selectedIcon: const Icon(Icons.leaderboard_rounded),
+                          icon: const Icon(AppIcons.charts),
+                          selectedIcon: const Icon(AppIcons.charts),
                           label: l.tabCharts,
                         ),
-                        NavigationDestination(icon: const Icon(Icons.more_horiz_rounded), label: l.tabMore),
+                        NavigationDestination(icon: const Icon(AppIcons.more), label: l.tabMore),
                       ],
                     ),
                   ),

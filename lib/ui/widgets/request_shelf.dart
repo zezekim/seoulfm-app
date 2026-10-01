@@ -5,6 +5,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// Covers to request from (`RequestGrid`) as a shelf: random songs from the tuned
 /// station's library, spread so the same artist never sits close together.
@@ -37,7 +38,7 @@ class _RequestShelfState extends State<RequestShelf> {
             onPressed: () => setState(() {
               _f = _load();
             }),
-            icon: Icon(Icons.shuffle_rounded, size: 20, color: c.muted),
+            icon: Icon(AppIcons.shuffle, size: 20, color: c.muted),
           ),
         ),
         SizedBox(

@@ -6,6 +6,11 @@ import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/share.dart';
+import 'package:seoulfm/ui/nav.dart';
+import 'package:seoulfm/state/now_playing_controller.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 extension L10nX on BuildContext {
   AppLocalizations get l => AppLocalizations.of(this);
@@ -41,7 +46,7 @@ class Artwork extends StatelessWidget {
     final placeholder = Container(
       color: c.text.withValues(alpha: 0.05),
       alignment: Alignment.center,
-      child: Icon(Icons.radio_rounded, size: iconSize, color: c.faint),
+      child: Icon(AppIcons.radio, size: iconSize, color: c.faint),
     );
     final child = url == null
         ? placeholder
@@ -150,6 +155,9 @@ class _EqBarsState extends State<EqBars> with SingleTickerProviderStateMixin {
   }
 }
 
+/// A section's heading inside a page (Top songs, Albums, Settings): the same bold voice as
+/// the shelves, a size down. [icon] is accepted for old call sites and not drawn: titles
+/// carry the hierarchy, as in Spotify and Apple Music.
 class SectionHeader extends StatelessWidget {
   const SectionHeader(this.title, {super.key, this.icon, this.trailing});
   final String title;
@@ -157,13 +165,13 @@ class SectionHeader extends StatelessWidget {
   final Widget? trailing;
   @override
   Widget build(BuildContext context) {
-    final c = context.sfm;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
+      padding: EdgeInsets.fromLTRB(16, 26, trailing == null ? 16 : 4, 10),
       child: Row(
         children: [
-          if (icon != null) ...[Icon(icon, size: 13, color: c.muted), const SizedBox(width: 8)],
-          Expanded(child: Text(title.toUpperCase(), style: eyebrow(context))),
+          Expanded(
+            child: Text(title, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w700, letterSpacing: -0.4)),
+          ),
           ?trailing,
         ],
       ),
@@ -251,7 +259,7 @@ class PlayButton extends StatelessWidget {
                 AnimatedSwitcher(
                   duration: Motion.fast,
                   child: Icon(
-                    playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                    playing ? AppIcons.pause : AppIcons.play,
                     key: ValueKey(playing),
                     size: size * 0.5,
                     color: fg,
@@ -310,7 +318,14 @@ class RatingButtons extends StatelessWidget {
                   r.rate(trackId!, active ? null : value);
                 }
               : null,
-          icon: Icon(active ? on : off, size: size),
+          // Outline icons only: the chosen one sits in a soft disc and pops when picked.
+          icon: AnimatedScale(
+            scale: active ? 1.08 : 1,
+            duration: Motion.base,
+            curve: Curves.easeOutBack,
+            child: Icon(active ? on : off, size: size),
+          ),
+          style: IconButton.styleFrom(backgroundColor: active ? base.withValues(alpha: 0.16) : Colors.transparent),
           color: active ? base : base.withValues(alpha: 0.7),
           disabledColor: base.withValues(alpha: 0.28),
           visualDensity: VisualDensity.compact,
@@ -321,60 +336,179 @@ class RatingButtons extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        btn('up', Icons.thumb_up_alt_outlined, Icons.thumb_up_alt, context.l.like),
-        btn('down', Icons.thumb_down_alt_outlined, Icons.thumb_down_alt, context.l.dislike),
+        btn('up', AppIcons.like, AppIcons.like, context.l.like),
+        btn('down', AppIcons.dislike, AppIcons.dislike, context.l.dislike),
       ],
     );
   }
 }
 
-/// A song in a list: cover, title, artist, and whatever goes at the end.
+/// A song in a list, as Spotify draws one: the cover, the title (in the accent with bars
+/// while it is on air), the artist, and whatever goes at the end. Long-press for the song's
+/// actions; with [requestable], swipe right to request it.
 class TrackRow extends StatelessWidget {
-  const TrackRow({super.key, required this.track, this.leading, this.trailing, this.subtitle, this.onTap});
+  const TrackRow({
+    super.key,
+    required this.track,
+    this.leading,
+    this.trailing,
+    this.subtitle,
+    this.onTap,
+    this.requestable = false,
+  });
   final Track track;
   final Widget? leading, trailing;
   final String? subtitle;
   final VoidCallback? onTap;
+  final bool requestable;
+
+  bool get _canRequest => requestable && track.requestable != false && track.id != null;
 
   @override
   Widget build(BuildContext context) {
     final c = context.sfm;
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-        child: Row(
-          children: [
-            if (leading != null) ...[leading!, const SizedBox(width: 12)],
-            Artwork(track.artworkUrl, size: 48),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    track.displayTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+    final onAir = track.id != null && context.select<NowPlayingController, String?>((n) => n.track?.id) == track.id;
+    final accent = Theme.of(context).colorScheme.secondary;
+    final row = Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: () {
+          HapticFeedback.mediumImpact();
+          showTrackActions(context, track);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: SizedBox(
+            height: 52,
+            child: Row(
+              children: [
+                if (leading != null) ...[leading!, const SizedBox(width: 12)],
+                Artwork(track.artworkUrl, size: 52, radius: 6),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          if (onAir) ...[EqBars(color: accent, height: 11), const SizedBox(width: 7)],
+                          Flexible(
+                            child: Text(
+                              track.displayTitle,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500, color: onAir ? accent : c.text),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        subtitle ?? track.displayArtist,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 13, color: c.muted),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle ?? track.displayArtist,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 12, color: c.muted),
-                  ),
-                ],
-              ),
+                ),
+                if (trailing != null) ...[const SizedBox(width: 8), trailing!],
+              ],
             ),
-            if (trailing != null) ...[const SizedBox(width: 8), trailing!],
-          ],
+          ),
         ),
       ),
     );
+    if (!_canRequest) return row;
+    // Swipe right to request: the row springs back and the request sheet opens.
+    return Dismissible(
+      key: ValueKey('req-${track.id}-${identityHashCode(this)}'),
+      direction: DismissDirection.startToEnd,
+      dismissThresholds: const {DismissDirection.startToEnd: 0.28},
+      confirmDismiss: (_) async {
+        HapticFeedback.mediumImpact();
+        showRequestSheet(context, track);
+        return false;
+      },
+      background: Container(
+        color: accent,
+        alignment: AlignmentDirectional.centerStart,
+        padding: const EdgeInsets.only(left: 24),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(AppIcons.request, color: readableOn(accent), size: 22),
+            const SizedBox(width: 10),
+            Text(
+              context.l.swipeToRequest,
+              style: TextStyle(fontWeight: FontWeight.w700, color: readableOn(accent)),
+            ),
+          ],
+        ),
+      ),
+      child: row,
+    );
   }
 }
+
+/// A song's actions (long-press on a row): request, its page, its artist, share.
+Future<void> showTrackActions(BuildContext context, Track t) => showModalBottomSheet<void>(
+  context: context,
+  useRootNavigator: true,
+  builder: (sheet) {
+    final c = sheet.sfm;
+    void go(VoidCallback f) {
+      Navigator.pop(sheet);
+      f();
+    }
+
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 10, bottom: 6),
+            width: 36,
+            height: 4,
+            decoration: BoxDecoration(color: c.text.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(9)),
+          ),
+          ListTile(
+            leading: Artwork(t.artworkUrl, size: 48, radius: 6),
+            title: Text(t.displayTitle, maxLines: 1, overflow: TextOverflow.ellipsis),
+            subtitle: Text(t.displayArtist, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+          const Divider(),
+          if (t.requestable != false && t.id != null)
+            ListTile(
+              leading: const Icon(AppIcons.request),
+              title: Text(sheet.l.request),
+              onTap: () => go(() => showRequestSheet(context, t)),
+            ),
+          if (t.id != null)
+            ListTile(
+              leading: const Icon(AppIcons.music),
+              title: Text(sheet.l.goToSong),
+              onTap: () => go(() => Nav.openSong(t)),
+            ),
+          if (t.artistKey != null)
+            ListTile(
+              leading: const Icon(AppIcons.artist),
+              title: Text(sheet.l.goToArtist),
+              onTap: () => go(() => Nav.openArtist(t.artistKey!, name: t.displayArtist)),
+            ),
+          ListTile(
+            leading: const Icon(AppIcons.share),
+            title: Text(sheet.l.share),
+            onTap: () => go(() => shareSong(context, t)),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  },
+);
 
 /// Small pill buttons (`.chip`).
 class Pill extends StatelessWidget {
@@ -685,7 +819,7 @@ class QualityPill extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (lossless && !compact) ...[
-            const Icon(Icons.graphic_eq_rounded, size: 12, color: Color(0xFF2A1E05)),
+            const Icon(AppIcons.quality, size: 12, color: Color(0xFF2A1E05)),
             const SizedBox(width: 4),
           ],
           Text(

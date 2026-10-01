@@ -42,13 +42,13 @@ dependencies:
   shared_preferences: ^2.5.5
   webview_flutter: ^4.14.1
   cached_network_image: ^4.0.4
-  google_fonts: ^8.0.0
   share_plus: ^13.3.0
   url_launcher: ^6.3.2
   uuid: ^4.6.0
   flutter_localizations:
     sdk: flutter
   intl: ^0.20.3
+  lucide_icons_flutter: ^3.1.21
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +73,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # Pretendard, variable (SIL OFL 1.1, assets/fonts/Pretendard-LICENSE.txt). FontWeight drives
+  # its weight axis, so one file covers 100 to 900.
+  fonts:
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/PretendardVariable.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

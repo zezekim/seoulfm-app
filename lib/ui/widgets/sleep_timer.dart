@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 const sleepChoices = [15, 30, 45, 60, 90];
 
@@ -69,12 +70,12 @@ class _SleepTimerButtonState extends State<SleepTimerButton> {
           return IconButton(
             tooltip: on ? context.l.sleepStopsIn((left.inSeconds / 60).ceil()) : context.l.sleepTimer,
             onPressed: () => pickSleepTimer(context),
-            icon: Icon(on ? Icons.bedtime_rounded : Icons.bedtime_outlined, size: 22, color: on ? Colors.white : color),
+            icon: Icon(on ? AppIcons.sleepOn : AppIcons.sleep, size: 22, color: on ? Colors.white : color),
           );
         }
         return TextButton.icon(
           onPressed: () => pickSleepTimer(context),
-          icon: Icon(Icons.bedtime_outlined, size: 18, color: color),
+          icon: Icon(AppIcons.sleep, size: 18, color: color),
           label: Text(
             left == null ? context.l.sleepTimer : context.l.sleepStopsIn((left.inSeconds / 60).ceil()),
             style: TextStyle(fontSize: 12, color: color),

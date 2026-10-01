@@ -7,6 +7,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// Under the collapsing header: clear of the pinned bar (the injector) and of the floating
 /// player and tab bar at the bottom.
@@ -136,23 +137,33 @@ class _TrackChart extends StatelessWidget {
             final t = items[i];
             final pos = t.position ?? i + 1;
             return TrackRow(
+              requestable: true,
               track: t,
               onTap: () => Nav.openSong(t),
               subtitle: [t.displayArtist, ?count?.call(t)].join(' · '),
+              // The rank, big and bold (the top three in the accent), the movement under it.
               leading: SizedBox(
-                width: 28,
+                width: 30,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       '$pos',
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, fontFeatures: tabular),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: pos < 10 ? 20 : 17,
+                        letterSpacing: -0.6,
+                        height: 1.1,
+                        fontFeatures: tabular,
+                        color: pos <= 3 ? Theme.of(context).colorScheme.secondary : null,
+                      ),
                     ),
                     _Movement(t),
                   ],
                 ),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.queue_music_rounded, color: c.muted),
+                icon: Icon(AppIcons.request, color: c.muted),
                 tooltip: context.l.request,
                 onPressed: t.requestable == false ? null : () => showRequestSheet(context, t),
               ),

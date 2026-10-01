@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// The API's data-usage notice for the lossless tier (`LosslessNotice`). Shown on every
 /// tune-in; the answer is never stored. Closing it without answering keeps standard quality.
@@ -21,7 +22,7 @@ Future<void> showLosslessSheet(BuildContext context, AppState app, LosslessPromp
             children: [
               Row(
                 children: [
-                  Icon(Icons.graphic_eq_rounded, color: p.channel.color),
+                  Icon(AppIcons.quality, color: p.channel.color),
                   const SizedBox(width: 10),
                   Text(context.l.losslessTitle, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
                 ],

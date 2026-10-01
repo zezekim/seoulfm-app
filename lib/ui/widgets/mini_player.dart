@@ -10,6 +10,7 @@ import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// Hero tag shared by the player bar's cover and the full-screen player's, so the cover grows
 /// from one into the other.
@@ -134,7 +135,7 @@ class _BarPlay extends StatelessWidget {
             AnimatedSwitcher(
               duration: Motion.fast,
               child: Icon(
-                playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                playing ? AppIcons.pause : AppIcons.play,
                 key: ValueKey(playing),
                 size: 32,
                 color: Colors.white,

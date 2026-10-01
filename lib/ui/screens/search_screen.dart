@@ -7,6 +7,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// Search the library (songs and artists) on the tuned station, and request from it.
 class SearchScreen extends StatefulWidget {
@@ -42,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _requestButton(Track t) => IconButton(
     tooltip: context.l.request,
     onPressed: t.requestable == false ? null : () => showRequestSheet(context, t),
-    icon: const Icon(Icons.queue_music_rounded),
+    icon: const Icon(AppIcons.request),
   );
 
   /// A results list under the collapsing header (the injector keeps it clear of the pinned bar).
@@ -66,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
           hintText: context.l.searchHint,
-          prefixIcon: const Icon(Icons.search_rounded),
+          prefixIcon: const Icon(AppIcons.search),
           suffixIcon: _q.text.isEmpty
               ? null
               : IconButton(
@@ -74,7 +75,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     _q.clear();
                     _onChanged('');
                   },
-                  icon: const Icon(Icons.close_rounded),
+                  icon: const Icon(AppIcons.close),
                 ),
         ),
       ),
@@ -98,7 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
                     child: Text(context.l.searchIntro, style: TextStyle(color: c.muted, fontSize: 13)),
                   ),
-                  SectionHeader(context.l.newSongs, icon: Icons.fiber_new_rounded),
+                  SectionHeader(context.l.newSongs, icon: AppIcons.fresh),
                   FutureBuilder<List<Track>>(
                     future: _new,
                     builder: (context, s) => s.data == null && !s.hasError
@@ -106,7 +107,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         : Column(
                             children: [
                               for (final t in s.data ?? const <Track>[])
-                                TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                                TrackRow(requestable: true, track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
                             ],
                           ),
                   ),
@@ -165,7 +166,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       ],
                       if (r.tracks.isNotEmpty) SectionHeader(context.l.songs),
                       for (final t in r.tracks)
-                        TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                        TrackRow(requestable: true, track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
                     ]);
                   },
                 ),

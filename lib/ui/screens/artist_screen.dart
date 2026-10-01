@@ -7,6 +7,7 @@ import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/icons.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// An artist: their photo (the site keeps it), top songs to request, albums.
@@ -23,7 +24,7 @@ class ArtistScreen extends StatelessWidget {
       tooltip: context.l.share,
       onPressed: () =>
           SharePlus.instance.share(ShareParams(text: '${name ?? ''}\n${shareLink(artistUrl(artistKey), 'artist')}')),
-      icon: const Icon(Icons.ios_share_rounded),
+      icon: const Icon(AppIcons.share),
     );
 
     /// Spotify's artist header: the photo full width, stretching on pull, collapsing into a bar
@@ -119,11 +120,12 @@ class ArtistScreen extends StatelessWidget {
                   SectionHeader(context.l.topTracks),
                   for (final t in p.topTracks.take(10))
                     TrackRow(
+                      requestable: true,
                       track: t,
                       onTap: () => Nav.openSong(t),
                       trailing: IconButton(
                         tooltip: context.l.request,
-                        icon: Icon(Icons.queue_music_rounded, color: c.muted),
+                        icon: Icon(AppIcons.request, color: c.muted),
                         onPressed: t.requestable == false ? null : () => showRequestSheet(context, t),
                       ),
                     ),

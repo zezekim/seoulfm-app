@@ -457,4 +457,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String pickLines(int count) {
     return 'Pick up to $count lines';
   }
+
+  @override
+  String get goToSong => 'Go to song';
+
+  @override
+  String get goToArtist => 'Go to artist';
+
+  @override
+  String get swipeToRequest => 'Request';
 }

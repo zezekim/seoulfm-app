@@ -6,6 +6,7 @@ import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// A song: cover, title and artist, request it live, its lyrics, songs like it.
 class SongScreen extends StatelessWidget {
@@ -18,7 +19,7 @@ class SongScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(tooltip: context.l.share, onPressed: () => shareSong(context, track), icon: const Icon(Icons.ios_share_rounded)),
+          IconButton(tooltip: context.l.share, onPressed: () => shareSong(context, track), icon: const Icon(AppIcons.share)),
         ],
       ),
       body: Loader<TrackDetail>(
@@ -56,7 +57,7 @@ class SongScreen extends StatelessWidget {
                     FilledButton.icon(
                       style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
                       onPressed: t.requestable == false ? null : () => showRequestSheet(context, t),
-                      icon: const Icon(Icons.queue_music_rounded),
+                      icon: const Icon(AppIcons.request),
                       label: Text(t.requestable == false ? context.l.notRequestable : context.l.requestTitle),
                     ),
                   ],
@@ -90,7 +91,7 @@ class _LyricsSection extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SectionHeader(context.l.lyrics, icon: Icons.lyrics_outlined),
+            SectionHeader(context.l.lyrics, icon: AppIcons.lyrics),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.all(16),

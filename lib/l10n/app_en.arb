@@ -281,5 +281,8 @@
         "type": "int"
       }
     }
-  }
+  },
+  "goToSong": "Go to song",
+  "goToArtist": "Go to artist",
+  "swipeToRequest": "Request"
 }

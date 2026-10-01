@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:seoulfm/ui/icons.dart';
 import 'package:flutter/services.dart';
 
 /// Where the sound goes, as Apple Music's player offers it: on iOS the system AirPlay picker,
@@ -21,7 +22,7 @@ class OutputDeviceButton extends StatelessWidget {
         HapticFeedback.selectionClick();
         _channel.invokeMethod<void>('pick').catchError((_) {});
       },
-      icon: Icon(ios ? Icons.airplay_rounded : Icons.speaker_group_outlined, color: color.withValues(alpha: 0.9), size: 24),
+      icon: Icon(ios ? AppIcons.airplay : AppIcons.output, color: color.withValues(alpha: 0.9), size: 24),
     );
   }
 }

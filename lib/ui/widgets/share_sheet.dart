@@ -10,6 +10,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/screens/lyrics_screen.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/icons.dart';
 import 'package:share_plus/share_plus.dart';
 
 /// Whether a share sheet is up (a screenshot while it is shouldn't open another).
@@ -188,7 +189,7 @@ class _ShareSheetState extends State<_ShareSheet> {
               padding: const EdgeInsets.only(top: 10),
               child: OutlinedButton.icon(
                 onPressed: _editLines,
-                icon: const Icon(Icons.edit_outlined, size: 18),
+                icon: const Icon(AppIcons.edit, size: 18),
                 label: Text(context.l.editLyrics),
               ),
             ),
@@ -199,17 +200,17 @@ class _ShareSheetState extends State<_ShareSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _Action(
-                icon: _copied ? Icons.check_rounded : Icons.link_rounded,
+                icon: _copied ? AppIcons.check : AppIcons.link,
                 label: _copied ? context.l.linkCopied : context.l.copyLink,
                 onTap: (_) => _copyLink(),
               ),
               _Action(
-                icon: Icons.image_outlined,
+                icon: AppIcons.image,
                 label: context.l.shareImage,
                 busy: _busy,
                 onTap: _shareImage,
               ),
-              _Action(icon: Icons.more_horiz_rounded, label: context.l.tabMore, onTap: _shareLink),
+              _Action(icon: AppIcons.more, label: context.l.tabMore, onTap: _shareLink),
             ],
           ),
         ],
@@ -382,8 +383,7 @@ class _LyricsCard extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                   letterSpacing: -0.6,
                   color: fg,
-                  fontFamilyFallback: const ['Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR'],
-                ),
+                                  ),
               ),
             ),
             _Wordmark(color: fg),

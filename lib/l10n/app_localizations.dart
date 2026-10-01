@@ -871,6 +871,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pick up to {count} lines'**
   String pickLines(int count);
+
+  /// No description provided for @goToSong.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to song'**
+  String get goToSong;
+
+  /// No description provided for @goToArtist.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to artist'**
+  String get goToArtist;
+
+  /// No description provided for @swipeToRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request'**
+  String get swipeToRequest;
 }
 
 class _AppLocalizationsDelegate

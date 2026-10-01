@@ -9,6 +9,7 @@ import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/turnstile.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// Request a song on the tuned station (`useSongRequest`): availability, an optional
 /// dedication, the captcha, then the API's answer shown as it is.
@@ -202,7 +203,7 @@ class _ResultView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Icon(
-          result.accepted ? Icons.check_circle_rounded : Icons.info_outline_rounded,
+          result.accepted ? AppIcons.done : AppIcons.info,
           size: 40,
           color: result.accepted ? accent : c.muted,
         ),

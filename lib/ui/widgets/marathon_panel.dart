@@ -11,6 +11,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/turnstile.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// Marathon takes votes, not song requests (`MarathonVote`): the artist on air, the queue,
 /// open nominations to vote for, and a nominate button. Polls every 10 s while shown.
@@ -131,14 +132,14 @@ class _MarathonPanelState extends State<MarathonPanel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionHeader(context.l.marathonOnAir, icon: Icons.timer_outlined),
+        SectionHeader(context.l.marathonOnAir, icon: AppIcons.timer),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
           child: Text(context.l.marathonIntro, style: TextStyle(fontSize: 12, color: c.muted)),
         ),
         if (s.current != null) _BlockCard(block: s.current!, big: true, accent: accent),
         if (s.queue.isNotEmpty) ...[
-          SectionHeader(context.l.marathonQueue, icon: Icons.queue_music_rounded),
+          SectionHeader(context.l.marathonQueue, icon: AppIcons.request),
           SizedBox(
             height: 150,
             child: ListView.separated(
@@ -153,7 +154,7 @@ class _MarathonPanelState extends State<MarathonPanel> {
             ),
           ),
         ],
-        SectionHeader(context.l.marathonNominations, icon: Icons.how_to_vote_outlined),
+        SectionHeader(context.l.marathonNominations, icon: AppIcons.vote),
         if (open.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -169,7 +170,7 @@ class _MarathonPanelState extends State<MarathonPanel> {
             ),
             onTap: () => Nav.openArtist(n.artist.artistKey, name: n.artist.name),
             trailing: voted.contains(n.id)
-                ? Icon(Icons.check_circle_rounded, color: accent)
+                ? Icon(AppIcons.done, color: accent)
                 : FilledButton(
                     style: FilledButton.styleFrom(
                       backgroundColor: accent,
@@ -186,7 +187,7 @@ class _MarathonPanelState extends State<MarathonPanel> {
             child: OutlinedButton.icon(
               style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(46)),
               onPressed: _nominate,
-              icon: const Icon(Icons.add_rounded),
+              icon: const Icon(AppIcons.add),
               label: Text(context.l.marathonNominate),
             ),
           ),
@@ -370,7 +371,7 @@ class _ArtistPickerState extends State<_ArtistPicker> {
             onChanged: _search,
             decoration: InputDecoration(
               hintText: context.l.marathonNominateHint,
-              prefixIcon: const Icon(Icons.search_rounded),
+              prefixIcon: const Icon(AppIcons.search),
             ),
           ),
         ),

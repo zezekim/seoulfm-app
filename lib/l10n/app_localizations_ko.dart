@@ -440,4 +440,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String pickLines(int count) {
     return '최대 $count줄까지 고를 수 있어요';
   }
+
+  @override
+  String get goToSong => '곡 보기';
+
+  @override
+  String get goToArtist => '아티스트 보기';
+
+  @override
+  String get swipeToRequest => '신청';
 }

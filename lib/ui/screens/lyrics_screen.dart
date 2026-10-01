@@ -14,6 +14,7 @@ import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/player_progress.dart';
 import 'package:seoulfm/ui/widgets/share_sheet.dart';
+import 'package:seoulfm/ui/icons.dart';
 
 /// The lyrics colour: the song's cover colour, as Spotify tints its card, or while that is
 /// still being read, the station's accent a shade deeper. [watch] rebuilds when it arrives.
@@ -119,8 +120,7 @@ class _LyricsViewState extends State<LyricsView> {
       height: 1.28,
       fontWeight: FontWeight.w800,
       letterSpacing: -0.4,
-      fontFamilyFallback: const ['Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR'],
-    );
+          );
     final physics = widget.interactive ? null : const NeverScrollableScrollPhysics();
     final Widget body;
     if (!widget.lyrics.synced) {
@@ -234,7 +234,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
                   IconButton(
                     tooltip: context.l.close,
                     onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.keyboard_arrow_down_rounded, color: fg, size: 30),
+                    icon: Icon(AppIcons.collapse, color: fg, size: 30),
                   ),
                   Expanded(
                     child: Column(
@@ -257,14 +257,14 @@ class _LyricsScreenState extends State<LyricsScreen> {
                   IconButton(
                     tooltip: context.l.share,
                     onPressed: () => showShareSheet(context, track: _track, lyrics: lyrics, color: bg, lyricsFirst: true),
-                    icon: Icon(Icons.ios_share_rounded, color: fg, size: 22),
+                    icon: Icon(AppIcons.share, color: fg, size: 22),
                   ),
                 ],
               ),
             ),
             Expanded(
               child: lyrics == null || lyrics.isEmpty
-                  ? Center(child: Icon(Icons.lyrics_outlined, size: 48, color: fg.withValues(alpha: 0.4)))
+                  ? Center(child: Icon(AppIcons.lyrics, size: 48, color: fg.withValues(alpha: 0.4)))
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: LyricsView(lyrics: lyrics, background: bg, fontSize: 30, padding: const EdgeInsets.symmetric(vertical: 80)),
