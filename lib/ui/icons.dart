@@ -38,6 +38,8 @@ abstract final class AppIcons {
   static const IconData music = LucideIcons.music;
   // The Dir variant mirrors in right-to-left languages (Arabic), so the chevron points "forward".
   static const IconData next = LucideIcons.chevronRightDir;
+  static const IconData back = LucideIcons.chevronLeftDir;
+  static const IconData spatial = LucideIcons.headphones;
   static const IconData offline = LucideIcons.wifiOff;
   static const IconData output = LucideIcons.speaker;
   static const IconData privacy = LucideIcons.shield;

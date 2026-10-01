@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/root_shell.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
@@ -51,12 +52,12 @@ void main() {
     if (find.byTooltip('Close').evaluate().isNotEmpty) await t.tap(find.byTooltip('Close'));
     await wait(t, 3);
     for (final tab in ['Request', 'Charts', 'More']) {
-      await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text(tab)));
+      await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text(tab)));
       await wait(t, 5);
       await shot('6-${tab.toLowerCase()}');
     }
     // Request: search.
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Request')));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text('Request')));
     await wait(t, 1);
     await t.enterText(find.byType(TextField), 'IU');
     await wait(t, 5);
@@ -66,7 +67,7 @@ void main() {
     await shot('7b-search-collapsed');
 
     // Charts → Artists → an artist.
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Charts')));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text('Charts')));
     await wait(t, 2);
     await t.ensureVisible(find.text('Artists').last);
     await wait(t, 1);

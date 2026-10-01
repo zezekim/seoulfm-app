@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'package:seoulfm/ui/root_shell.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
 
@@ -11,7 +12,7 @@ void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   Future<void> tab(WidgetTester t, String name) async {
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text(name)));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text(name)));
     await wait(t, 4);
   }
 

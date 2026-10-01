@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:seoulfm/ui/root_shell.dart';
 
 import 'helpers.dart';
 
@@ -24,7 +25,7 @@ void main() {
     await t.tap(find.text('Start listening'));
     await wait(t, 10);
     await binding.takeScreenshot('w4-home');
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('Request')));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text('Request')));
     await wait(t, 2);
     await t.enterText(find.byType(TextField), 'zzqxjv');
     await wait(t, 5);

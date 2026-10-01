@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/widgets/spatial_badge.dart';
 import 'package:seoulfm/ui/widgets/dedication_actions.dart';
 import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/api/api.dart';
@@ -374,11 +375,15 @@ class _Player extends StatelessWidget {
                                     ],
                                   ),
                                   const SizedBox(height: 2),
-                                  Text(
-                                    t?.displayArtist ?? channel.localTagline,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 16, color: white.withValues(alpha: 0.6)),
+                                  // The artist opens the artist, as in Apple Music.
+                                  GestureDetector(
+                                    onTap: t == null || !Nav.hasArtist(t) ? null : () => Nav.openArtistOf(t),
+                                    child: Text(
+                                      t?.displayArtist ?? channel.localTagline,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16, color: white.withValues(alpha: 0.6)),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -415,10 +420,16 @@ class _Player extends StatelessWidget {
                       ),
                     ),
                     RatingButtons(trackId: t?.id, onImage: true, size: 24),
+                    if (t != null)
+                      IconButton(
+                        tooltip: context.l.moreOptions,
+                        onPressed: () => showTrackActions(context, t),
+                        icon: Icon(AppIcons.more, color: white.withValues(alpha: 0.85), size: 22),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 18),
-                const PlayerProgress(),
+                const PlayerProgress(center: SpatialAudioBadge()),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -731,4 +731,8 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stationsFolder => 'Stations';
+
+  @override
+  String get spatialAudioBody =>
+      'SeoulFM est mixé pour le casque avec un crossfeed BS2B (Bauer stereophonic-to-binaural). Un peu de chaque canal parvient à l\'autre oreille, comme avec des enceintes dans une pièce : le son paraît plus large, plus naturel et reste agréable à l\'oreille pendant des heures.';
 }

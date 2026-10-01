@@ -206,5 +206,6 @@
   "audioOutput": "音频输出",
   "openPlayer": "打开播放器",
   "songsCount": "{count, plural, =1{{count}首歌} other{{count}首歌}}",
-  "stationsFolder": "电台"
+  "stationsFolder": "电台",
+  "spatialAudioBody": "SeoulFM 针对耳机采用 BS2B（Bauer stereophonic-to-binaural）串音混合。每个声道的少量声音会传到另一只耳朵，就像在房间里听音箱一样，因此声音更开阔、更自然，长时间聆听也不易疲劳。"
 }

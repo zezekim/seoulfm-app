@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:seoulfm/data/app_language.dart';
 
 /// The site's design tokens (`app/globals.css`): a neutral base, near-black surfaces,
@@ -120,6 +121,14 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
     labelSmall: s(p.labelSmall, 11, FontWeight.w600, track: 0.2),
   );
   return base.copyWith(
+    // Apple Music's navigation on both platforms: pages slide in from the side over a dimmed,
+    // parallaxed page behind, and swipe back from the edge.
+    pageTransitionsTheme: const PageTransitionsTheme(
+      builders: {
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      },
+    ),
     scaffoldBackgroundColor: c.bg,
     canvasColor: c.bg,
     colorScheme: ColorScheme.fromSeed(

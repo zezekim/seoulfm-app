@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:seoulfm/ui/root_shell.dart';
 
 import 'helpers.dart';
 
@@ -20,7 +21,7 @@ void main() {
     await t.drag(find.byType(CustomScrollView).last, const Offset(0, -700));
     await wait(t, 2);
     await binding.takeScreenshot('s4-support-below');
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('More')));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text('More')));
     await wait(t, 3);
     await binding.takeScreenshot('s5-more');
   });

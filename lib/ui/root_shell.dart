@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +11,7 @@ import 'package:seoulfm/ui/screens/more_screen.dart';
 import 'package:seoulfm/ui/screens/search_screen.dart';
 import 'package:seoulfm/ui/screens/welcome_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/widgets/glass.dart';
 import 'package:seoulfm/ui/widgets/lossless_sheet.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
 import 'package:seoulfm/ui/widgets/request_pill.dart';
@@ -101,10 +100,9 @@ class _RootShellState extends State<RootShell> {
 
   @override
   Widget build(BuildContext context) {
-    final c = context.sfm;
     final l = context.l;
     final index = Nav.tab.value.index;
-    return PopScope(
+    final shell = PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
@@ -128,70 +126,145 @@ class _RootShellState extends State<RootShell> {
               ),
           ],
         ),
-        bottomNavigationBar: DecoratedBox(
-          // Content fades out under the floating player, as Spotify's does.
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [c.bg.withValues(alpha: 0), c.bg.withValues(alpha: 0.85)],
-              stops: const [0, 0.45],
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const RequestPill(),
+            const MiniPlayer(),
+            GlassTabBar(
+              selected: index,
+              onSelect: _select,
+              items: [
+                (AppIcons.home, l.tabHome),
+                (AppIcons.request, l.tabRequest),
+                (AppIcons.charts, l.tabCharts),
+                (AppIcons.more, l.tabMore),
+              ],
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const RequestPill(),
-              const MiniPlayer(),
-              ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                  child: NavigationBarTheme(
-                    data: NavigationBarThemeData(
-                      backgroundColor: c.bg.withValues(alpha: 0.6),
-                      indicatorColor: Colors.transparent,
-                      surfaceTintColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      elevation: 0,
-                      height: 58,
-                      iconTheme: WidgetStateProperty.resolveWith(
-                        (s) => IconThemeData(size: 26, color: s.contains(WidgetState.selected) ? c.text : c.muted),
-                      ),
-                      labelTextStyle: WidgetStateProperty.resolveWith(
-                        (s) => TextStyle(
-                          fontSize: 11,
-                          fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
-                          color: s.contains(WidgetState.selected) ? c.text : c.muted,
-                        ),
+          ],
+        ),
+      ),
+    );
+    // While the player rises, the app sinks back behind it into a dimmed card (Apple Music).
+    final corner = MediaQuery.paddingOf(context).top > 30 ? 48.0 : 16.0;
+    // The same widgets whether or not the player is up, so the tabs keep their state; at rest
+    // they cost nothing (no scale, no clip, a clear veil).
+    return ValueListenableBuilder<Animation<double>?>(
+      valueListenable: Nav.playerPresentation,
+      child: shell,
+      builder: (_, presentation, shell) => AnimatedBuilder(
+        animation: presentation ?? kAlwaysDismissedAnimation,
+        child: shell,
+        builder: (_, shell) {
+          final v = Curves.easeOutCubic.transform(presentation?.value ?? 0);
+          return ColoredBox(
+            color: Colors.black,
+            child: Transform.scale(
+              scale: 1 - 0.07 * v,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(corner * v),
+                clipBehavior: v == 0 ? Clip.none : Clip.antiAlias,
+                child: Stack(
+                  children: [
+                    shell!,
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: ColoredBox(color: Colors.black.withValues(alpha: 0.4 * v)),
                       ),
                     ),
-                    child: NavigationBar(
-                      selectedIndex: index,
-                      onDestinationSelected: _select,
-                      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                      destinations: [
-                        NavigationDestination(
-                          icon: const Icon(AppIcons.home),
-                          selectedIcon: const Icon(AppIcons.home),
-                          label: l.tabHome,
-                        ),
-                        NavigationDestination(
-                          icon: const Icon(AppIcons.request),
-                          selectedIcon: const Icon(AppIcons.request),
-                          label: l.tabRequest,
-                        ),
-                        NavigationDestination(
-                          icon: const Icon(AppIcons.charts),
-                          selectedIcon: const Icon(AppIcons.charts),
-                          label: l.tabCharts,
-                        ),
-                        NavigationDestination(icon: const Icon(AppIcons.more), label: l.tabMore),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+/// The tab bar as iOS 26 floats it: a glass capsule over the content, with a lens of brighter
+/// glass that slides to the selected tab.
+class GlassTabBar extends StatelessWidget {
+  const GlassTabBar({super.key, required this.selected, required this.onSelect, required this.items});
+  final int selected;
+  final ValueChanged<int> onSelect;
+  final List<(IconData, String)> items;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    final bottom = MediaQuery.paddingOf(context).bottom;
+    final scale = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3);
+    final height = 34 + scale.scale(11 * 1.3) + 12;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(14, 6, 14, bottom > 0 ? bottom - 6 : 10),
+      child: Glass(
+        radius: height / 2,
+        child: SizedBox(
+          height: height,
+          child: LayoutBuilder(
+            builder: (context, box) {
+              final w = (box.maxWidth - 8) / items.length;
+              return Stack(
+                children: [
+                  // The lens behind the selected tab.
+                  AnimatedPositionedDirectional(
+                    duration: const Duration(milliseconds: 380),
+                    curve: Curves.easeOutBack,
+                    start: 4 + w * selected,
+                    top: 4,
+                    bottom: 4,
+                    width: w,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: c.text.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(height / 2),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Row(
+                      children: [
+                        for (var i = 0; i < items.length; i++)
+                          Expanded(
+                            child: Semantics(
+                              button: true,
+                              selected: i == selected,
+                              label: items[i].$2,
+                              excludeSemantics: true,
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => onSelect(i),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(items[i].$1, size: 24, color: i == selected ? c.text : c.muted),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      items[i].$2,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textScaler: scale,
+                                      style: TextStyle(
+                                        fontSize: 10.5,
+                                        height: 1.3,
+                                        fontWeight: i == selected ? FontWeight.w700 : FontWeight.w500,
+                                        color: i == selected ? c.text : c.muted,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ),
       ),

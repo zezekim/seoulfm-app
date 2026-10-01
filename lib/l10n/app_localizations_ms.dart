@@ -732,4 +732,8 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get stationsFolder => 'Stesen';
+
+  @override
+  String get spatialAudioBody =>
+      'SeoulFM dicampur untuk fon kepala dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit bunyi daripada setiap saluran sampai juga ke telinga sebelah, seperti daripada pembesar suara dalam bilik, jadi bunyi terasa lebih luas, lebih semula jadi dan selesa di telinga selama berjam-jam.';
 }

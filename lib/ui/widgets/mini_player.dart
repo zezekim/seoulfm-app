@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/widgets/glass.dart';
 import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -30,33 +31,29 @@ class MiniPlayer extends StatelessWidget {
     final radio = context.read<RadioHandler>();
     final t = np.track;
     final tint = context.watch<CoverColors>().of(t?.artworkUrl) ?? channel.color;
-    final bg = forWhiteText(Color.lerp(tint, Colors.black, 0.5)!);
+    // The glass takes the cover's colour, deep enough for white text over anything behind it.
+    final pane = forWhiteText(Color.lerp(tint, Colors.black, 0.35)!);
     const white = Colors.white;
 
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 8, 6),
+      padding: const EdgeInsetsDirectional.fromSTEB(14, 0, 14, 0),
       child: Pressable(
         scale: 0.98,
         semanticLabel: context.l.openPlayer,
         onTap: () => Nav.showNowPlaying(context),
-        child: AnimatedContainer(
+        child: TweenAnimationBuilder<Color?>(
           duration: Motion.slow,
-          curve: Motion.out,
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(Radii.md),
-            boxShadow: const [BoxShadow(color: Color(0x66000000), blurRadius: 18, offset: Offset(0, 6))],
-          ),
-          clipBehavior: Clip.antiAlias,
+          tween: ColorTween(end: pane),
+          builder: (_, color, child) => Glass(radius: 30, tint: color, child: child!),
           child: Stack(
             children: [
               Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 4, 10),
+                padding: const EdgeInsetsDirectional.fromSTEB(9, 9, 6, 9),
                 child: Row(
                   children: [
                     Hero(
                       tag: playerCoverHero,
-                      child: Artwork(t?.artworkUrl, size: 42, radius: 6),
+                      child: Artwork(t?.artworkUrl, size: 42, radius: 9),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
@@ -105,7 +102,8 @@ class MiniPlayer extends StatelessWidget {
                   ],
                 ),
               ),
-              const PositionedDirectional(start: 10, end: 10, bottom: 0, child: _Hairline()),
+              // Inside the capsule's straight run, clear of its rounded ends.
+              const PositionedDirectional(start: 26, end: 26, bottom: 2, child: _Hairline()),
             ],
           ),
         ),

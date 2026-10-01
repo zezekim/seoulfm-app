@@ -206,5 +206,6 @@
   "audioOutput": "Salida de audio",
   "openPlayer": "Abrir reproductor",
   "songsCount": "{count, plural, =1{1 canción} other{{count} canciones}}",
-  "stationsFolder": "Estaciones"
+  "stationsFolder": "Estaciones",
+  "spatialAudioBody": "SeoulFM está mezclado para auriculares con crossfeed BS2B (Bauer stereophonic-to-binaural). Un poco de cada canal llega también al otro oído, como ocurriría con altavoces en una habitación, así que el sonido resulta más amplio, más natural y más descansado para el oído durante horas."
 }

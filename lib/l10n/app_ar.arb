@@ -206,5 +206,6 @@
   "audioOutput": "مخرج الصوت",
   "openPlayer": "فتح المشغّل",
   "songsCount": "{count, plural, =0{لا أغاني} =1{أغنية واحدة} =2{أغنيتان} few{{count} أغانٍ} many{{count} أغنية} other{{count} أغنية}}",
-  "stationsFolder": "المحطات"
+  "stationsFolder": "المحطات",
+  "spatialAudioBody": "تم مزج SeoulFM لسماعات الرأس باستخدام كروس فيد BS2B (Bauer stereophonic-to-binaural). يصل جزء بسيط من كل قناة إلى الأذن الأخرى كما لو كان من مكبرات صوت في غرفة، فيبدو الصوت أوسع وأكثر طبيعية ومريحًا للأذن لساعات طويلة."
 }

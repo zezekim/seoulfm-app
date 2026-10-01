@@ -206,5 +206,6 @@
   "audioOutput": "Дыбыс шығысы",
   "openPlayer": "Ойнатқышты ашу",
   "songsCount": "{count, plural, one{{count} ән} other{{count} ән}}",
-  "stationsFolder": "Станциялар"
+  "stationsFolder": "Станциялар",
+  "spatialAudioBody": "SeoulFM құлаққапқа арналған BS2B (Bauer stereophonic-to-binaural) кроссфидпен араластырылған. Бөлмедегі динамиктердегідей, әр арнаның дыбысы екінші құлаққа да сәл жетеді, сондықтан дыбыс кеңірек, табиғирақ естіледі және сағаттап тыңдағанда құлақ шаршамайды."
 }

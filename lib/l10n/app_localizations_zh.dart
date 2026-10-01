@@ -705,6 +705,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get stationsFolder => '电台';
+
+  @override
+  String get spatialAudioBody =>
+      'SeoulFM 针对耳机采用 BS2B（Bauer stereophonic-to-binaural）串音混合。每个声道的少量声音会传到另一只耳朵，就像在房间里听音箱一样，因此声音更开阔、更自然，长时间聆听也不易疲劳。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1407,4 +1411,8 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get stationsFolder => '電台';
+
+  @override
+  String get spatialAudioBody =>
+      'SeoulFM 針對耳機採用 BS2B（Bauer stereophonic-to-binaural）串音混合。每個聲道的少量聲音會傳到另一隻耳朵，就像在房間裡聽喇叭一樣，因此聲音更開闊、更自然，長時間聆聽也不易疲勞。';
 }

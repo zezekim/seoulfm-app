@@ -692,4 +692,8 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get stationsFolder => '채널';
+
+  @override
+  String get spatialAudioBody =>
+      'SeoulFM은 BS2B(Bauer stereophonic-to-binaural) 크로스피드로 헤드폰에 맞게 믹스돼요. 방 안의 스피커처럼 각 채널의 소리가 반대쪽 귀에도 살짝 전해져, 더 넓고 자연스럽게 들리고 오래 들어도 귀가 편해요.';
 }

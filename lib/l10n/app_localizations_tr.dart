@@ -728,4 +728,8 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get stationsFolder => 'İstasyonlar';
+
+  @override
+  String get spatialAudioBody =>
+      'SeoulFM, kulaklıklar için BS2B (Bauer stereophonic-to-binaural) crossfeed ile miksleniyor. Her kanalın bir kısmı, odadaki hoparlörlerde olduğu gibi diğer kulağa da ulaşır; böylece ses daha geniş ve doğal gelir, saatlerce dinlerken kulağı yormaz.';
 }

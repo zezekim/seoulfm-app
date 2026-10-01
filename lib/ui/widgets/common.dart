@@ -1,3 +1,4 @@
+import 'dart:ui' show ImageFilter;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -502,11 +503,11 @@ Future<void> showTrackActions(BuildContext context, Track t) => showModalBottomS
               title: Text(sheet.l.goToSong),
               onTap: () => go(() => Nav.openSong(t)),
             ),
-          if (t.artistKey != null)
+          if (Nav.hasArtist(t))
             ListTile(
               leading: const Icon(AppIcons.artist),
               title: Text(sheet.l.goToArtist),
-              onTap: () => go(() => Nav.openArtist(t.artistKey!, name: t.displayArtist)),
+              onTap: () => go(() => Nav.openArtistOf(t)),
             ),
           ListTile(
             leading: const Icon(AppIcons.share),
@@ -969,7 +970,8 @@ SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWid
   return SliverAppBar(
     pinned: true,
     expandedHeight: kToolbarHeight + large + bottomHeight,
-    backgroundColor: c.bg,
+    // Clear while the big title shows; frosted glass once the page scrolls under the bar.
+    backgroundColor: Colors.transparent,
     surfaceTintColor: Colors.transparent,
     scrolledUnderElevation: 0,
     actions: actions,
@@ -979,8 +981,24 @@ SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWid
         final top = MediaQuery.paddingOf(context).top;
         final min = top + kToolbarHeight + bottomHeight;
         final t = ((box.maxHeight - min) / large).clamp(0.0, 1.0); // 1 = fully expanded
+        final frost = (1 - t * 2.5).clamp(0.0, 1.0);
         return Stack(
           children: [
+            Positioned.fill(
+              child: frost == 0
+                  ? ColoredBox(color: c.bg)
+                  : ClipRect(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 24 * frost, sigmaY: 24 * frost),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Color.lerp(c.bg, c.bg.withValues(alpha: 0.72), frost),
+                            border: Border(bottom: BorderSide(color: c.border.withValues(alpha: frost), width: 0.5)),
+                          ),
+                        ),
+                      ),
+                    ),
+            ),
             PositionedDirectional(
               top: top,
               start: 56,

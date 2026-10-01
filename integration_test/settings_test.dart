@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/root_shell.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
@@ -20,7 +21,7 @@ void main() {
     await radio.setQuality(null);
     expect(radio.quality.value, isNull);
 
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.text('More')));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.text('More')));
     await wait(t, 3);
     await t.scrollUntilVisible(find.text('Quality'), 200, scrollable: find.byType(Scrollable).first);
     await wait(t, 1);

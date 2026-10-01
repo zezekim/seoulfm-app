@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:seoulfm/ui/root_shell.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
 
@@ -50,11 +51,11 @@ void main() {
     await wait(t, 3);
     await shot(t, '4-genres');
 
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.byIcon(AppIcons.charts)));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.byIcon(AppIcons.charts)));
     await wait(t, 5);
     await shot(t, '5-charts');
 
-    await t.tap(find.descendant(of: find.byType(NavigationBar), matching: find.byIcon(AppIcons.request)));
+    await t.tap(find.descendant(of: find.byType(GlassTabBar), matching: find.byIcon(AppIcons.request)));
     await wait(t, 4);
     await shot(t, '6-request');
     await prefs.remove('seoulfm-locale');

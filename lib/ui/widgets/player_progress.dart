@@ -8,8 +8,11 @@ import 'package:seoulfm/ui/widgets/common.dart';
 /// Elapsed and −remaining on the listener's own clock (`positionMs`), ticking each second.
 /// Drawn in [color] (white on artwork and on the lyrics colour).
 class PlayerProgress extends StatefulWidget {
-  const PlayerProgress({super.key, this.color = Colors.white});
+  const PlayerProgress({super.key, this.color = Colors.white, this.center});
   final Color color;
+
+  /// Shown between the elapsed and remaining times (Apple Music puts its Dolby Atmos badge there).
+  final Widget? center;
   @override
   State<PlayerProgress> createState() => _PlayerProgressState();
 }
@@ -50,10 +53,12 @@ class _PlayerProgressState extends State<PlayerProgress> {
         ),
         const SizedBox(height: 6),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(fmtDuration(pos), style: style),
-            Text(dur > 0 ? '−${fmtDuration(dur - pos)}' : '', style: style),
+            Expanded(child: Text(fmtDuration(pos), style: style)),
+            ?widget.center,
+            Expanded(
+              child: Text(dur > 0 ? '−${fmtDuration(dur - pos)}' : '', style: style, textAlign: TextAlign.end),
+            ),
           ],
         ),
       ],

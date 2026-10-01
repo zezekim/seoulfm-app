@@ -206,5 +206,6 @@
   "audioOutput": "Output audio",
   "openPlayer": "Buka pemutar",
   "songsCount": "{count, plural, =1{1 lagu} other{{count} lagu}}",
-  "stationsFolder": "Stasiun"
+  "stationsFolder": "Stasiun",
+  "spatialAudioBody": "SeoulFM dimiks untuk headphone dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit suara dari tiap kanal sampai juga ke telinga sebelahnya, seperti dari speaker di dalam ruangan, sehingga suara terasa lebih luas, lebih alami, dan nyaman di telinga berjam-jam."
 }
