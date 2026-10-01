@@ -17,14 +17,18 @@ void main() {
     final radio = t.element(find.byType(MiniPlayer)).read<RadioHandler>();
     await t.tap(find.descendant(of: find.byType(MiniPlayer), matching: find.byIcon(AppIcons.play)));
     final ahead = <double>[];
-    for (var i = 0; i < 12; i++) {
+    var buffering = 0;
+    // Samples every 5 s; --dart-define=SAMPLES=36 for three minutes.
+    const samples = int.fromEnvironment('SAMPLES', defaultValue: 12);
+    for (var i = 0; i < samples; i++) {
       await wait(t, 5);
       final s = radio.playbackState.value;
       final a = radio.bufferAhead.inMilliseconds / 1000;
       ahead.add(a);
+      if (s.processingState.name != 'ready') buffering++;
       debugPrint('BUF t=${(i + 1) * 5}s ahead=${a.toStringAsFixed(1)}s state=${s.processingState.name} ${radio.debugClock}');
     }
     ahead.sort();
-    debugPrint('BUF-SUMMARY min=${ahead.first.toStringAsFixed(1)} median=${ahead[ahead.length ~/ 2].toStringAsFixed(1)}');
+    debugPrint('BUF-SUMMARY min=${ahead.first.toStringAsFixed(1)} median=${ahead[ahead.length ~/ 2].toStringAsFixed(1)} buffering=$buffering/$samples');
   });
 }
