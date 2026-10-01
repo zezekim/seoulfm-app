@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:seoulfm/api/api.dart';
+import 'package:seoulfm/api/models.dart';
+import 'package:seoulfm/state/channel_controller.dart';
+import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/nav.dart';
+import 'package:seoulfm/ui/widgets/common.dart';
+import 'package:seoulfm/ui/widgets/request_sheet.dart';
+
+/// The tuned station's charts: the week, hot right now, most requested, trending, artists.
+class ChartsScreen extends StatelessWidget {
+  const ChartsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final station = context.watch<ChannelController>().active;
+    final l = context.l;
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('${l.tabCharts} · ${station.name}'),
+          bottom: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            indicatorColor: station.color,
+            labelColor: context.sfm.text,
+            unselectedLabelColor: context.sfm.muted,
+            dividerColor: context.sfm.border,
+            tabs: [
+              Tab(text: l.chartsWeekly),
+              Tab(text: '🔥 ${l.chartsHot}'),
+              Tab(text: l.chartsRequested),
+              Tab(text: l.chartsTrending),
+              Tab(text: l.artists),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          key: ValueKey(station.key),
+          children: [
+            _TrackChart(load: () => api.weeklyChart(), count: (t) => t.playCount == null ? null : l.plays(t.playCount!)),
+            _TrackChart(load: () => api.hotTracks()),
+            _TrackChart(load: () => api.topRequested(), count: (t) => t.requestCount == null ? null : l.requestsCount(t.requestCount!)),
+            _TrackChart(load: () => api.trending(), count: (t) => t.playCount == null ? null : l.plays(t.playCount!)),
+            Loader<List<ArtistSummary>>(
+              load: () => api.topArtists(),
+              builder: (context, items) => ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (_, i) {
+                  final a = items[i];
+                  return ListTile(
+                    leading: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 24,
+                          child: Text(
+                            '${i + 1}',
+                            style: TextStyle(fontWeight: FontWeight.w700, color: context.sfm.muted, fontFeatures: tabular),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Artwork(a.artworkUrl, size: 44, radius: 22),
+                      ],
+                    ),
+                    title: Text(a.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    subtitle: Text(l.plays(a.playCount), style: TextStyle(color: context.sfm.muted, fontSize: 12)),
+                    onTap: () => Nav.openArtist(a.key, name: a.name),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TrackChart extends StatelessWidget {
+  const _TrackChart({required this.load, this.count});
+  final Future<List<Track>> Function() load;
+  final String? Function(Track)? count;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    return Loader<List<Track>>(
+      load: load,
+      builder: (context, items) => RefreshIndicator(
+        onRefresh: () async {},
+        child: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (_, i) {
+            final t = items[i];
+            final pos = t.position ?? i + 1;
+            return TrackRow(
+              track: t,
+              onTap: () => Nav.openSong(t),
+              subtitle: [t.displayArtist, ?count?.call(t)].join(' · '),
+              leading: SizedBox(
+                width: 28,
+                child: Column(
+                  children: [
+                    Text(
+                      '$pos',
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15, fontFeatures: tabular),
+                    ),
+                    _Movement(t),
+                  ],
+                ),
+              ),
+              trailing: IconButton(
+                icon: Icon(Icons.queue_music_rounded, color: c.muted),
+                tooltip: context.l.request,
+                onPressed: t.requestable == false ? null : () => showRequestSheet(context, t),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _Movement extends StatelessWidget {
+  const _Movement(this.t);
+  final Track t;
+  @override
+  Widget build(BuildContext context) {
+    if (t.previousPosition == null && t.movement != null) {
+      return Text(
+        context.l.newEntry,
+        style: const TextStyle(fontSize: 8, fontWeight: FontWeight.w800, color: Color(0xFF2FB38F)),
+      );
+    }
+    final prev = t.previousPosition, pos = t.position;
+    if (prev == null || pos == null || prev == pos) return const SizedBox.shrink();
+    final up = pos < prev;
+    return Icon(
+      up ? Icons.arrow_drop_up_rounded : Icons.arrow_drop_down_rounded,
+      size: 16,
+      color: up ? const Color(0xFF2FB38F) : const Color(0xFFFF5A5F),
+    );
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "@@locale": "en",
+  "appTitle": "SeoulFM",
+  "tabHome": "Home",
+  "tabSearch": "Search",
+  "tabCharts": "Charts",
+  "tabWall": "Dedications",
+  "tabMore": "More",
+  "live": "LIVE",
+  "offAir": "Off air",
+  "stationBreak": "Station break. Back in a moment.",
+  "nowPlaying": "Now playing",
+  "upNext": "Up next",
+  "stations": "Stations",
+  "recentlyPlayed": "Recently played",
+  "requestASong": "Request a song",
+  "requestHint": "Pick a song and it plays live for everyone.",
+  "searchHint": "Songs, artists, albums",
+  "searchEmpty": "No matches for “{query}”",
+  "@searchEmpty": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchIntro": "Search 58,000+ songs, read the lyrics, and request one to play live.",
+  "newSongs": "New on SeoulFM",
+  "songs": "Songs",
+  "artists": "Artists",
+  "play": "Play",
+  "pause": "Pause",
+  "request": "Request",
+  "requestTitle": "Request this song",
+  "yourName": "Your name (optional)",
+  "dedication": "Dedication (optional)",
+  "sendRequest": "Send request",
+  "verifying": "Checking you’re human…",
+  "requestAccepted": "Requested!",
+  "etaMinutes": "Plays in about {minutes} min",
+  "@etaMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "etaSoon": "Plays soon",
+  "requestQueued": "“{title}” is in the queue",
+  "@requestQueued": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "requestScheduled": "“{title}” is coming up",
+  "@requestScheduled": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "requestPlayed": "“{title}” is on air now",
+  "@requestPlayed": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "requestExpired": "“{title}” couldn’t be played this time",
+  "@requestExpired": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "notRequestable": "Not requestable right now",
+  "errorGeneric": "Something went wrong. Try again.",
+  "offline": "Can’t reach SeoulFM. Check your connection.",
+  "retry": "Retry",
+  "chartsWeekly": "This week",
+  "chartsHot": "Hot",
+  "chartsRequested": "Most requested",
+  "chartsTrending": "Trending",
+  "plays": "{count, plural, =1{1 play} other{{count} plays}}",
+  "@plays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "requestsCount": "{count, plural, =1{1 request} other{{count} requests}}",
+  "@requestsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newEntry": "NEW",
+  "dedicationsEmpty": "No dedications yet. Request a song and add one.",
+  "dedicatedBy": "Dedicated by {name}",
+  "@dedicatedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "lyrics": "Lyrics",
+  "lyricsNone": "No lyrics for this song yet.",
+  "share": "Share",
+  "shareSong": "{title} by {artist}, live on SeoulFM",
+  "@shareSong": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "artist": {
+        "type": "String"
+      }
+    }
+  },
+  "shareStation": "SeoulFM {name}: free 24/7 K-pop radio",
+  "@shareStation": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "close": "Close",
+  "startListeningToRate": "Start listening to rate",
+  "like": "I like this",
+  "dislike": "Not for me",
+  "hot": "Hot",
+  "topTracks": "Top songs",
+  "albums": "Albums",
+  "related": "You might also like",
+  "settings": "Settings",
+  "theme": "Theme",
+  "themeSystem": "System",
+  "themeDark": "Dark",
+  "themeLight": "Light",
+  "sleepTimer": "Sleep timer",
+  "sleepOff": "Off",
+  "sleepMinutes": "{minutes} min",
+  "@sleepMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepStopsIn": "Stops in {minutes} min",
+  "@sleepStopsIn": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "inTheCar": "In the car",
+  "carBody": "SeoulFM works with Apple CarPlay and Android Auto. Connect your phone and pick a station on the car’s screen; the steering-wheel skip buttons change station.",
+  "about": "About SeoulFM",
+  "aboutBody": "SeoulFM is free 24/7 K-pop radio and a Korean music streaming platform: twelve live stations, and a library of 58,000+ songs, each with lyrics, that you can search and request. A requested song plays live for everyone. On air since 2009, always free.",
+  "website": "Website",
+  "privacy": "Privacy",
+  "terms": "Terms",
+  "contact": "Contact",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "losslessTitle": "Lossless FLAC",
+  "losslessUses": "About {mb} MB an hour",
+  "@losslessUses": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "losslessUsesAac": "Standard quality: about {mb} MB an hour",
+  "@losslessUsesAac": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "losslessFallbackNotice": "Lossless audio uses far more data than standard streaming. Use Wi-Fi or an unlimited data plan.",
+  "losslessAccept": "Play lossless",
+  "losslessDecline": "Use standard quality",
+  "losslessFailed": "Lossless isn’t playing, so standard quality is on.",
+  "retryFlac": "Retry FLAC",
+  "marathonOnAir": "On air this hour",
+  "marathonQueue": "Coming up",
+  "marathonNominations": "Vote them in",
+  "marathonVote": "Vote",
+  "marathonVotes": "{votes} of {required} votes",
+  "@marathonVotes": {
+    "placeholders": {
+      "votes": {
+        "type": "int"
+      },
+      "required": {
+        "type": "int"
+      }
+    }
+  },
+  "marathonNominate": "Nominate an artist",
+  "marathonNominateHint": "Search artists",
+  "marathonVoted": "Vote counted",
+  "marathonEmpty": "No open nominations. Nominate an artist for the next free hour.",
+  "marathonVotedIn": "Voted in",
+  "marathonIntro": "One group, one full hour. Vote an artist into the next free hour.",
+  "seeAll": "See all",
+  "justNow": "just now",
+  "minutesAgo": "{n} min ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{n} h ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "inMinutes": "in {n} min",
+  "@inMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "requestBadge": "Request",
+  "artistPage": "Artist page",
+  "openSong": "Song page",
+  "nextStation": "Next station",
+  "previousStation": "Previous station",
+  "quality": "Quality",
+  "qualityAuto": "Auto (AAC)",
+  "comingSoon": "Coming soon",
+  "captchaFailed": "Couldn’t verify. Try again."
+}
