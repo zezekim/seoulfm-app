@@ -15,11 +15,13 @@ station skip from the steering wheel or headset, and a sleep timer.
 ## Run
 
 ```bash
+cp dart-defines.example.json dart-defines.json   # then fill in the keys; it is gitignored
 flutter pub get
-flutter run \
-  --dart-define=SEOULFM_API_KEY=<publishable key issued for the app> \
-  --dart-define=TURNSTILE_SITE_KEY=<Cloudflare Turnstile site key>
+flutter run --dart-define-from-file=dart-defines.json
 ```
+
+Each define can also be passed alone, e.g. `--dart-define=SEOULFM_API_KEY=…`. Without the key,
+every REST call returns 401 and only the tuned station's live feed works.
 
 | define | default | what |
 |---|---|---|
