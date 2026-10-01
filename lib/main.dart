@@ -1,7 +1,10 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:seoulfm/config.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/platform/screenshots.dart';
@@ -9,8 +12,22 @@ import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/root_shell.dart';
+import 'package:seoulfm/ui/widgets/launch_curtain.dart';
 
 Future<void> main() async {
+  // Crash and error reports go to Sentry when a DSN is configured; otherwise straight to the app.
+  if (Config.sentryDsn.isEmpty) return _start();
+  await SentryFlutter.init((o) {
+    o.dsn = Config.sentryDsn;
+    o.release = 'seoulfm@${Config.appVersion}';
+    o.environment = kReleaseMode ? 'production' : 'development';
+    o.tracesSampleRate = 0.1;
+    // Listeners are anonymous: no IPs, no request bodies, no screenshots.
+    o.sendDefaultPii = false;
+  }, appRunner: _start);
+}
+
+Future<void> _start() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Session.init();
 
@@ -69,7 +86,7 @@ class SeoulFmApp extends StatelessWidget {
         builder: (context, child) => MediaQuery.withClampedTextScaling(
           minScaleFactor: 0.9,
           maxScaleFactor: 1.35,
-          child: child!,
+          child: LaunchCurtain(child: child!),
         ),
         home: const RootShell(),
       ),

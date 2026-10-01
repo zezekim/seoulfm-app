@@ -19,5 +19,8 @@ class Config {
   static const turnstileSiteKey = String.fromEnvironment('TURNSTILE_SITE_KEY');
   static bool get captchaEnabled => turnstileSiteKey.isNotEmpty;
 
+  /// Sentry DSN for crash and error reports; empty turns reporting off (nothing is sent).
+  static const sentryDsn = String.fromEnvironment('SENTRY_DSN');
+
   static const appVersion = String.fromEnvironment('SEOULFM_APP_VERSION', defaultValue: '3.0.0');
 }

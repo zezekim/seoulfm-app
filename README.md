@@ -32,8 +32,21 @@ every REST call returns 401 and only the tuned station's live feed works.
 | `SEOULFM_SITE_URL` | `https://seoul.fm` | Artwork copies (`/api/art/`), artist photos, share links. |
 | `SEOULFM_RUNTIME_CONFIG_URL` | dash-api runtime config | Operators' notices and listener delay. |
 | `SEOULFM_APP_VERSION` | `3.0.0` | Sent with heartbeats. |
+| `SENTRY_DSN` | none (off) | Crash and error reports to Sentry. Nothing is sent without it. |
 
-`flutter analyze` and `flutter test` must pass. `flutter gen-l10n` runs on `pub get`.
+`flutter analyze` and `flutter test` must pass. `flutter gen-l10n` runs on `pub get`. CI (`.github/workflows/ci.yml`)
+runs both on every push, then builds the Android and iOS apps.
+
+The walkthrough tests in `integration_test/` drive the real app against the live API and save
+screenshots. Run them on a device or emulator before a release:
+
+```bash
+SHOTS_DIR=/tmp/shots flutter drive --driver=test_driver/integration_test.dart \
+  --target=integration_test/screens_test.dart -d <device> --dart-define-from-file=dart-defines.json
+```
+
+`screens` walks every tab and the player, `welcome` the first run, `lyrics` lyrics and sharing,
+`support` the support page, `look` both themes, `stream` startup time and stalls.
 
 ### On your own iPhone (free Apple ID)
 
