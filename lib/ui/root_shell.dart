@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/request_tracker.dart';
@@ -85,6 +88,7 @@ class _RootShellState extends State<RootShell> {
   /// Tapping the selected tab again pops it to its root.
   void _select(int i) {
     final tab = AppTab.values[i];
+    HapticFeedback.selectionClick();
     if (tab == Nav.tab.value) Nav.tabs[i].currentState?.popUntil((r) => r.isFirst);
     Nav.tab.value = tab;
   }
@@ -106,6 +110,8 @@ class _RootShellState extends State<RootShell> {
         }
       },
       child: Scaffold(
+        // The pages run under the floating player and the glass tab bar.
+        extendBody: true,
         body: IndexedStack(
           index: index,
           children: [
@@ -116,35 +122,70 @@ class _RootShellState extends State<RootShell> {
               ),
           ],
         ),
-        bottomNavigationBar: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const MiniPlayer(),
-            NavigationBarTheme(
-              data: NavigationBarThemeData(
-                backgroundColor: c.bg,
-                indicatorColor: c.text.withValues(alpha: 0.08),
-                surfaceTintColor: Colors.transparent,
-                height: 62,
-                labelTextStyle: WidgetStatePropertyAll(TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: c.muted)),
-              ),
-              child: NavigationBar(
-                selectedIndex: index,
-                onDestinationSelected: _select,
-                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-                destinations: [
-                  NavigationDestination(
-                    icon: const Icon(Icons.home_outlined),
-                    selectedIcon: const Icon(Icons.home_rounded),
-                    label: l.tabHome,
-                  ),
-                  NavigationDestination(icon: const Icon(Icons.queue_music_rounded), label: l.tabRequest),
-                  NavigationDestination(icon: const Icon(Icons.bar_chart_rounded), label: l.tabCharts),
-                  NavigationDestination(icon: const Icon(Icons.more_horiz_rounded), label: l.tabMore),
-                ],
-              ),
+        bottomNavigationBar: DecoratedBox(
+          // Content fades out under the floating player, as Spotify's does.
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [c.bg.withValues(alpha: 0), c.bg.withValues(alpha: 0.85)],
+              stops: const [0, 0.45],
             ),
-          ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const MiniPlayer(),
+              ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                  child: NavigationBarTheme(
+                    data: NavigationBarThemeData(
+                      backgroundColor: c.bg.withValues(alpha: 0.6),
+                      indicatorColor: Colors.transparent,
+                      surfaceTintColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      elevation: 0,
+                      height: 58,
+                      iconTheme: WidgetStateProperty.resolveWith(
+                        (s) => IconThemeData(size: 26, color: s.contains(WidgetState.selected) ? c.text : c.muted),
+                      ),
+                      labelTextStyle: WidgetStateProperty.resolveWith(
+                        (s) => TextStyle(
+                          fontSize: 11,
+                          fontWeight: s.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
+                          color: s.contains(WidgetState.selected) ? c.text : c.muted,
+                        ),
+                      ),
+                    ),
+                    child: NavigationBar(
+                      selectedIndex: index,
+                      onDestinationSelected: _select,
+                      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                      destinations: [
+                        NavigationDestination(
+                          icon: const Icon(Icons.home_outlined),
+                          selectedIcon: const Icon(Icons.home_rounded),
+                          label: l.tabHome,
+                        ),
+                        NavigationDestination(
+                          icon: const Icon(Icons.queue_music_outlined),
+                          selectedIcon: const Icon(Icons.queue_music_rounded),
+                          label: l.tabRequest,
+                        ),
+                        NavigationDestination(
+                          icon: const Icon(Icons.leaderboard_outlined),
+                          selectedIcon: const Icon(Icons.leaderboard_rounded),
+                          label: l.tabCharts,
+                        ),
+                        NavigationDestination(icon: const Icon(Icons.more_horiz_rounded), label: l.tabMore),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

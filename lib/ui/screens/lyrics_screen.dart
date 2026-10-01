@@ -8,14 +8,19 @@ import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
+import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/player_progress.dart';
 import 'package:seoulfm/ui/widgets/share_sheet.dart';
 
-/// The lyrics colour for a station: its accent, a shade deeper, as Spotify tints its card.
-Color lyricsColor(Color accent) => Color.lerp(accent, Colors.black, 0.22)!;
+/// The lyrics colour: the song's cover colour, as Spotify tints its card, or while that is
+/// still being read, the station's accent a shade deeper. [watch] rebuilds when it arrives.
+Color lyricsColor(BuildContext context, Track? track, Color stationAccent, {bool watch = true}) {
+  final covers = watch ? context.watch<CoverColors>() : context.read<CoverColors>();
+  return covers.of(track?.artworkUrl) ?? Color.lerp(stationAccent, Colors.black, 0.22)!;
+}
 
 /// Text colours on a lyrics background: the lines already sung (and the one being sung)
 /// stand out, the ones still to come sit back. Light backgrounds get dark type.
@@ -211,7 +216,7 @@ class _LyricsScreenState extends State<LyricsScreen> {
     _follow(context.watch<NowPlayingController>().track);
     final channel = context.watch<ChannelController>().active;
     final radio = context.read<RadioHandler>();
-    final bg = lyricsColor(channel.color);
+    final bg = lyricsColor(context, _track, channel.color);
     final fg = LyricsPalette.on(bg).sung;
     final pad = MediaQuery.paddingOf(context);
     final lyrics = _lyrics;

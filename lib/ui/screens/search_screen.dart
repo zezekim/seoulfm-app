@@ -81,12 +81,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       SectionHeader(context.l.newSongs, icon: Icons.fiber_new_rounded),
                       FutureBuilder<List<Track>>(
                         future: _new,
-                        builder: (context, s) => Column(
-                          children: [
-                            for (final t in s.data ?? const <Track>[])
-                              TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
-                          ],
-                        ),
+                        builder: (context, s) => s.data == null && !s.hasError
+                            ? const SkeletonList()
+                            : Column(
+                                children: [
+                                  for (final t in s.data ?? const <Track>[])
+                                    TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                                ],
+                              ),
                       ),
                     ],
                   )
@@ -94,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     future: _results,
                     builder: (context, s) {
                       if (s.hasError) return ErrorRetry(onRetry: () => _onChanged(_q.text));
-                      if (!s.hasData) return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                      if (!s.hasData) return const SingleChildScrollView(child: SkeletonList());
                       final r = s.data!;
                       if (r.tracks.isEmpty && r.artists.isEmpty) {
                         return Center(
@@ -122,7 +124,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                         children: [
                                           Artwork(a.artworkUrl, size: 84, radius: 42),
                                           const SizedBox(height: 6),
-                                          Text(a.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12)),
+                                          Text(
+                                            a.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(fontSize: 12),
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -132,7 +139,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ],
                           if (r.tracks.isNotEmpty) SectionHeader(context.l.songs),
-                          for (final t in r.tracks) TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                          for (final t in r.tracks)
+                            TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
                         ],
                       );
                     },

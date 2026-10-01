@@ -33,15 +33,13 @@ class MoreScreen extends StatelessWidget {
           SectionHeader(l.settings),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SegmentedButton<ThemeMode>(
-              segments: [
-                ButtonSegment(value: ThemeMode.dark, label: Text(l.themeDark), icon: const Icon(Icons.dark_mode_outlined)),
-                ButtonSegment(value: ThemeMode.light, label: Text(l.themeLight), icon: const Icon(Icons.light_mode_outlined)),
-                ButtonSegment(value: ThemeMode.system, label: Text(l.themeSystem), icon: const Icon(Icons.brightness_auto_outlined)),
-              ],
-              selected: {app.themeMode},
-              showSelectedIcon: false,
-              onSelectionChanged: (s) => app.setTheme(s.first),
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: PillSegmented<ThemeMode>(
+                options: {ThemeMode.dark: l.themeDark, ThemeMode.light: l.themeLight, ThemeMode.system: l.themeSystem},
+                selected: app.themeMode,
+                onChanged: app.setTheme,
+              ),
             ),
           ),
           const SizedBox(height: 8),

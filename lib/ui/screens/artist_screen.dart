@@ -35,7 +35,7 @@ class ArtistScreen extends StatelessWidget {
       body: Loader<ArtistProfile>(
         load: () => api.artist(artistKey),
         builder: (context, p) => ListView(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 24),
           children: [
             SizedBox(
               height: 320,

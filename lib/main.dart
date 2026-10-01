@@ -53,6 +53,7 @@ class SeoulFmApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: app.ratings),
         ChangeNotifierProvider.value(value: app.runtime),
         ChangeNotifierProvider.value(value: app.requests),
+        ChangeNotifierProvider.value(value: app.covers),
         Provider.value(value: app.radio),
       ],
       child: MaterialApp(

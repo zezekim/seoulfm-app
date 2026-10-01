@@ -21,6 +21,7 @@ import 'package:seoulfm/ui/screens/lyrics_screen.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/marathon_panel.dart';
+import 'package:seoulfm/ui/widgets/mini_player.dart';
 import 'package:seoulfm/ui/widgets/notices.dart';
 import 'package:seoulfm/ui/widgets/player_progress.dart';
 import 'package:seoulfm/ui/widgets/request_shelf.dart';
@@ -76,7 +77,8 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
       return;
     }
     final lyrics = _lyrics != null && !_lyrics!.isEmpty ? _lyrics : null;
-    showShareSheet(context, track: t, lyrics: lyrics, color: lyricsColor(channel.color), lyricsFirst: lyricsFirst);
+    final color = lyricsColor(context, t, channel.color, watch: false);
+    showShareSheet(context, track: t, lyrics: lyrics, color: color, lyricsFirst: lyricsFirst);
   }
 
   void _loadLyrics(Track? t) {
@@ -91,6 +93,17 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
           if (mounted && _lyricsFor == id) setState(() => _lyrics = l);
         })
         .catchError((_) {});
+  }
+
+  bool _closing = false;
+
+  /// Pulled down past the top by a finger: close, as Apple Music's player does.
+  bool _onPull(ScrollUpdateNotification n) {
+    if (!_closing && n.dragDetails != null && n.metrics.pixels < -110) {
+      _closing = true;
+      Navigator.of(context).maybePop();
+    }
+    return false;
   }
 
   void _openLyrics() {
@@ -132,52 +145,57 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
           ),
           LayoutBuilder(
             // The player takes the first screen less a sliver, so the sections below peek up.
-            builder: (context, box) => CustomScrollView(
-              controller: _scroll,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: box.maxHeight - 28,
-                    child: _Player(hasLyrics: hasLyrics, onOpenLyrics: _openLyrics, onShare: _share),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xF209090B),
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(Radii.xl)),
+            builder: (context, box) => NotificationListener<ScrollUpdateNotification>(
+              onNotification: _onPull,
+              child: CustomScrollView(
+                controller: _scroll,
+                // Bouncing everywhere, so pulling down at the top can close the player.
+                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: box.maxHeight - 28,
+                      child: _Player(hasLyrics: hasLyrics, onOpenLyrics: _openLyrics, onShare: _share),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 10),
-                            width: 36,
-                            height: 4,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(9),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Color(0xF209090B),
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(Radii.xl)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              width: 36,
+                              height: 4,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.2),
+                                borderRadius: BorderRadius.circular(9),
+                              ),
                             ),
                           ),
-                        ),
-                        const Notices(lossless: true),
-                        if (hasLyrics)
-                          _LyricsCard(
-                            lyrics: _lyrics!,
-                            color: lyricsColor(channel.color),
-                            onExpand: _openLyrics,
-                            onShare: () => _share(lyricsFirst: true),
-                          ),
-                        const _UpNext(),
-                        if (channel.marathon) const MarathonPanel() else RequestShelf(key: ValueKey(channel.key)),
-                        const _Recent(),
-                        const SizedBox(height: 32),
-                      ],
+                          const Notices(lossless: true),
+                          if (hasLyrics)
+                            _LyricsCard(
+                              lyrics: _lyrics!,
+                              color: lyricsColor(context, t, channel.color),
+                              onExpand: _openLyrics,
+                              onShare: () => _share(lyricsFirst: true),
+                            ),
+                          const _UpNext(),
+                          if (channel.marathon) const MarathonPanel() else RequestShelf(key: ValueKey(channel.key)),
+                          const _Recent(),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           // Keeps the clock readable over whatever scrolls under it; at the top the cover's own
@@ -190,10 +208,8 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
             child: IgnorePointer(
               child: ListenableBuilder(
                 listenable: _scroll,
-                builder: (_, child) => Opacity(
-                  opacity: _scroll.hasClients ? (_scroll.offset / 120).clamp(0.0, 1.0) : 0,
-                  child: child,
-                ),
+                builder: (_, child) =>
+                    Opacity(opacity: _scroll.hasClients ? (_scroll.offset / 120).clamp(0.0, 1.0) : 0, child: child),
                 child: const DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -456,7 +472,10 @@ class _Player extends StatelessWidget {
               left: 0,
               right: 0,
               height: art,
-              child: _BleedArt(url: t?.artworkUrl),
+              child: Hero(
+                tag: playerCoverHero,
+                child: _BleedArt(url: t?.artworkUrl),
+              ),
             ),
             // Keeps the header readable on a bright cover.
             Positioned(
@@ -719,7 +738,8 @@ class _LyricsCard extends StatelessWidget {
     );
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: GestureDetector(
+      child: Pressable(
+        scale: 0.98,
         onTap: onExpand,
         child: Container(
           height: 360,
@@ -787,7 +807,7 @@ class _UpNext extends StatelessWidget {
             itemBuilder: (context, i) {
               final t = upcoming[i];
               final mins = t.startsAtEpoch != null ? ((t.startsAtEpoch! - now) / 60).ceil() : null;
-              return GestureDetector(
+              return Pressable(
                 onTap: () => Nav.openSong(t),
                 child: SizedBox(
                   width: cover,

@@ -8,6 +8,7 @@ import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
+import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/state/stations_now_playing.dart';
 import 'package:seoulfm/theme.dart';
@@ -58,7 +59,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ],
-                const SliverToBoxAdapter(child: SizedBox(height: 32)),
+                // Clear of the floating player and the tab bar, which the page runs under.
+            SliverToBoxAdapter(child: SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
               ],
             ),
             // Keeps the clock readable over whatever scrolls under it.
@@ -201,14 +203,16 @@ class _FeaturedCard extends StatelessWidget {
     final t = _onAir(context, channel);
     final tuned = context.watch<ChannelController>().active.key == channel.key;
     final radio = context.read<RadioHandler>();
-    final shade = Color.lerp(channel.color, Colors.black, 0.6)!;
+    // The fade takes the colour of the cover on air (the station's while that is read).
+    final shade = Color.lerp(context.watch<CoverColors>().of(t?.artworkUrl) ?? channel.color, Colors.black, 0.45)!;
     const white = Colors.white;
 
     return Semantics(
       button: true,
       selected: tuned,
       label: 'SeoulFM ${channel.name}. ${channel.tagline}',
-      child: GestureDetector(
+      child: Pressable(
+        scale: 0.97,
         onTap: () => _listen(context, channel),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(Radii.lg),
@@ -405,8 +409,8 @@ class _GenreTile extends StatelessWidget {
       label: 'SeoulFM ${channel.name}',
       child: Opacity(
         opacity: channel.tunable ? 1 : 0.5,
-        child: GestureDetector(
-          onTap: () => _listen(context, channel),
+        child: Pressable(
+          onTap: channel.tunable ? () => _listen(context, channel) : null,
           child: AnimatedContainer(
             duration: Motion.base,
             decoration: BoxDecoration(

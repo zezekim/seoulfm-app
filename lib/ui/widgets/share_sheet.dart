@@ -178,14 +178,10 @@ class _ShareSheetState extends State<_ShareSheet> {
           ),
           const SizedBox(height: 18),
           if (hasLyrics)
-            SegmentedButton<_Card>(
-              segments: [
-                ButtonSegment(value: _Card.song, label: Text(context.l.shareCardSong)),
-                ButtonSegment(value: _Card.lyrics, label: Text(context.l.lyrics)),
-              ],
-              selected: {_mode},
-              showSelectedIcon: false,
-              onSelectionChanged: (s) => setState(() => _mode = s.first),
+            PillSegmented<_Card>(
+              options: {_Card.song: context.l.shareCardSong, _Card.lyrics: context.l.lyrics},
+              selected: _mode,
+              onChanged: (m) => setState(() => _mode = m),
             ),
           if (hasLyrics && _mode == _Card.lyrics)
             Padding(

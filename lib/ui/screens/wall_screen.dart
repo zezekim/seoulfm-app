@@ -37,7 +37,7 @@ class _WallScreenState extends State<WallScreen> {
           future: _f,
           builder: (context, s) {
             if (s.hasError) return ListView(children: [ErrorRetry(onRetry: () => setState(() => _f = api.wall(limit: 60)))]);
-            if (!s.hasData) return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+            if (!s.hasData) return const SingleChildScrollView(child: SkeletonList());
             final items = s.data!.where((w) => w.dedication != null).toList();
             if (items.isEmpty) {
               return ListView(
@@ -54,7 +54,7 @@ class _WallScreenState extends State<WallScreen> {
               );
             }
             return ListView.separated(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.paddingOf(context).bottom + 16),
               itemCount: items.length,
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (_, i) {

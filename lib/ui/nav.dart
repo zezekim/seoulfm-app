@@ -29,27 +29,25 @@ class Nav {
     _nav?.push(MaterialPageRoute<void>(builder: (_) => page));
   }
 
-  /// The full-screen player, over everything; swipe down or the chevron closes it.
+  /// The full-screen player, over everything. It slides up while the cover grows out of the
+  /// player bar (a shared Hero); pulling down at its top, or the chevron, closes it.
   static Future<void> showNowPlaying(BuildContext context) async {
     if (_player?.mounted ?? false) return;
-    // The player covers the status bar, so it needs the window's insets: a sheet drops the top
-    // one, and so does the Scaffold's bottom bar the player bar sits in.
-    final padding = MediaQueryData.fromView(View.of(context)).padding;
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useRootNavigator: true,
-      useSafeArea: false,
-      backgroundColor: const Color(0xFF09090B),
-      shape: const RoundedRectangleBorder(),
-      clipBehavior: Clip.antiAlias,
-      builder: (sheet) {
-        _player = sheet;
-        return MediaQuery(
-          data: MediaQuery.of(sheet).copyWith(padding: padding),
-          child: SizedBox(height: MediaQuery.sizeOf(sheet).height, child: const NowPlayingScreen()),
-        );
-      },
+    await Navigator.of(context, rootNavigator: true).push(
+      PageRouteBuilder<void>(
+        transitionDuration: const Duration(milliseconds: 420),
+        reverseTransitionDuration: const Duration(milliseconds: 320),
+        pageBuilder: (route, _, _) {
+          _player = route;
+          return const NowPlayingScreen();
+        },
+        transitionsBuilder: (_, a, _, child) => SlideTransition(
+          position: Tween(begin: const Offset(0, 1), end: Offset.zero).animate(
+            CurvedAnimation(parent: a, curve: const Cubic(0.2, 0.9, 0.25, 1), reverseCurve: Curves.easeInCubic),
+          ),
+          child: child,
+        ),
+      ),
     );
     _player = null;
   }

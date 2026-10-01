@@ -45,7 +45,25 @@ class _RequestShelfState extends State<RequestShelf> {
             builder: (context, s) {
               if (s.hasError) return ErrorRetry(onRetry: () => setState(() => _f = _load()));
               final items = s.data;
-              if (items == null) return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+              if (items == null) {
+                return ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  separatorBuilder: (_, _) => const SizedBox(width: 12),
+                  itemBuilder: (_, _) => const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Skeleton(width: _cover, height: _cover, radius: Radii.md),
+                      SizedBox(height: 10),
+                      Skeleton(width: 100, height: 12, radius: 4),
+                      SizedBox(height: 6),
+                      Skeleton(width: 70, height: 10, radius: 4),
+                    ],
+                  ),
+                );
+              }
               return ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -53,7 +71,7 @@ class _RequestShelfState extends State<RequestShelf> {
                 separatorBuilder: (_, _) => const SizedBox(width: 12),
                 itemBuilder: (context, i) {
                   final t = items[i];
-                  return GestureDetector(
+                  return Pressable(
                     onTap: () => showRequestSheet(context, t),
                     onLongPress: () => Nav.openSong(t),
                     child: SizedBox(

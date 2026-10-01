@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -114,7 +115,8 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
     ),
     textTheme: text,
     dividerColor: c.border,
-    splashFactory: InkSparkle.splashFactory,
+    // iOS apps don't ripple; Android keeps its sparkle.
+    splashFactory: defaultTargetPlatform == TargetPlatform.iOS ? NoSplash.splashFactory : InkSparkle.splashFactory,
     appBarTheme: AppBarTheme(
       backgroundColor: c.bg,
       surfaceTintColor: Colors.transparent,

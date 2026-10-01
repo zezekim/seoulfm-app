@@ -27,7 +27,7 @@ class SongScreen extends StatelessWidget {
           final t = d.track;
           final meta = [t.album, t.releaseYear?.toString(), t.genre].whereType<String>().where((s) => s.isNotEmpty).join(' · ');
           return ListView(
-            padding: const EdgeInsets.only(bottom: 32),
+            padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 32),
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 8),

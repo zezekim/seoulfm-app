@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
@@ -25,7 +26,7 @@ String timeAgo(BuildContext context, int epochSeconds) {
 
 const tabular = [FontFeature.tabularFigures()];
 
-/// A cover that fades in once decoded; a radio glyph while there is none.
+/// A cover that shimmers while it loads and fades in once decoded; a radio glyph when there is none.
 class Artwork extends StatelessWidget {
   const Artwork(this.url, {super.key, this.size, this.radius = Radii.sm, this.fit = BoxFit.cover, this.iconSize = 18});
   final String? url;
@@ -47,9 +48,9 @@ class Artwork extends StatelessWidget {
         : CachedNetworkImage(
             imageUrl: url!,
             fit: fit,
-            fadeInDuration: Motion.base,
+            fadeInDuration: Motion.slow,
             fadeOutDuration: Duration.zero,
-            placeholder: (_, _) => placeholder,
+            placeholder: (_, _) => const Skeleton(),
             errorWidget: (_, _, _) => placeholder,
           );
     return ClipRRect(
@@ -230,7 +231,10 @@ class PlayButton extends StatelessWidget {
         elevation: 0,
         child: InkWell(
           customBorder: const CircleBorder(),
-          onTap: onPressed,
+          onTap: () {
+            HapticFeedback.lightImpact();
+            onPressed();
+          },
           child: SizedBox(
             width: size,
             height: size,
@@ -299,7 +303,12 @@ class RatingButtons extends StatelessWidget {
       return Tooltip(
         message: enabled ? label : context.l.startListeningToRate,
         child: IconButton(
-          onPressed: enabled ? () => r.rate(trackId!, active ? null : value) : null,
+          onPressed: enabled
+              ? () {
+                  HapticFeedback.selectionClick();
+                  r.rate(trackId!, active ? null : value);
+                }
+              : null,
           icon: Icon(active ? on : off, size: size),
           color: active ? base : base.withValues(alpha: 0.7),
           disabledColor: base.withValues(alpha: 0.28),
@@ -447,13 +456,197 @@ class _LoaderState<T> extends State<Loader<T>> {
     builder: (context, s) {
       if (s.hasError) return ErrorRetry(onRetry: () => setState(() => _f = widget.load()));
       if (!s.hasData) {
-        return widget.loading ??
-            const Padding(
-              padding: EdgeInsets.all(40),
-              child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-            );
+        return widget.loading ?? const SkeletonList();
       }
       return widget.builder(context, s.data as T);
     },
   );
+}
+
+/// Shrinks a touch while pressed, as Spotify's and Apple Music's cards do, with a light tap
+/// on release. [onTap] null leaves the child inert.
+class Pressable extends StatefulWidget {
+  const Pressable({super.key, required this.child, this.onTap, this.onLongPress, this.scale = 0.96});
+  final Widget child;
+  final VoidCallback? onTap, onLongPress;
+  final double scale;
+  @override
+  State<Pressable> createState() => _PressableState();
+}
+
+class _PressableState extends State<Pressable> {
+  bool _down = false;
+  void _set(bool v) {
+    if (_down != v) setState(() => _down = v);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.onTap == null && widget.onLongPress == null) return widget.child;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: (_) => _set(true),
+      onTapUp: (_) => _set(false),
+      onTapCancel: () => _set(false),
+      onTap: widget.onTap == null
+          ? null
+          : () {
+              HapticFeedback.selectionClick();
+              widget.onTap!();
+            },
+      onLongPress: widget.onLongPress,
+      child: AnimatedScale(
+        scale: _down ? widget.scale : 1,
+        duration: Motion.fast,
+        curve: Motion.out,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+/// A shimmering placeholder in the shape of what is loading.
+class Skeleton extends StatefulWidget {
+  const Skeleton({super.key, this.width, this.height, this.radius = 0});
+  final double? width, height;
+  final double radius;
+  @override
+  State<Skeleton> createState() => _SkeletonState();
+}
+
+class _SkeletonState extends State<Skeleton> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1400))
+    ..repeat();
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final base = context.sfm.text;
+    return AnimatedBuilder(
+      animation: _c,
+      builder: (_, _) {
+        final t = _c.value * 3 - 1; // sweeps from left of the box to right of it
+        return Container(
+          width: widget.width,
+          height: widget.height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(widget.radius),
+            gradient: LinearGradient(
+              begin: Alignment(t - 1, -0.3),
+              end: Alignment(t + 1, 0.3),
+              colors: [base.withValues(alpha: 0.05), base.withValues(alpha: 0.12), base.withValues(alpha: 0.05)],
+              stops: const [0.25, 0.5, 0.75],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// A list's shape while it loads: a few song rows.
+class SkeletonList extends StatelessWidget {
+  const SkeletonList({super.key, this.rows = 7});
+  final int rows;
+  @override
+  Widget build(BuildContext context) => Column(children: [for (var i = 0; i < rows; i++) const SkeletonRow()]);
+}
+
+/// A song row's shape while the list loads.
+class SkeletonRow extends StatelessWidget {
+  const SkeletonRow({super.key});
+  @override
+  Widget build(BuildContext context) => const Padding(
+    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    child: Row(
+      children: [
+        Skeleton(width: 48, height: 48, radius: Radii.sm),
+        SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Skeleton(width: 160, height: 12, radius: 4),
+              SizedBox(height: 8),
+              Skeleton(width: 100, height: 10, radius: 4),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+/// Spotify's pill switch: a dark track, the chosen option a white pill sliding under it.
+/// The same on iOS and Android, unlike Material's segmented button.
+class PillSegmented<T> extends StatelessWidget {
+  const PillSegmented({super.key, required this.options, required this.selected, required this.onChanged});
+  final Map<T, String> options;
+  final T selected;
+  final ValueChanged<T> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    final keys = options.keys.toList();
+    final index = keys.indexOf(selected);
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(color: c.text.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(99)),
+      child: IntrinsicWidth(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: LayoutBuilder(
+                builder: (_, box) {
+                  final w = box.maxWidth / keys.length;
+                  return AnimatedPadding(
+                    duration: Motion.base,
+                    curve: Motion.out,
+                    padding: EdgeInsets.only(left: w * index, right: w * (keys.length - 1 - index)),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(color: c.text, borderRadius: BorderRadius.circular(99)),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                for (final k in keys)
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (k == selected) return;
+                        HapticFeedback.selectionClick();
+                        onChanged(k);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
+                        child: AnimatedDefaultTextStyle(
+                          duration: Motion.base,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: k == selected ? c.bg : c.text.withValues(alpha: 0.85),
+                          ),
+                          child: Text(options[k]!, textAlign: TextAlign.center, maxLines: 1),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

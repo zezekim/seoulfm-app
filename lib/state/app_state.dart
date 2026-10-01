@@ -5,6 +5,7 @@ import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/platform/carplay_bridge.dart';
 import 'package:seoulfm/state/channel_controller.dart';
+import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
 import 'package:seoulfm/state/request_tracker.dart';
@@ -32,6 +33,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final stations = StationsNowPlaying();
   late final RatingsController ratings = RatingsController(listeningSince: radio.listeningSince, station: () => channels.active.key);
   final requests = RequestTracker();
+  final covers = CoverColors();
   late final CarPlayBridge carPlay = CarPlayBridge(onTune: (key) => tuneIn(key, play: true, fromCar: true));
 
   final ValueNotifier<LosslessPrompt?> losslessPrompt = ValueNotifier(null);
