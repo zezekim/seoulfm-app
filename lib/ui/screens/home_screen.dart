@@ -324,6 +324,7 @@ class _Tag extends StatelessWidget {
   final Channel channel;
   @override
   Widget build(BuildContext context) {
+    if (channel.lossless && !channel.comingSoon) return const QualityPill(lossless: true, label: 'LOSSLESS · FLAC');
     final label = channel.comingSoon ? context.l.comingSoon : (channel.genre ?? context.l.live);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),

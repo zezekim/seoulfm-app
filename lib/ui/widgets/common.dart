@@ -70,7 +70,8 @@ class LiveDot extends StatefulWidget {
 }
 
 class _LiveDotState extends State<LiveDot> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))..repeat(reverse: true);
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))
+    ..repeat(reverse: true);
   @override
   void dispose() {
     _c.dispose();
@@ -438,12 +439,14 @@ class ErrorRetry extends StatelessWidget {
   );
 }
 
-/// Loads once and rebuilds with the result; `retry` re-runs.
+/// Loads once and rebuilds with the result; `retry` re-runs. [frame], when given, wraps the
+/// loading and error states (e.g. to keep them clear of a pinned header).
 class Loader<T> extends StatefulWidget {
-  const Loader({super.key, required this.load, required this.builder, this.loading});
+  const Loader({super.key, required this.load, required this.builder, this.loading, this.frame});
   final Future<T> Function() load;
   final Widget Function(BuildContext, T data) builder;
   final Widget? loading;
+  final Widget Function(BuildContext, Widget child)? frame;
   @override
   State<Loader<T>> createState() => _LoaderState<T>();
 }
@@ -454,10 +457,18 @@ class _LoaderState<T> extends State<Loader<T>> {
   Widget build(BuildContext context) => FutureBuilder<T>(
     future: _f,
     builder: (context, s) {
-      if (s.hasError) return ErrorRetry(onRetry: () => setState(() => _f = widget.load()));
-      if (!s.hasData) {
-        return widget.loading ?? const SkeletonList();
+      final frame = widget.frame ?? (_, Widget child) => child;
+      if (s.hasError) {
+        return frame(
+          context,
+          ErrorRetry(
+            onRetry: () => setState(() {
+              _f = widget.load();
+            }),
+          ),
+        );
       }
+      if (!s.hasData) return frame(context, widget.loading ?? const SkeletonList());
       return widget.builder(context, s.data as T);
     },
   );
@@ -649,4 +660,109 @@ class PillSegmented<T> extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The stream's quality, as Tidal and Apple Music badge it: gold for lossless, a quiet
+/// outline for the standard stream. [compact] is the small one for the player bar.
+class QualityPill extends StatelessWidget {
+  const QualityPill({super.key, required this.lossless, this.compact = false, this.label});
+  final bool lossless, compact;
+  final String? label;
+
+  static const gold = [Color(0xFFF6DA8B), Color(0xFFD9A441)];
+
+  @override
+  Widget build(BuildContext context) {
+    final text = label ?? (lossless ? (compact ? 'FLAC' : 'LOSSLESS') : 'AAC');
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: compact ? 5 : 9, vertical: compact ? 1.5 : 4),
+      decoration: BoxDecoration(
+        gradient: lossless ? const LinearGradient(colors: gold) : null,
+        border: lossless ? null : Border.all(color: Colors.white.withValues(alpha: 0.35)),
+        borderRadius: BorderRadius.circular(compact ? 4 : 99),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (lossless && !compact) ...[
+            const Icon(Icons.graphic_eq_rounded, size: 12, color: Color(0xFF2A1E05)),
+            const SizedBox(width: 4),
+          ],
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: compact ? 8.5 : 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: compact ? 0.6 : 1.2,
+              color: lossless ? const Color(0xFF2A1E05) : Colors.white.withValues(alpha: 0.75),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A large title that shrinks into the bar as the page scrolls (iOS's large titles): a big title
+/// under the bar that fades and shrinks while a small centred one fades in. Pinned; [bottom]
+/// (a search field, tabs) stays under it.
+SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWidget? bottom, List<Widget>? actions}) {
+  final c = context.sfm;
+  const large = 56.0; // room for the big title under the bar
+  final bottomHeight = bottom?.preferredSize.height ?? 0;
+  return SliverAppBar(
+    pinned: true,
+    expandedHeight: kToolbarHeight + large + bottomHeight,
+    backgroundColor: c.bg,
+    surfaceTintColor: Colors.transparent,
+    scrolledUnderElevation: 0,
+    actions: actions,
+    bottom: bottom,
+    flexibleSpace: LayoutBuilder(
+      builder: (context, box) {
+        final top = MediaQuery.paddingOf(context).top;
+        final min = top + kToolbarHeight + bottomHeight;
+        final t = ((box.maxHeight - min) / large).clamp(0.0, 1.0); // 1 = fully expanded
+        return Stack(
+          children: [
+            Positioned(
+              top: top,
+              left: 56,
+              right: 56,
+              height: kToolbarHeight,
+              child: Center(
+                child: Opacity(
+                  opacity: (1 - t * 2).clamp(0.0, 1.0),
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, letterSpacing: -0.3),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: bottomHeight + 6,
+              child: Opacity(
+                opacity: t,
+                child: Transform.scale(
+                  alignment: Alignment.bottomLeft,
+                  scale: 0.9 + 0.1 * t,
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800, letterSpacing: -1, height: 1.15),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    ),
+  );
 }

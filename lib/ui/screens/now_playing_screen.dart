@@ -10,6 +10,7 @@ import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
+import 'package:seoulfm/platform/output_devices.dart';
 import 'package:seoulfm/platform/screenshots.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -433,16 +434,15 @@ class _Player extends StatelessWidget {
                       onPressed: radio.skipToNext,
                       icon: Icon(Icons.skip_next_rounded, color: white.withValues(alpha: 0.9), size: 38),
                     ),
-                    SizedBox(
-                      width: 48,
-                      child: Center(child: _QualityBadge(app: context.read<AppState>())),
-                    ),
+                    const SizedBox(width: 48, child: Center(child: OutputDeviceButton())),
                   ],
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
                     const SleepTimerButton(onImage: true),
+                    const Spacer(),
+                    _QualityBadge(app: context.read<AppState>()),
                     const Spacer(),
                     IconButton(
                       tooltip: context.l.share,
@@ -464,7 +464,10 @@ class _Player extends StatelessWidget {
       builder: (context, box) {
         // Down to just above the title, as square as that allows: on a tall phone the sides of
         // the cover are trimmed a little (never more than a quarter), on a wide one it stays square.
-        final art = (box.maxHeight - 290).clamp(min(box.maxWidth, box.maxHeight * 0.5), box.maxWidth * 1.35).toDouble();
+        // Whole pixels: a fractional edge leaves a row the fade doesn't reach.
+        final art = (box.maxHeight - 290)
+            .clamp(min(box.maxWidth, box.maxHeight * 0.5), box.maxWidth * 1.35)
+            .floorToDouble();
         return Stack(
           children: [
             Positioned(
@@ -506,26 +509,79 @@ class _Player extends StatelessWidget {
 
 /// The cover, full width and square, cross-fading on a new song and fading out at its
 /// lower edge into whatever sits behind it.
-class _BleedArt extends StatelessWidget {
+class _BleedArt extends StatefulWidget {
   const _BleedArt({this.url});
   final String? url;
+  @override
+  State<_BleedArt> createState() => _BleedArtState();
+}
+
+/// The cover drifts: a slow zoom and pan (Ken Burns), as Spotify's Canvas and Apple's animated
+/// covers keep the player alive. Only while the station plays, so it also says "playing".
+class _BleedArtState extends State<_BleedArt> with SingleTickerProviderStateMixin {
+  late final AnimationController _drift = AnimationController(vsync: this, duration: const Duration(seconds: 28));
+  late final RadioHandler _radio = context.read<RadioHandler>();
+
+  @override
+  void initState() {
+    super.initState();
+    _radio.wantPlaying.addListener(_sync);
+    _sync();
+  }
+
+  void _sync() {
+    if (_radio.wantPlaying.value) {
+      if (!_drift.isAnimating) _drift.repeat(reverse: true);
+    } else {
+      _drift.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _radio.wantPlaying.removeListener(_sync);
+    _drift.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ShaderMask(
-      blendMode: BlendMode.dstIn,
-      shaderCallback: (rect) => const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Colors.white, Colors.white, Color(0x00FFFFFF)],
-        stops: [0, 0.7, 1],
-      ).createShader(rect),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 600),
-        layoutBuilder: (current, previous) => Stack(fit: StackFit.expand, children: [...previous, ?current]),
-        child: url == null
-            ? const SizedBox.expand(key: ValueKey('none'))
-            : Artwork(url, key: ValueKey(url), radius: 0, fit: BoxFit.cover, iconSize: 56),
+    final url = widget.url;
+    // The clip sits outside the mask, and the fade is complete a little before the edge: the
+    // drifting cover is larger than its box, and nothing it paints past the mask may show.
+    return ClipRect(
+      child: ShaderMask(
+        blendMode: BlendMode.dstIn,
+        shaderCallback: (rect) => const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Colors.white, Color(0x00FFFFFF), Color(0x00FFFFFF)],
+          stops: [0, 0.68, 0.97, 1],
+        ).createShader(rect),
+        child: LayoutBuilder(
+          builder: (_, box) => AnimatedBuilder(
+            animation: _drift,
+            builder: (_, child) {
+              final t = Curves.easeInOutSine.transform(_drift.value);
+              final s = 1.0 + 0.1 * t;
+              return OverflowBox(
+                alignment: Alignment(-0.6 + 1.2 * t, -0.3 + 0.5 * t),
+                minWidth: box.maxWidth * s,
+                maxWidth: box.maxWidth * s,
+                minHeight: box.maxHeight * s,
+                maxHeight: box.maxHeight * s,
+                child: child,
+              );
+            },
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 600),
+              layoutBuilder: (current, previous) => Stack(fit: StackFit.expand, children: [...previous, ?current]),
+              child: url == null
+                  ? const SizedBox.expand(key: ValueKey('none'))
+                  : Artwork(url, key: ValueKey(url), radius: 0, fit: BoxFit.cover, iconSize: 56),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -549,15 +605,7 @@ class _QualityBadge extends StatelessWidget {
               icon: const Icon(Icons.warning_amber_rounded, size: 20, color: Color(0xFFF5B73C)),
             );
           }
-          return Text(
-            lossless ? 'FLAC' : 'AUTO',
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.4,
-              color: Colors.white.withValues(alpha: 0.55),
-            ),
-          );
+          return QualityPill(lossless: lossless);
         },
       ),
     );

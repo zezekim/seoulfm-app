@@ -34,7 +34,9 @@ class _RequestShelfState extends State<RequestShelf> {
           subtitle: context.l.requestHint,
           trailing: IconButton(
             tooltip: MaterialLocalizations.of(context).refreshIndicatorSemanticLabel,
-            onPressed: () => setState(() => _f = _load()),
+            onPressed: () => setState(() {
+              _f = _load();
+            }),
             icon: Icon(Icons.shuffle_rounded, size: 20, color: c.muted),
           ),
         ),
@@ -43,7 +45,13 @@ class _RequestShelfState extends State<RequestShelf> {
           child: FutureBuilder<List<Track>>(
             future: _f,
             builder: (context, s) {
-              if (s.hasError) return ErrorRetry(onRetry: () => setState(() => _f = _load()));
+              if (s.hasError) {
+                return ErrorRetry(
+                  onRetry: () => setState(() {
+                    _f = _load();
+                  }),
+                );
+              }
               final items = s.data;
               if (items == null) {
                 return ListView.separated(

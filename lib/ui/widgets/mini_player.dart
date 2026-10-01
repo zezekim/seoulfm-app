@@ -69,6 +69,15 @@ class MiniPlayer extends StatelessWidget {
                           const SizedBox(height: 1),
                           Row(
                             children: [
+                              ValueListenableBuilder<bool>(
+                                valueListenable: radio.losslessActive,
+                                builder: (_, lossless, _) => lossless
+                                    ? const Padding(
+                                        padding: EdgeInsets.only(right: 6),
+                                        child: QualityPill(lossless: true, compact: true),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
                               if (channel.onAir) ...[LiveDot(color: white, size: 5), const SizedBox(width: 5)],
                               Flexible(
                                 child: Text(

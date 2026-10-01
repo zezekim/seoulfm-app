@@ -25,7 +25,10 @@ class _SearchScreenState extends State<SearchScreen> {
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
       final q = v.trim();
-      setState(() => _results = q.length < 2 ? null : api.search(q, limit: 25));
+      final results = q.length < 2 ? null : api.search(q, limit: 25);
+      setState(() {
+        _results = results;
+      });
     });
   }
 
@@ -42,111 +45,131 @@ class _SearchScreenState extends State<SearchScreen> {
     icon: const Icon(Icons.queue_music_rounded),
   );
 
+  /// A results list under the collapsing header (the injector keeps it clear of the pinned bar).
+  Widget _list(BuildContext context, List<Widget> children) => CustomScrollView(
+    slivers: [
+      SliverOverlapInjector(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
+      SliverList.list(children: children),
+      // Clear of the floating player and the tab bar.
+      SliverToBoxAdapter(child: SizedBox(height: MediaQuery.paddingOf(context).bottom + 16)),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
     final c = context.sfm;
+    final field = Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      child: TextField(
+        controller: _q,
+        onChanged: _onChanged,
+        textInputAction: TextInputAction.search,
+        decoration: InputDecoration(
+          hintText: context.l.searchHint,
+          prefixIcon: const Icon(Icons.search_rounded),
+          suffixIcon: _q.text.isEmpty
+              ? null
+              : IconButton(
+                  onPressed: () {
+                    _q.clear();
+                    _onChanged('');
+                  },
+                  icon: const Icon(Icons.close_rounded),
+                ),
+        ),
+      ),
+    );
     return Scaffold(
-      appBar: AppBar(title: Text(context.l.tabRequest)),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-            child: TextField(
-              controller: _q,
-              onChanged: _onChanged,
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                hintText: context.l.searchHint,
-                prefixIcon: const Icon(Icons.search_rounded),
-                suffixIcon: _q.text.isEmpty
-                    ? null
-                    : IconButton(
-                        onPressed: () {
-                          _q.clear();
-                          _onChanged('');
-                        },
-                        icon: const Icon(Icons.close_rounded),
-                      ),
-              ),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, _) => [
+          SliverOverlapAbsorber(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            sliver: largeTitleBar(
+              context,
+              context.l.tabRequest,
+              bottom: PreferredSize(preferredSize: const Size.fromHeight(60), child: field),
             ),
           ),
-          Expanded(
-            child: _results == null
-                ? ListView(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                        child: Text(context.l.searchIntro, style: TextStyle(color: c.muted, fontSize: 13)),
-                      ),
-                      SectionHeader(context.l.newSongs, icon: Icons.fiber_new_rounded),
-                      FutureBuilder<List<Track>>(
-                        future: _new,
-                        builder: (context, s) => s.data == null && !s.hasError
-                            ? const SkeletonList()
-                            : Column(
-                                children: [
-                                  for (final t in s.data ?? const <Track>[])
-                                    TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
-                                ],
-                              ),
-                      ),
-                    ],
-                  )
-                : FutureBuilder<SearchResults>(
-                    future: _results,
-                    builder: (context, s) {
-                      if (s.hasError) return ErrorRetry(onRetry: () => _onChanged(_q.text));
-                      if (!s.hasData) return const SingleChildScrollView(child: SkeletonList());
-                      final r = s.data!;
-                      if (r.tracks.isEmpty && r.artists.isEmpty) {
-                        return Center(
-                          child: Text(context.l.searchEmpty(_q.text.trim()), style: TextStyle(color: c.muted)),
-                        );
-                      }
-                      return ListView(
-                        children: [
-                          if (r.artists.isNotEmpty) ...[
-                            SectionHeader(context.l.artists),
-                            SizedBox(
-                              height: 120,
-                              child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                itemCount: r.artists.length,
-                                separatorBuilder: (_, _) => const SizedBox(width: 12),
-                                itemBuilder: (_, i) {
-                                  final a = r.artists[i];
-                                  return GestureDetector(
-                                    onTap: () => Nav.openArtist(a.key, name: a.name),
-                                    child: SizedBox(
-                                      width: 84,
-                                      child: Column(
-                                        children: [
-                                          Artwork(a.artworkUrl, size: 84, radius: 42),
-                                          const SizedBox(height: 6),
-                                          Text(
-                                            a.name,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                          if (r.tracks.isNotEmpty) SectionHeader(context.l.songs),
-                          for (final t in r.tracks)
-                            TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
-                        ],
-                      );
-                    },
-                  ),
-          ),
         ],
+        body: Builder(
+          builder: (context) => _results == null
+              ? _list(context, [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                    child: Text(context.l.searchIntro, style: TextStyle(color: c.muted, fontSize: 13)),
+                  ),
+                  SectionHeader(context.l.newSongs, icon: Icons.fiber_new_rounded),
+                  FutureBuilder<List<Track>>(
+                    future: _new,
+                    builder: (context, s) => s.data == null && !s.hasError
+                        ? const SkeletonList()
+                        : Column(
+                            children: [
+                              for (final t in s.data ?? const <Track>[])
+                                TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                            ],
+                          ),
+                  ),
+                ])
+              : FutureBuilder<SearchResults>(
+                  future: _results,
+                  builder: (context, s) {
+                    if (s.hasError) return _list(context, [ErrorRetry(onRetry: () => _onChanged(_q.text))]);
+                    if (!s.hasData) return _list(context, const [SkeletonList()]);
+                    final r = s.data!;
+                    if (r.tracks.isEmpty && r.artists.isEmpty) {
+                      return _list(context, [
+                        Padding(
+                          padding: const EdgeInsets.all(40),
+                          child: Text(
+                            context.l.searchEmpty(_q.text.trim()),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: c.muted),
+                          ),
+                        ),
+                      ]);
+                    }
+                    return _list(context, [
+                      if (r.artists.isNotEmpty) ...[
+                        SectionHeader(context.l.artists),
+                        SizedBox(
+                          height: 120,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            itemCount: r.artists.length,
+                            separatorBuilder: (_, _) => const SizedBox(width: 12),
+                            itemBuilder: (_, i) {
+                              final a = r.artists[i];
+                              return Pressable(
+                                onTap: () => Nav.openArtist(a.key, name: a.name),
+                                child: SizedBox(
+                                  width: 84,
+                                  child: Column(
+                                    children: [
+                                      Artwork(a.artworkUrl, size: 84, radius: 42),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        a.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                      if (r.tracks.isNotEmpty) SectionHeader(context.l.songs),
+                      for (final t in r.tracks)
+                        TrackRow(track: t, onTap: () => Nav.openSong(t), trailing: _requestButton(t)),
+                    ]);
+                  },
+                ),
+        ),
       ),
     );
   }

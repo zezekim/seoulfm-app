@@ -101,7 +101,13 @@ const _fallback = ['Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Noto Sa
 ThemeData buildTheme(Brightness brightness, Color accent) {
   final c = brightness == Brightness.dark ? SfmColors.dark : SfmColors.light;
   final base = ThemeData(brightness: brightness, useMaterial3: true);
-  final text = GoogleFonts.interTextTheme(base.textTheme).apply(bodyColor: c.text, displayColor: c.text, fontFamilyFallback: _fallback);
+  final inter = GoogleFonts.interTextTheme(base.textTheme).apply(bodyColor: c.text, displayColor: c.text, fontFamilyFallback: _fallback);
+  // Large titles (headlineMedium, expanded) heavy and tight like Apple's and Spotify's; the
+  // collapsed title (titleLarge) a step lighter.
+  final text = inter.copyWith(
+    headlineMedium: inter.headlineMedium?.copyWith(fontSize: 32, fontWeight: FontWeight.w800, letterSpacing: -1),
+    titleLarge: inter.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w700, letterSpacing: -0.3),
+  );
   return base.copyWith(
     scaffoldBackgroundColor: c.bg,
     canvasColor: c.bg,
@@ -123,7 +129,6 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
       foregroundColor: c.text,
       elevation: 0,
       centerTitle: false,
-      titleTextStyle: text.titleMedium?.copyWith(fontWeight: FontWeight.w600, letterSpacing: -0.2),
     ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: c.surface,

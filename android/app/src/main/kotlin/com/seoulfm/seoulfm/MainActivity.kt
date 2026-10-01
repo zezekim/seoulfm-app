@@ -1,6 +1,8 @@
 package com.seoulfm.seoulfm
 
 import android.app.Activity
+import android.content.Intent
+import android.media.MediaRouter2
 import android.os.Build
 import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -23,6 +25,31 @@ class MainActivity : AudioServiceActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         screenshots = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "fm.seoul/screenshots")
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "fm.seoul/output").setMethodCallHandler { call, result ->
+            if (call.method == "pick") {
+                showOutputSwitcher()
+                result.success(null)
+            } else {
+                result.notImplemented()
+            }
+        }
+    }
+
+    // Where the sound goes: Android 14's system output switcher, else the media output panel.
+    private fun showOutputSwitcher() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+            MediaRouter2.getInstance(this).showSystemOutputSwitcher()
+        ) {
+            return
+        }
+        try {
+            startActivity(
+                Intent("com.android.settings.panel.action.MEDIA_OUTPUT")
+                    .putExtra("com.android.settings.panel.extra.PACKAGE_NAME", packageName)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            )
+        } catch (_: Exception) {
+        }
     }
 
     override fun onStart() {

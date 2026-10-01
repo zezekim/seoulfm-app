@@ -30,13 +30,25 @@ class _WallScreenState extends State<WallScreen> {
       appBar: AppBar(title: Text('${context.l.tabWall} · ${station.name}')),
       body: RefreshIndicator(
         onRefresh: () async {
-          setState(() => _f = api.wall(limit: 60));
+          setState(() {
+            _f = api.wall(limit: 60);
+          });
           await _f;
         },
         child: FutureBuilder<List<WallItem>>(
           future: _f,
           builder: (context, s) {
-            if (s.hasError) return ListView(children: [ErrorRetry(onRetry: () => setState(() => _f = api.wall(limit: 60)))]);
+            if (s.hasError) {
+              return ListView(
+                children: [
+                  ErrorRetry(
+                    onRetry: () => setState(() {
+                      _f = api.wall(limit: 60);
+                    }),
+                  ),
+                ],
+              );
+            }
             if (!s.hasData) return const SingleChildScrollView(child: SkeletonList());
             final items = s.data!.where((w) => w.dedication != null).toList();
             if (items.isEmpty) {

@@ -8,7 +8,20 @@ import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
 
+/// Under the collapsing header: clear of the pinned bar (the injector) and of the floating
+/// player and tab bar at the bottom.
+Widget _injected(BuildContext context, List<Widget> slivers) => CustomScrollView(
+  slivers: [
+    SliverOverlapInjector(handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)),
+    ...slivers,
+    SliverToBoxAdapter(child: SizedBox(height: MediaQuery.paddingOf(context).bottom + 16)),
+  ],
+);
+
+Widget _frame(BuildContext context, Widget child) => _injected(context, [SliverToBoxAdapter(child: child)]);
+
 /// The tuned station's charts: the week, hot right now, most requested, trending, artists.
+/// A large title that shrinks as the list scrolls, the tabs pinned under it.
 class ChartsScreen extends StatelessWidget {
   const ChartsScreen({super.key});
 
@@ -19,60 +32,86 @@ class ChartsScreen extends StatelessWidget {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('${l.tabCharts} · ${station.name}'),
-          bottom: TabBar(
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            indicatorColor: station.color,
-            labelColor: context.sfm.text,
-            unselectedLabelColor: context.sfm.muted,
-            dividerColor: context.sfm.border,
-            tabs: [
-              Tab(text: l.chartsWeekly),
-              Tab(text: '🔥 ${l.chartsHot}'),
-              Tab(text: l.chartsRequested),
-              Tab(text: l.chartsTrending),
-              Tab(text: l.artists),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          key: ValueKey(station.key),
-          children: [
-            _TrackChart(load: () => api.weeklyChart(), count: (t) => t.playCount == null ? null : l.plays(t.playCount!)),
-            _TrackChart(load: () => api.hotTracks()),
-            _TrackChart(load: () => api.topRequested(), count: (t) => t.requestCount == null ? null : l.requestsCount(t.requestCount!)),
-            _TrackChart(load: () => api.trending(), count: (t) => t.playCount == null ? null : l.plays(t.playCount!)),
-            Loader<List<ArtistSummary>>(
-              load: () => api.topArtists(),
-              builder: (context, items) => ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (_, i) {
-                  final a = items[i];
-                  return ListTile(
-                    leading: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 24,
-                          child: Text(
-                            '${i + 1}',
-                            style: TextStyle(fontWeight: FontWeight.w700, color: context.sfm.muted, fontFeatures: tabular),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Artwork(a.artworkUrl, size: 44, radius: 22),
-                      ],
-                    ),
-                    title: Text(a.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-                    subtitle: Text(l.plays(a.playCount), style: TextStyle(color: context.sfm.muted, fontSize: 12)),
-                    onTap: () => Nav.openArtist(a.key, name: a.name),
-                  );
-                },
+        body: NestedScrollView(
+          headerSliverBuilder: (context, _) => [
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: largeTitleBar(
+                context,
+                '${l.tabCharts} · ${station.name}',
+                bottom: TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  indicatorColor: station.color,
+                  labelColor: context.sfm.text,
+                  unselectedLabelColor: context.sfm.muted,
+                  dividerColor: context.sfm.border,
+                  tabs: [
+                    Tab(text: l.chartsWeekly),
+                    Tab(text: '🔥 ${l.chartsHot}'),
+                    Tab(text: l.chartsRequested),
+                    Tab(text: l.chartsTrending),
+                    Tab(text: l.artists),
+                  ],
+                ),
               ),
             ),
           ],
+          body: TabBarView(
+            key: ValueKey(station.key),
+            children: [
+              _TrackChart(
+                load: () => api.weeklyChart(),
+                count: (t) => t.playCount == null ? null : l.plays(t.playCount!),
+              ),
+              _TrackChart(load: () => api.hotTracks()),
+              _TrackChart(
+                load: () => api.topRequested(),
+                count: (t) => t.requestCount == null ? null : l.requestsCount(t.requestCount!),
+              ),
+              _TrackChart(load: () => api.trending(), count: (t) => t.playCount == null ? null : l.plays(t.playCount!)),
+              Builder(
+                builder: (context) => Loader<List<ArtistSummary>>(
+                  load: () => api.topArtists(),
+                  frame: _frame,
+                  builder: (context, items) => _injected(context, [
+                    SliverList.builder(
+                      itemCount: items.length,
+                      itemBuilder: (_, i) {
+                        final a = items[i];
+                        return ListTile(
+                          leading: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 24,
+                                child: Text(
+                                  '${i + 1}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: context.sfm.muted,
+                                    fontFeatures: tabular,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Artwork(a.artworkUrl, size: 44, radius: 22),
+                            ],
+                          ),
+                          title: Text(a.name, style: const TextStyle(fontWeight: FontWeight.w600)),
+                          subtitle: Text(
+                            l.plays(a.playCount),
+                            style: TextStyle(color: context.sfm.muted, fontSize: 12),
+                          ),
+                          onTap: () => Nav.openArtist(a.key, name: a.name),
+                        );
+                      },
+                    ),
+                  ]),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -89,9 +128,9 @@ class _TrackChart extends StatelessWidget {
     final c = context.sfm;
     return Loader<List<Track>>(
       load: load,
-      builder: (context, items) => RefreshIndicator(
-        onRefresh: () async {},
-        child: ListView.builder(
+      frame: _frame,
+      builder: (context, items) => _injected(context, [
+        SliverList.builder(
           itemCount: items.length,
           itemBuilder: (_, i) {
             final t = items[i];
@@ -120,7 +159,7 @@ class _TrackChart extends StatelessWidget {
             );
           },
         ),
-      ),
+      ]),
     );
   }
 }

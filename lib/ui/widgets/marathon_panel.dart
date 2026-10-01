@@ -163,7 +163,10 @@ class _MarathonPanelState extends State<MarathonPanel> {
           ListTile(
             leading: Artwork(n.artworkUrl, size: 48),
             title: Text(n.artist.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-            subtitle: Text(context.l.marathonVotes(n.votes, n.votesRequired), style: TextStyle(color: c.muted, fontSize: 12)),
+            subtitle: Text(
+              context.l.marathonVotes(n.votes, n.votesRequired),
+              style: TextStyle(color: c.muted, fontSize: 12),
+            ),
             onTap: () => Nav.openArtist(n.artist.artistKey, name: n.artist.name),
             trailing: voted.contains(n.id)
                 ? Icon(Icons.check_circle_rounded, color: accent)
@@ -240,7 +243,11 @@ class _BlockCard extends StatelessWidget {
                     block.artist.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: big ? 24 : 15, fontWeight: FontWeight.w700, color: const Color(0xFFFFFFFF)),
+                    style: TextStyle(
+                      fontSize: big ? 24 : 15,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFFFFFFF),
+                    ),
                   ),
                   Text(time, style: const TextStyle(fontSize: 11, color: Color(0xB3FFFFFF))),
                 ],
@@ -255,7 +262,13 @@ class _BlockCard extends StatelessWidget {
 
 /// Confirm dialog carrying the captcha, for a vote or a nomination.
 class _ConfirmWrite extends StatefulWidget {
-  const _ConfirmWrite({required this.title, required this.art, required this.action, required this.cta, required this.send});
+  const _ConfirmWrite({
+    required this.title,
+    required this.art,
+    required this.action,
+    required this.cta,
+    required this.send,
+  });
   final String title, action, cta;
   final String? art;
   final Future<WriteResult> Function(String? token) send;
@@ -308,7 +321,9 @@ class _ConfirmWriteState extends State<_ConfirmWrite> {
                 minimumSize: const Size.fromHeight(48),
               ),
               onPressed: _sending || (Config.captchaEnabled && _token == null) ? null : _go,
-              child: _sending ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)) : Text(widget.cta),
+              child: _sending
+                  ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                  : Text(widget.cta),
             ),
           ],
         ),
@@ -329,7 +344,12 @@ class _ArtistPickerState extends State<_ArtistPicker> {
 
   void _search(String q) {
     _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 300), () => setState(() => _f = api.marathonArtists(q.trim())));
+    _debounce = Timer(
+      const Duration(milliseconds: 300),
+      () => setState(() {
+        _f = api.marathonArtists(q.trim());
+      }),
+    );
   }
 
   @override
@@ -348,7 +368,10 @@ class _ArtistPickerState extends State<_ArtistPicker> {
           child: TextField(
             autofocus: true,
             onChanged: _search,
-            decoration: InputDecoration(hintText: context.l.marathonNominateHint, prefixIcon: const Icon(Icons.search_rounded)),
+            decoration: InputDecoration(
+              hintText: context.l.marathonNominateHint,
+              prefixIcon: const Icon(Icons.search_rounded),
+            ),
           ),
         ),
         Expanded(
@@ -363,7 +386,9 @@ class _ArtistPickerState extends State<_ArtistPicker> {
                       enabled: a.eligible,
                       leading: Artwork(a.artworkUrl, size: 44),
                       title: Text(a.artist.name),
-                      subtitle: a.eligible || a.reason == null ? null : Text(a.reason!, style: TextStyle(color: c.faint, fontSize: 12)),
+                      subtitle: a.eligible || a.reason == null
+                          ? null
+                          : Text(a.reason!, style: TextStyle(color: c.faint, fontSize: 12)),
                       onTap: () => Navigator.pop(context, a),
                     ),
                 ],
