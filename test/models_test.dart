@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/state/runtime_config.dart';
-import 'package:seoulfm/ui/screens/home_screen.dart';
+import 'package:seoulfm/ui/widgets/request_shelf.dart';
 
 void main() {
   group('artworkSrc', () {

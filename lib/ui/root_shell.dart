@@ -7,15 +7,16 @@ import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/charts_screen.dart';
 import 'package:seoulfm/ui/screens/home_screen.dart';
 import 'package:seoulfm/ui/screens/more_screen.dart';
+import 'package:seoulfm/ui/screens/now_playing_screen.dart';
 import 'package:seoulfm/ui/screens/search_screen.dart';
-import 'package:seoulfm/ui/screens/wall_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/lossless_sheet.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
 
 final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-/// Five tabs, each with its own navigator, over the player bar (the mobile site's shell).
+/// Five tabs, each with its own navigator, over the player bar. The bar hides on the
+/// Now Playing tab, which is the player itself.
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
   @override
@@ -23,16 +24,22 @@ class RootShell extends StatefulWidget {
 }
 
 class _RootShellState extends State<RootShell> {
-  int _index = 0;
   late final AppState _app = context.read<AppState>();
 
-  static const _pages = <Widget>[HomeScreen(), SearchScreen(), ChartsScreen(), WallScreen(), MoreScreen()];
+  static const _pages = <AppTab, Widget>{
+    AppTab.home: HomeScreen(),
+    AppTab.nowPlaying: NowPlayingScreen(),
+    AppTab.search: SearchScreen(),
+    AppTab.charts: ChartsScreen(),
+    AppTab.more: MoreScreen(),
+  };
 
   @override
   void initState() {
     super.initState();
     _app.losslessPrompt.addListener(_onLosslessPrompt);
     _app.requests.addListener(_onRequestChange);
+    Nav.tab.addListener(_onTab);
     WidgetsBinding.instance.addPostFrameCallback((_) => _onLosslessPrompt());
   }
 
@@ -40,6 +47,7 @@ class _RootShellState extends State<RootShell> {
   void dispose() {
     _app.losslessPrompt.removeListener(_onLosslessPrompt);
     _app.requests.removeListener(_onRequestChange);
+    Nav.tab.removeListener(_onTab);
     super.dispose();
   }
 
@@ -74,43 +82,46 @@ class _RootShellState extends State<RootShell> {
     );
   }
 
+  void _onTab() => setState(() {});
+
+  /// Tapping the selected tab again pops it to its root.
   void _select(int i) {
-    if (i == _index) {
-      Nav.tabs[i].currentState?.popUntil((r) => r.isFirst);
-    }
-    setState(() => _index = Nav.current = i);
+    final tab = AppTab.values[i];
+    if (tab == Nav.tab.value) Nav.tabs[i].currentState?.popUntil((r) => r.isFirst);
+    Nav.tab.value = tab;
   }
 
   @override
   Widget build(BuildContext context) {
     final c = context.sfm;
     final l = context.l;
+    final index = Nav.tab.value.index;
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
-        final nav = Nav.tabs[_index].currentState;
+        final nav = Nav.tabs[index].currentState;
         if (nav != null && nav.canPop()) {
           nav.pop();
-        } else if (_index != 0) {
+        } else if (index != 0) {
           _select(0);
         }
       },
       child: Scaffold(
         body: IndexedStack(
-          index: _index,
+          index: index,
           children: [
-            for (var i = 0; i < _pages.length; i++)
+            for (final tab in AppTab.values)
               Navigator(
-                key: Nav.tabs[i],
-                onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _pages[i]),
+                key: Nav.tabs[tab.index],
+                onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _pages[tab]!),
               ),
           ],
         ),
         bottomNavigationBar: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const MiniPlayer(),
+            if (Nav.tab.value != AppTab.nowPlaying) const MiniPlayer(),
             NavigationBarTheme(
               data: NavigationBarThemeData(
                 backgroundColor: c.bg,
@@ -120,7 +131,7 @@ class _RootShellState extends State<RootShell> {
                 labelTextStyle: WidgetStatePropertyAll(TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: c.muted)),
               ),
               child: NavigationBar(
-                selectedIndex: _index,
+                selectedIndex: index,
                 onDestinationSelected: _select,
                 labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
                 destinations: [
@@ -129,13 +140,13 @@ class _RootShellState extends State<RootShell> {
                     selectedIcon: const Icon(Icons.home_rounded),
                     label: l.tabHome,
                   ),
+                  NavigationDestination(
+                    icon: const Icon(Icons.play_circle_outline_rounded),
+                    selectedIcon: const Icon(Icons.play_circle_rounded),
+                    label: l.tabNowPlaying,
+                  ),
                   NavigationDestination(icon: const Icon(Icons.search_rounded), label: l.tabSearch),
                   NavigationDestination(icon: const Icon(Icons.bar_chart_rounded), label: l.tabCharts),
-                  NavigationDestination(
-                    icon: const Icon(Icons.favorite_border_rounded),
-                    selectedIcon: const Icon(Icons.favorite_rounded),
-                    label: l.tabWall,
-                  ),
                   NavigationDestination(icon: const Icon(Icons.more_horiz_rounded), label: l.tabMore),
                 ],
               ),

@@ -390,4 +390,34 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get captchaFailed => '확인하지 못했어요. 다시 시도해 주세요.';
+
+  @override
+  String get tabNowPlaying => '재생 중';
+
+  @override
+  String get goodMorning => '좋은 아침이에요';
+
+  @override
+  String get goodAfternoon => '좋은 오후예요';
+
+  @override
+  String get goodEvening => '좋은 저녁이에요';
+
+  @override
+  String get featuredStations => '추천 채널';
+
+  @override
+  String get genresAndEras => '장르와 시대';
+
+  @override
+  String get playingFrom => '재생 중인 채널';
+
+  @override
+  String get chooseStation => '채널 선택';
+
+  @override
+  String get listenNow => '지금 듣기';
+
+  @override
+  String get showLyrics => '가사 보기';
 }

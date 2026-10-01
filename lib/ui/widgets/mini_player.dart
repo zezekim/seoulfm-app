@@ -8,10 +8,10 @@ import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
-import 'package:seoulfm/ui/widgets/now_playing_sheet.dart';
+import 'package:seoulfm/ui/nav.dart';
 
 /// The player bar above the tabs (`PlayerBar` on phones): glass, the heard song, its
-/// progress as a hairline in the accent, play. Tap the song for the Now Playing sheet.
+/// progress as a hairline in the accent, play. Tap the song for the Now Playing tab.
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({super.key});
 
@@ -37,7 +37,7 @@ class MiniPlayer extends StatelessWidget {
             children: [
               _Hairline(color: channel.color),
               InkWell(
-                onTap: () => showNowPlaying(context),
+                onTap: Nav.showNowPlaying,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
                   child: Row(

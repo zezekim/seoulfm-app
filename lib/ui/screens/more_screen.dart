@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/nav.dart';
+import 'package:seoulfm/ui/screens/wall_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Settings, the car, and about.
+/// Dedications, settings, the car, and about.
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
@@ -22,6 +24,12 @@ class MoreScreen extends StatelessWidget {
       appBar: AppBar(title: Text(l.tabMore)),
       body: ListView(
         children: [
+          ListTile(
+            leading: const Icon(Icons.favorite_border_rounded),
+            title: Text(l.tabWall),
+            trailing: Icon(Icons.chevron_right_rounded, color: c.muted),
+            onTap: () => Nav.push(const WallScreen()),
+          ),
           SectionHeader(l.settings),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -169,6 +169,39 @@ class SectionHeader extends StatelessWidget {
   }
 }
 
+/// A shelf's heading on the home and Now Playing tabs: a bold title, an optional line under it.
+class ShelfTitle extends StatelessWidget {
+  const ShelfTitle(this.title, {super.key, this.subtitle, this.trailing});
+  final String title;
+  final String? subtitle;
+  final Widget? trailing;
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16, 28, trailing == null ? 16 : 4, 12),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 21, fontWeight: FontWeight.w700, letterSpacing: -0.5)),
+                if (subtitle != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(subtitle!, style: TextStyle(fontSize: 13, color: c.muted)),
+                  ),
+              ],
+            ),
+          ),
+          ?trailing,
+        ],
+      ),
+    );
+  }
+}
+
 /// The round play/pause button (`.play-btn`).
 class PlayButton extends StatelessWidget {
   const PlayButton({

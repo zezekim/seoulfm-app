@@ -258,5 +258,15 @@
   "quality": "Quality",
   "qualityAuto": "Auto (AAC)",
   "comingSoon": "Coming soon",
-  "captchaFailed": "Couldn’t verify. Try again."
+  "captchaFailed": "Couldn’t verify. Try again.",
+  "tabNowPlaying": "Now Playing",
+  "goodMorning": "Good morning",
+  "goodAfternoon": "Good afternoon",
+  "goodEvening": "Good evening",
+  "featuredStations": "Featured stations",
+  "genresAndEras": "Genres & eras",
+  "playingFrom": "Playing from",
+  "chooseStation": "Choose a station",
+  "listenNow": "Listen now",
+  "showLyrics": "Show lyrics"
 }

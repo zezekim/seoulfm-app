@@ -775,6 +775,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Couldn’t verify. Try again.'**
   String get captchaFailed;
+
+  /// No description provided for @tabNowPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Now Playing'**
+  String get tabNowPlaying;
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get goodMorning;
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get goodAfternoon;
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get goodEvening;
+
+  /// No description provided for @featuredStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Featured stations'**
+  String get featuredStations;
+
+  /// No description provided for @genresAndEras.
+  ///
+  /// In en, this message translates to:
+  /// **'Genres & eras'**
+  String get genresAndEras;
+
+  /// No description provided for @playingFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing from'**
+  String get playingFrom;
+
+  /// No description provided for @chooseStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a station'**
+  String get chooseStation;
+
+  /// No description provided for @listenNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen now'**
+  String get listenNow;
+
+  /// No description provided for @showLyrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Show lyrics'**
+  String get showLyrics;
 }
 
 class _AppLocalizationsDelegate

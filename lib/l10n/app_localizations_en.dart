@@ -407,4 +407,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get captchaFailed => 'Couldn’t verify. Try again.';
+
+  @override
+  String get tabNowPlaying => 'Now Playing';
+
+  @override
+  String get goodMorning => 'Good morning';
+
+  @override
+  String get goodAfternoon => 'Good afternoon';
+
+  @override
+  String get goodEvening => 'Good evening';
+
+  @override
+  String get featuredStations => 'Featured stations';
+
+  @override
+  String get genresAndEras => 'Genres & eras';
+
+  @override
+  String get playingFrom => 'Playing from';
+
+  @override
+  String get chooseStation => 'Choose a station';
+
+  @override
+  String get listenNow => 'Listen now';
+
+  @override
+  String get showLyrics => 'Show lyrics';
 }

@@ -112,5 +112,15 @@
   "quality": "음질",
   "qualityAuto": "자동 (AAC)",
   "comingSoon": "곧 공개",
-  "captchaFailed": "확인하지 못했어요. 다시 시도해 주세요."
+  "captchaFailed": "확인하지 못했어요. 다시 시도해 주세요.",
+  "tabNowPlaying": "재생 중",
+  "goodMorning": "좋은 아침이에요",
+  "goodAfternoon": "좋은 오후예요",
+  "goodEvening": "좋은 저녁이에요",
+  "featuredStations": "추천 채널",
+  "genresAndEras": "장르와 시대",
+  "playingFrom": "재생 중인 채널",
+  "chooseStation": "채널 선택",
+  "listenNow": "지금 듣기",
+  "showLyrics": "가사 보기"
 }
