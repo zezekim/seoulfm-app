@@ -104,7 +104,10 @@ here: the car shows only system templates.
 3. **Signing.** Android: `android/key.properties` (not committed) with the existing Play upload
    key. iOS: the team that owns `com.seoulfm.seoulfm`. Raise `version` in `pubspec.yaml` above
    the current store build numbers (it is `3.0.0+300`).
-4. **Icons.** Generated from the site's wordmark (`dart run flutter_launcher_icons`). The iOS
+4. **Widgets and Live Activity (iOS).** Register the App Group `group.com.seoulfm.seoulfm` for the
+   team, and create an App ID and profile for the extension `com.seoulfm.seoulfm.NowPlayingWidget`;
+   both the app's and the extension's profiles need the group. Signing fails until they do.
+5. **Icons.** Generated from the site's wordmark (`dart run flutter_launcher_icons`). The iOS
    1024 px icon is upscaled from the site's 512 px file: replace `assets/icon/app-icon-1024.png`
    with a real 1024 px master and regenerate.
 
