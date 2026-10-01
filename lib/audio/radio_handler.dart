@@ -27,9 +27,9 @@ class RadioHandler extends BaseAudioHandler {
     _init();
   }
 
-  /// How far behind the live edge the listener plays: the playlist's `EXT-X-START` (and its
-  /// `HOLD-BACK`, once the server sends one). The players honour it natively.
-  static const liveOffset = Duration(seconds: 12);
+  /// How far behind the live edge the listener plays: the playlists' `HOLD-BACK` and
+  /// `EXT-X-START` (24 s since 2026-10-01). The players honour them natively.
+  static const liveOffset = Duration(seconds: 24);
 
   final AudioPlayer _player = AudioPlayer(
     audioLoadConfiguration: const AudioLoadConfiguration(
