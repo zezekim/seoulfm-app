@@ -690,8 +690,14 @@ class QualityPill extends StatelessWidget {
           ],
           Text(
             text,
+            // Caps only: centre them on the line box, not on room left for descenders.
+            textHeightBehavior: const TextHeightBehavior(
+              applyHeightToFirstAscent: false,
+              applyHeightToLastDescent: false,
+            ),
             style: TextStyle(
               fontSize: compact ? 8.5 : 10,
+              height: 1,
               fontWeight: FontWeight.w800,
               letterSpacing: compact ? 0.6 : 1.2,
               color: lossless ? const Color(0xFF2A1E05) : Colors.white.withValues(alpha: 0.75),

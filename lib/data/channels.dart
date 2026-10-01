@@ -143,6 +143,11 @@ class Channel {
   /// `/v3/streams/{stream}/manifest.m3u8`. Never build segment URLs by hand.
   String get manifest => '${Config.apiBase}/streams/${Uri.encodeComponent(stream)}/manifest.m3u8';
 
+  /// One AAC quality's media playlist (48, 128, 192 or 320 kbps). Playing one directly, not
+  /// the master, keeps the player from starting on the first listed (lowest) quality and
+  /// re-buffering on every quality switch: each has its own init segment.
+  String variant(int kbps) => '$manifest?bitrate=$kbps';
+
   /// The FLAC media playlist (not the master: its relative variant URI drops the acknowledgement).
   String get losslessManifest =>
       '${Config.apiBase}/streams/${Uri.encodeComponent(stream)}/lossless/manifest.m3u8?bitrate=lossless&accept_data_usage=true';

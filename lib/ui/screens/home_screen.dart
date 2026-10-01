@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
                 // Clear of the floating player and the tab bar, which the page runs under.
-            SliverToBoxAdapter(child: SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
+                SliverToBoxAdapter(child: SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
               ],
             ),
             // Keeps the clock readable over whatever scrolls under it.
@@ -401,7 +401,10 @@ class _GenreTile extends StatelessWidget {
     final t = _onAir(context, channel);
     final tuned = context.watch<ChannelController>().active.key == channel.key;
     final radio = context.read<RadioHandler>();
-    final fill = Color.lerp(channel.color, Colors.black, 0.3)!;
+    // The colour of the cover on air (as Spotify's browse tiles take theirs), the station's
+    // while that is read.
+    final tint = context.watch<CoverColors>().of(t?.artworkUrl) ?? channel.color;
+    final fill = Color.lerp(tint, Colors.black, 0.18)!;
     const white = Colors.white;
 
     return Semantics(
@@ -413,7 +416,7 @@ class _GenreTile extends StatelessWidget {
         child: Pressable(
           onTap: channel.tunable ? () => _listen(context, channel) : null,
           child: AnimatedContainer(
-            duration: Motion.base,
+            duration: Motion.slow,
             decoration: BoxDecoration(
               color: fill,
               borderRadius: BorderRadius.circular(Radii.md),

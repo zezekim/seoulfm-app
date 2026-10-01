@@ -32,8 +32,11 @@ Future<void> pickSleepTimer(BuildContext context) async {
 }
 
 class SleepTimerButton extends StatefulWidget {
-  const SleepTimerButton({super.key, this.onImage = false});
+  const SleepTimerButton({super.key, this.onImage = false, this.iconOnly = false});
   final bool onImage;
+
+  /// Just the moon (the player), lit while a timer runs; the label form is for settings.
+  final bool iconOnly;
   @override
   State<SleepTimerButton> createState() => _SleepTimerButtonState();
 }
@@ -61,6 +64,14 @@ class _SleepTimerButtonState extends State<SleepTimerButton> {
       valueListenable: radio.sleepAt,
       builder: (_, at, _) {
         final left = at?.difference(DateTime.now());
+        if (widget.iconOnly) {
+          final on = left != null;
+          return IconButton(
+            tooltip: on ? context.l.sleepStopsIn((left.inSeconds / 60).ceil()) : context.l.sleepTimer,
+            onPressed: () => pickSleepTimer(context),
+            icon: Icon(on ? Icons.bedtime_rounded : Icons.bedtime_outlined, size: 22, color: on ? Colors.white : color),
+          );
+        }
         return TextButton.icon(
           onPressed: () => pickSleepTimer(context),
           icon: Icon(Icons.bedtime_outlined, size: 18, color: color),

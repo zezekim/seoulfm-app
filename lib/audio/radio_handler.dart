@@ -31,14 +31,29 @@ class RadioHandler extends BaseAudioHandler {
       androidLoadControl: AndroidLoadControl(
         minBufferDuration: Duration(seconds: 15),
         maxBufferDuration: Duration(seconds: 45),
-        bufferForPlaybackDuration: Duration(milliseconds: 1500),
-        bufferForPlaybackAfterRebufferDuration: Duration(seconds: 4),
+        // The server starts 12 s behind live: play once a segment is in hand, and after a stall
+        // wait for two, so playback doesn't stutter in and out.
+        bufferForPlaybackDuration: Duration(milliseconds: 3000),
+        bufferForPlaybackAfterRebufferDuration: Duration(seconds: 7),
       ),
       darwinLoadControl: DarwinLoadControl(preferredForwardBufferDuration: Duration(seconds: 20)),
     ),
   );
 
   static const _freshFor = Duration(seconds: 15);
+
+  /// AAC qualities, best first. Playback starts at the top and steps down a rung when the
+  /// connection can't keep up (two stalls within [_stallWindow], or a failed load); after
+  /// [_retryUpAfter] at a lower rung, the next tune-in tries the top again.
+  static const ladder = [320, 192, 128, 48];
+  static const _stallWindow = Duration(seconds: 60);
+  static const _retryUpAfter = Duration(minutes: 5);
+  int _rung = 0;
+  DateTime? _steppedDownAt;
+  final List<DateTime> _stalls = [];
+
+  /// The AAC quality playing, in kbps (null while lossless or on the fallback manifest).
+  final ValueNotifier<int?> aacKbps = ValueNotifier(null);
   static const _fadeIn = Duration(milliseconds: 600);
   static const _fadeOut = Duration(milliseconds: 300);
 
@@ -105,6 +120,7 @@ class RadioHandler extends BaseAudioHandler {
         }
       } else if (buffering.value && !wasBuffering && _startAt == null) {
         _rebuffers++;
+        _onStall();
       }
       if (s.processingState == ProcessingState.completed && wantPlaying.value) _recover('completed');
       _broadcast();
@@ -128,6 +144,8 @@ class RadioHandler extends BaseAudioHandler {
     losslessFailed.value = false;
     _useFallback = false;
     if (same) return;
+    _maybeStepUp();
+    _stalls.clear();
     listeningSince.value = null;
     _publishIdleItem();
     if (wantPlaying.value) {
@@ -158,7 +176,39 @@ class RadioHandler extends BaseAudioHandler {
     final c = _channel!;
     if (_losslessWanted && !losslessFailed.value) return c.losslessManifest;
     if (_useFallback && c.fallbackManifest != null) return c.fallbackManifest!;
-    return c.manifest;
+    return c.variant(ladder[_rung]);
+  }
+
+  /// A stall while playing: two within a minute means this quality is too much for the
+  /// connection, so reload a rung lower (quietly, without a fade).
+  void _onStall() {
+    final now = DateTime.now();
+    _stalls
+      ..add(now)
+      ..removeWhere((t) => now.difference(t) > _stallWindow);
+    if (_stalls.length < 2 || !_stepDown()) return;
+    _stalls.clear();
+    debugPrint('radio: stalling, down to ${ladder[_rung]} kbps');
+    unawaited(() async {
+      await _load();
+      if (_loaded && wantPlaying.value) await _player.play();
+    }());
+  }
+
+  /// One rung lower, if there is one (AAC only).
+  bool _stepDown() {
+    if (losslessActive.value || _rung >= ladder.length - 1) return false;
+    _rung++;
+    _steppedDownAt = DateTime.now();
+    return true;
+  }
+
+  /// A new tune-in after a while at a lower rung tries the best quality again.
+  void _maybeStepUp() {
+    if (_rung > 0 && _steppedDownAt != null && DateTime.now().difference(_steppedDownAt!) > _retryUpAfter) {
+      _rung = 0;
+      _steppedDownAt = null;
+    }
   }
 
   Future<void> _load() async {
@@ -166,6 +216,7 @@ class RadioHandler extends BaseAudioHandler {
     final url = _url();
     _loadedUrl = url;
     losslessActive.value = url == _channel!.losslessManifest;
+    aacKbps.value = url == _channel!.variant(ladder[_rung]) ? ladder[_rung] : null;
     _startAt = DateTime.now();
     try {
       await _player.setAudioSource(HlsAudioSource(Uri.parse(url)), preload: true);
@@ -186,7 +237,9 @@ class RadioHandler extends BaseAudioHandler {
     if (losslessActive.value) {
       losslessFailed.value = true;
       losslessActive.value = false;
-    } else if (_channel!.fallbackManifest != null) {
+    } else if (_attempt > 0 && !_stepDown() && _channel!.fallbackManifest != null) {
+      // The first error just reloads (an expired token, say); repeated ones step down a
+      // rung, and with none left, alternate with the Worker manifest.
       _useFallback = !_useFallback;
     }
     _recoverTimer?.cancel();
@@ -297,7 +350,11 @@ class RadioHandler extends BaseAudioHandler {
     };
     playbackState.add(
       PlaybackState(
-        controls: [MediaControl.skipToPrevious, wantPlaying.value ? MediaControl.pause : MediaControl.play, MediaControl.skipToNext],
+        controls: [
+          MediaControl.skipToPrevious,
+          wantPlaying.value ? MediaControl.pause : MediaControl.play,
+          MediaControl.skipToNext,
+        ],
         systemActions: const {MediaAction.playFromMediaId, MediaAction.playFromSearch},
         androidCompactActionIndices: const [0, 1, 2],
         processingState: _channel == null ? AudioProcessingState.idle : processing,
@@ -309,7 +366,15 @@ class RadioHandler extends BaseAudioHandler {
   void _publishIdleItem() {
     final c = _channel;
     if (c == null) return;
-    mediaItem.add(MediaItem(id: c.key, title: 'SeoulFM ${c.name}', artist: c.tagline, album: 'SeoulFM ${c.name}', artUri: _stationArt(c)));
+    mediaItem.add(
+      MediaItem(
+        id: c.key,
+        title: 'SeoulFM ${c.name}',
+        artist: c.tagline,
+        album: 'SeoulFM ${c.name}',
+        artUri: _stationArt(c),
+      ),
+    );
   }
 
   /// The heard track on the tuned channel (from `NowPlayingController`).
@@ -389,7 +454,9 @@ class RadioHandler extends BaseAudioHandler {
     final q = query.toLowerCase().replaceAll('seoulfm', '').replaceAll('seoul fm', '').trim();
     if (q.isNotEmpty) {
       for (final c in channels().where((c) => c.tunable)) {
-        if (c.name.toLowerCase().contains(q) || q.contains(c.name.toLowerCase()) || (c.genre ?? '').toLowerCase().contains(q)) {
+        if (c.name.toLowerCase().contains(q) ||
+            q.contains(c.name.toLowerCase()) ||
+            (c.genre ?? '').toLowerCase().contains(q)) {
           onTune(c.key);
           break;
         }

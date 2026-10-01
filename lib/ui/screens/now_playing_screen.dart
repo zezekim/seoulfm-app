@@ -438,16 +438,25 @@ class _Player extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 4),
+                // Equal columns either side, so the quality badge sits on the centre line.
                 Row(
                   children: [
-                    const SleepTimerButton(onImage: true),
-                    const Spacer(),
+                    const Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional.centerStart,
+                        child: SleepTimerButton(onImage: true, iconOnly: true),
+                      ),
+                    ),
                     _QualityBadge(app: context.read<AppState>()),
-                    const Spacer(),
-                    IconButton(
-                      tooltip: context.l.share,
-                      onPressed: onShare,
-                      icon: Icon(Icons.ios_share_rounded, color: white.withValues(alpha: 0.75), size: 22),
+                    Expanded(
+                      child: Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: IconButton(
+                          tooltip: context.l.share,
+                          onPressed: onShare,
+                          icon: Icon(Icons.ios_share_rounded, color: white.withValues(alpha: 0.75), size: 22),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -605,7 +614,11 @@ class _QualityBadge extends StatelessWidget {
               icon: const Icon(Icons.warning_amber_rounded, size: 20, color: Color(0xFFF5B73C)),
             );
           }
-          return QualityPill(lossless: lossless);
+          return ValueListenableBuilder<int?>(
+            valueListenable: radio.aacKbps,
+            builder: (_, kbps, _) =>
+                QualityPill(lossless: lossless, label: lossless || kbps == null ? null : 'AAC $kbps'),
+          );
         },
       ),
     );
