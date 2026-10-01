@@ -51,7 +51,21 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     return radio.wantPlaying.value ? (configured > _playerOffsetMs ? configured : _playerOffsetMs) : configured;
   }
 
+  /// The listener's stations, picked on the welcome screen (Home shows them first).
+  final ValueNotifier<List<String>> favourites = ValueNotifier(const []);
+
+  /// Whether the welcome has been seen (it shows once, on first launch).
+  bool get onboarded => Session.prefs.getBool('seoulfm-onboarded') ?? false;
+
+  void setFavourites(List<String> keys) {
+    favourites.value = List.unmodifiable(keys);
+    Session.prefs.setStringList('seoulfm-favourites', keys);
+  }
+
+  void finishOnboarding() => Session.prefs.setBool('seoulfm-onboarded', true);
+
   void start() {
+    favourites.value = Session.prefs.getStringList('seoulfm-favourites') ?? const [];
     themeMode = switch (Session.prefs.getString('seoulfm-theme')) {
       'light' => ThemeMode.light,
       'system' => ThemeMode.system,

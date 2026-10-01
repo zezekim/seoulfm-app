@@ -449,4 +449,65 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get swipeToRequest => '신청';
+
+  @override
+  String get offlineTitle => '오프라인 상태예요';
+
+  @override
+  String get serverErrorTitle => '문제가 생겼어요';
+
+  @override
+  String get noResultsTitle => '결과가 없어요';
+
+  @override
+  String get noResultsBody => '다른 철자나 영어·한국어 제목, 아티스트 이름으로 찾아보세요.';
+
+  @override
+  String get wallEmptyTitle => '아직 사연이 없어요';
+
+  @override
+  String get requestTrackerQueued => '내 신청곡 · 대기 중';
+
+  @override
+  String requestTrackerEta(int minutes) {
+    return '내 신청곡 · 약 $minutes분 후 재생';
+  }
+
+  @override
+  String get requestTrackerNext => '내 신청곡이 다음 차례예요';
+
+  @override
+  String get requestTrackerPlaying => '내 신청곡이 지금 나오고 있어요!';
+
+  @override
+  String get welcomeTitle => '라이브로, 무료로 듣는 K-pop 라디오';
+
+  @override
+  String get welcomeBody =>
+      '열두 개의 채널이 24시간, 가사가 있는 58,000곡 이상. 곡을 신청하면 모두에게 라이브로 재생돼요.';
+
+  @override
+  String get continueLabel => '계속';
+
+  @override
+  String get pickStationsTitle => '좋아하는 채널을 골라 주세요';
+
+  @override
+  String get pickStationsBody => '맨 앞에 보여 드릴게요. 언제든 바꿀 수 있어요.';
+
+  @override
+  String get requestsTitle => '다음 곡은 여러분이 골라요';
+
+  @override
+  String get requestsBody =>
+      '어떤 곡이든 찾아서 신청하세요. 재생되면 듣고 있는 모두가 함께 듣고, 사연도 보게 돼요.';
+
+  @override
+  String get startListening => '듣기 시작';
+
+  @override
+  String get skip => '건너뛰기';
+
+  @override
+  String get yourStations => '내 채널';
 }

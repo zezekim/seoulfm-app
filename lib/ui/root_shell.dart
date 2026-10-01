@@ -11,9 +11,11 @@ import 'package:seoulfm/ui/screens/charts_screen.dart';
 import 'package:seoulfm/ui/screens/home_screen.dart';
 import 'package:seoulfm/ui/screens/more_screen.dart';
 import 'package:seoulfm/ui/screens/search_screen.dart';
+import 'package:seoulfm/ui/screens/welcome_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/lossless_sheet.dart';
 import 'package:seoulfm/ui/widgets/mini_player.dart';
+import 'package:seoulfm/ui/widgets/request_pill.dart';
 import 'package:seoulfm/ui/icons.dart';
 
 final rootMessengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -42,7 +44,10 @@ class _RootShellState extends State<RootShell> {
     _app.losslessPrompt.addListener(_onLosslessPrompt);
     _app.requests.addListener(_onRequestChange);
     Nav.tab.addListener(_onTab);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _onLosslessPrompt());
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await showWelcomeIfNeeded(context);
+      _onLosslessPrompt();
+    });
   }
 
   @override
@@ -136,6 +141,7 @@ class _RootShellState extends State<RootShell> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const RequestPill(),
               const MiniPlayer(),
               ClipRect(
                 child: BackdropFilter(

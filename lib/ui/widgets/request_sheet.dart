@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
@@ -65,6 +66,7 @@ class _RequestSheetState extends State<_RequestSheet> {
       if (r.accepted && r.requestId != null && r.statusToken != null) {
         context.read<RequestTracker>().follow(r.requestId!, r.statusToken!);
       }
+      if (r.accepted) HapticFeedback.heavyImpact();
       setState(() => _result = r);
     } on ApiError catch (e) {
       setState(() {
@@ -202,11 +204,10 @@ class _ResultView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Icon(
-          result.accepted ? AppIcons.done : AppIcons.info,
-          size: 40,
-          color: result.accepted ? accent : c.muted,
-        ),
+        if (result.accepted)
+          Center(child: _Celebrate(color: accent))
+        else
+          Icon(AppIcons.info, size: 40, color: c.muted),
         const SizedBox(height: 10),
         Text(
           result.accepted ? context.l.requestAccepted : '',
@@ -232,6 +233,67 @@ class _ResultView extends StatelessWidget {
         const SizedBox(height: 16),
         OutlinedButton(onPressed: () => Navigator.pop(context), child: Text(context.l.close)),
       ],
+    );
+  }
+}
+
+/// An accepted request: a check springs in and a ring of dots bursts out around it.
+class _Celebrate extends StatefulWidget {
+  const _Celebrate({required this.color});
+  final Color color;
+  @override
+  State<_Celebrate> createState() => _CelebrateState();
+}
+
+class _CelebrateState extends State<_Celebrate> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1100))
+    ..forward();
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final fg = readableOn(widget.color);
+    return SizedBox(
+      width: 120,
+      height: 96,
+      child: AnimatedBuilder(
+        animation: _c,
+        builder: (_, _) {
+          final pop = Curves.elasticOut.transform((_c.value / 0.7).clamp(0.0, 1.0));
+          final burst = Curves.easeOutCubic.transform(_c.value);
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              for (var i = 0; i < 12; i++)
+                Transform.translate(
+                  offset: Offset.fromDirection(i * 3.14159 / 6, 22 + 30 * burst),
+                  child: Opacity(
+                    opacity: (1 - burst).clamp(0.0, 1.0),
+                    child: Container(
+                      width: i.isEven ? 7 : 5,
+                      height: i.isEven ? 7 : 5,
+                      decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
+                    ),
+                  ),
+                ),
+              Transform.scale(
+                scale: pop,
+                child: Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
+                  child: Icon(AppIcons.check, color: fg, size: 30),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

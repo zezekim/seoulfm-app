@@ -15,6 +15,15 @@ class RequestTracker extends ChangeNotifier {
   /// The latest change, for the toast.
   RequestStatus? lastChange;
 
+  /// The listener's latest request still on its way (queued, scheduled, playing), with its
+  /// ETA as it updates; null when there is none. Drives the tracker above the player bar.
+  final ValueNotifier<RequestStatus?> current = ValueNotifier(null);
+
+  void _syncCurrent() {
+    final open = active.values.where((s) => !s.isFinal).toList();
+    current.value = open.isEmpty ? null : open.last;
+  }
+
   void follow(String requestId, String token) {
     if (_subs.containsKey(requestId)) return;
     _subs[requestId] = sseConnect(api.requestEvents(requestId, token)).listen(
@@ -23,7 +32,9 @@ class RequestTracker extends ChangeNotifier {
           try {
             final s = RequestStatus.fromJson((jsonDecode(e.data) as Map).cast());
             final prev = active[requestId];
+            active.remove(requestId); // re-insert: the latest request is last
             active[requestId] = s;
+            _syncCurrent();
             if (prev?.status != s.status) {
               lastChange = s;
               notifyListeners();
@@ -40,6 +51,9 @@ class RequestTracker extends ChangeNotifier {
 
   void _end(String id) {
     _subs.remove(id)?.cancel();
+    final s = active[id];
+    if (s != null && !s.isFinal) active.remove(id); // the stream ended without a verdict
+    _syncCurrent();
   }
 
   @override

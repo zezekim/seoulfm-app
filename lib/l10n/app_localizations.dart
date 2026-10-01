@@ -889,6 +889,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request'**
   String get swipeToRequest;
+
+  /// No description provided for @offlineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You’re offline'**
+  String get offlineTitle;
+
+  /// No description provided for @serverErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get serverErrorTitle;
+
+  /// No description provided for @noResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get noResultsTitle;
+
+  /// No description provided for @noResultsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Try another spelling, an English or Korean title, or the artist’s name.'**
+  String get noResultsBody;
+
+  /// No description provided for @wallEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No dedications yet'**
+  String get wallEmptyTitle;
+
+  /// No description provided for @requestTrackerQueued.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request · in the queue'**
+  String get requestTrackerQueued;
+
+  /// No description provided for @requestTrackerEta.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request · plays in ~{minutes} min'**
+  String requestTrackerEta(int minutes);
+
+  /// No description provided for @requestTrackerNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request is up next'**
+  String get requestTrackerNext;
+
+  /// No description provided for @requestTrackerPlaying.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request is playing now!'**
+  String get requestTrackerPlaying;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'K-pop radio, live and free'**
+  String get welcomeTitle;
+
+  /// No description provided for @welcomeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Twelve stations, 24/7, and 58,000+ songs with lyrics. Request a song and it plays live for everyone.'**
+  String get welcomeBody;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @pickStationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your stations'**
+  String get pickStationsTitle;
+
+  /// No description provided for @pickStationsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We’ll keep them up front. Change them any time.'**
+  String get pickStationsBody;
+
+  /// No description provided for @requestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You choose what plays next'**
+  String get requestsTitle;
+
+  /// No description provided for @requestsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Find any song and request it. When it plays, everyone listening hears it — and sees your dedication.'**
+  String get requestsBody;
+
+  /// No description provided for @startListening.
+  ///
+  /// In en, this message translates to:
+  /// **'Start listening'**
+  String get startListening;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @yourStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Your stations'**
+  String get yourStations;
 }
 
 class _AppLocalizationsDelegate

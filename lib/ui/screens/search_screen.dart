@@ -115,18 +115,15 @@ class _SearchScreenState extends State<SearchScreen> {
               : FutureBuilder<SearchResults>(
                   future: _results,
                   builder: (context, s) {
-                    if (s.hasError) return _list(context, [ErrorRetry(onRetry: () => _onChanged(_q.text))]);
+                    if (s.hasError) return _list(context, [ErrorRetry(error: s.error, onRetry: () => _onChanged(_q.text))]);
                     if (!s.hasData) return _list(context, const [SkeletonList()]);
                     final r = s.data!;
                     if (r.tracks.isEmpty && r.artists.isEmpty) {
                       return _list(context, [
-                        Padding(
-                          padding: const EdgeInsets.all(40),
-                          child: Text(
-                            context.l.searchEmpty(_q.text.trim()),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: c.muted),
-                          ),
+                        EmptyState(
+                          icon: AppIcons.searchEmpty,
+                          title: context.l.searchEmpty(_q.text.trim()),
+                          body: context.l.noResultsBody,
                         ),
                       ]);
                     }

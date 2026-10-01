@@ -190,6 +190,17 @@ Color? parseHex(String? hex) {
   return Color(0xFF000000 | int.parse(m.group(1)!, radix: 16));
 }
 
+/// [c] darkened until white text on it reaches [ratio] (WCAG: 4.5 for body text, 3 for large).
+/// Cover colours can be light (a gold, a pastel); this keeps the white type on them readable.
+Color forWhiteText(Color c, {double ratio = 4.5}) {
+  var hsl = HSLColor.fromColor(c);
+  double contrast(Color x) => 1.05 / (x.computeLuminance() + 0.05);
+  while (contrast(hsl.toColor()) < ratio && hsl.lightness > 0.02) {
+    hsl = hsl.withLightness((hsl.lightness - 0.02).clamp(0.0, 1.0));
+  }
+  return hsl.toColor();
+}
+
 /// Near-black or white, whichever reads better on a solid fill (`readableOn` in lib/channels.ts).
 Color readableOn(Color c) => c.computeLuminance() > 0.3 ? const Color(0xFF09090B) : Colors.white;
 

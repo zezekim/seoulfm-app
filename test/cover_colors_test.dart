@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:seoulfm/state/cover_colors.dart';
+import 'package:seoulfm/theme.dart';
 
 Uint8List _pixels(List<(int, int, int, int)> colours) {
   final out = <int>[];
@@ -30,5 +31,14 @@ void main() {
   test('a black-and-white cover comes out grey', () {
     final c = CoverColors.dominant(_pixels([(240, 240, 240, 512), (20, 20, 20, 512)]));
     expect(HSLColor.fromColor(c).saturation, lessThan(0.1));
+  });
+
+  test('forWhiteText darkens a light colour until white reads on it', () {
+    double contrast(Color c) => 1.05 / (c.computeLuminance() + 0.05);
+    for (final c in const [Color(0xFFF5D547), Color(0xFFA7E8F0), Color(0xFFFFFFFF), Color(0xFF2B2B2B)]) {
+      expect(contrast(forWhiteText(c)), greaterThanOrEqualTo(4.5));
+    }
+    // A colour that already passes is left alone.
+    expect(forWhiteText(const Color(0xFF2B2B2B)), const Color(0xFF2B2B2B));
   });
 }

@@ -41,6 +41,7 @@ class HomeScreen extends StatelessWidget {
               slivers: [
                 const SliverToBoxAdapter(child: _Header()),
                 const SliverToBoxAdapter(child: Notices()),
+            const SliverToBoxAdapter(child: _YourStations()),
                 SliverToBoxAdapter(child: ShelfTitle(context.l.featuredStations)),
                 SliverToBoxAdapter(child: _FeaturedCarousel(channels: featured)),
                 if (rest.isNotEmpty) ...[
@@ -404,7 +405,7 @@ class _GenreTile extends StatelessWidget {
     // The colour of the cover on air (as Spotify's browse tiles take theirs), the station's
     // while that is read.
     final tint = context.watch<CoverColors>().of(t?.artworkUrl) ?? channel.color;
-    final fill = Color.lerp(tint, Colors.black, 0.18)!;
+    final fill = forWhiteText(Color.lerp(tint, Colors.black, 0.18)!);
     const white = Colors.white;
 
     return Semantics(
@@ -499,6 +500,98 @@ class _GenreTile extends StatelessWidget {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Your stations ─────────────────────────────────────────────────────────
+
+/// The stations picked on the welcome screen, as round covers of what each plays: one tap
+/// to listen. Hidden when none were picked.
+class _YourStations extends StatelessWidget {
+  const _YourStations();
+  @override
+  Widget build(BuildContext context) {
+    final app = context.read<AppState>();
+    return ValueListenableBuilder<List<String>>(
+      valueListenable: app.favourites,
+      builder: (context, keys, _) {
+        final cc = context.watch<ChannelController>();
+        final picked = [for (final k in keys) ?cc.byKey(k)].where((c) => c.tunable).toList();
+        if (picked.isEmpty) return const SizedBox.shrink();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ShelfTitle(context.l.yourStations),
+            SizedBox(
+              height: 112,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: picked.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 16),
+                itemBuilder: (context, i) => _StationBubble(channel: picked[i]),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _StationBubble extends StatelessWidget {
+  const _StationBubble({required this.channel});
+  final Channel channel;
+  @override
+  Widget build(BuildContext context) {
+    final t = _onAir(context, channel);
+    final tuned = context.watch<ChannelController>().active.key == channel.key;
+    final ring = forWhiteText(context.watch<CoverColors>().of(t?.artworkUrl) ?? channel.color, ratio: 3);
+    final radio = context.read<RadioHandler>();
+    return Semantics(
+      button: true,
+      selected: tuned,
+      label: 'SeoulFM ${channel.name}',
+      child: Pressable(
+        onTap: () => _listen(context, channel),
+        child: SizedBox(
+          width: 76,
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: ring, width: 2.5)),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    ClipOval(child: Artwork(t?.artworkUrl, size: 64, radius: 0)),
+                    if (tuned)
+                      ValueListenableBuilder<bool>(
+                        valueListenable: radio.wantPlaying,
+                        builder: (_, p, _) => p
+                            ? Container(
+                                width: 64,
+                                height: 64,
+                                decoration: const BoxDecoration(color: Color(0x73000000), shape: BoxShape.circle),
+                                child: const Center(child: EqBars(height: 16)),
+                              )
+                            : const SizedBox.shrink(),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                channel.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600),
+              ),
+            ],
           ),
         ),
       ),

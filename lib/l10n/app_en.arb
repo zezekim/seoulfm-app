@@ -284,5 +284,31 @@
   },
   "goToSong": "Go to song",
   "goToArtist": "Go to artist",
-  "swipeToRequest": "Request"
+  "swipeToRequest": "Request",
+  "offlineTitle": "You’re offline",
+  "serverErrorTitle": "Something went wrong",
+  "noResultsTitle": "No results",
+  "noResultsBody": "Try another spelling, an English or Korean title, or the artist’s name.",
+  "wallEmptyTitle": "No dedications yet",
+  "requestTrackerQueued": "Your request · in the queue",
+  "requestTrackerEta": "Your request · plays in ~{minutes} min",
+  "requestTrackerNext": "Your request is up next",
+  "requestTrackerPlaying": "Your request is playing now!",
+  "@requestTrackerEta": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "welcomeTitle": "K-pop radio, live and free",
+  "welcomeBody": "Twelve stations, 24/7, and 58,000+ songs with lyrics. Request a song and it plays live for everyone.",
+  "continueLabel": "Continue",
+  "pickStationsTitle": "Pick your stations",
+  "pickStationsBody": "We’ll keep them up front. Change them any time.",
+  "requestsTitle": "You choose what plays next",
+  "requestsBody": "Find any song and request it. When it plays, everyone listening hears it — and sees your dedication.",
+  "startListening": "Start listening",
+  "skip": "Skip",
+  "yourStations": "Your stations"
 }

@@ -466,4 +466,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get swipeToRequest => 'Request';
+
+  @override
+  String get offlineTitle => 'You’re offline';
+
+  @override
+  String get serverErrorTitle => 'Something went wrong';
+
+  @override
+  String get noResultsTitle => 'No results';
+
+  @override
+  String get noResultsBody =>
+      'Try another spelling, an English or Korean title, or the artist’s name.';
+
+  @override
+  String get wallEmptyTitle => 'No dedications yet';
+
+  @override
+  String get requestTrackerQueued => 'Your request · in the queue';
+
+  @override
+  String requestTrackerEta(int minutes) {
+    return 'Your request · plays in ~$minutes min';
+  }
+
+  @override
+  String get requestTrackerNext => 'Your request is up next';
+
+  @override
+  String get requestTrackerPlaying => 'Your request is playing now!';
+
+  @override
+  String get welcomeTitle => 'K-pop radio, live and free';
+
+  @override
+  String get welcomeBody =>
+      'Twelve stations, 24/7, and 58,000+ songs with lyrics. Request a song and it plays live for everyone.';
+
+  @override
+  String get continueLabel => 'Continue';
+
+  @override
+  String get pickStationsTitle => 'Pick your stations';
+
+  @override
+  String get pickStationsBody =>
+      'We’ll keep them up front. Change them any time.';
+
+  @override
+  String get requestsTitle => 'You choose what plays next';
+
+  @override
+  String get requestsBody =>
+      'Find any song and request it. When it plays, everyone listening hears it — and sees your dedication.';
+
+  @override
+  String get startListening => 'Start listening';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get yourStations => 'Your stations';
 }

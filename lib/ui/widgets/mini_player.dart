@@ -29,7 +29,7 @@ class MiniPlayer extends StatelessWidget {
     final radio = context.read<RadioHandler>();
     final t = np.track;
     final tint = context.watch<CoverColors>().of(t?.artworkUrl) ?? channel.color;
-    final bg = Color.lerp(tint, Colors.black, 0.5)!;
+    final bg = forWhiteText(Color.lerp(tint, Colors.black, 0.5)!);
     const white = Colors.white;
 
     return Padding(

@@ -4,6 +4,7 @@ import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 
@@ -42,6 +43,7 @@ class _WallScreenState extends State<WallScreen> {
               return ListView(
                 children: [
                   ErrorRetry(
+                    error: s.error,
                     onRetry: () => setState(() {
                       _f = api.wall(limit: 60);
                     }),
@@ -54,14 +56,7 @@ class _WallScreenState extends State<WallScreen> {
             if (items.isEmpty) {
               return ListView(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(40),
-                    child: Text(
-                      context.l.dedicationsEmpty,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: c.muted),
-                    ),
-                  ),
+                  EmptyState(icon: AppIcons.dedications, title: context.l.wallEmptyTitle, body: context.l.dedicationsEmpty),
                 ],
               );
             }

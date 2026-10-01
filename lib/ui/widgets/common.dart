@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
@@ -48,10 +49,15 @@ class Artwork extends StatelessWidget {
       alignment: Alignment.center,
       child: Icon(AppIcons.radio, size: iconSize, color: c.faint),
     );
+    // Decode at the size it is drawn (plus the screen's density), not the file's: a 1000 px
+    // cover in a 52 pt row is ~16x the memory and the decode time.
+    final px = size == null ? null : (size! * MediaQuery.devicePixelRatioOf(context)).round();
     final child = url == null
         ? placeholder
         : CachedNetworkImage(
             imageUrl: url!,
+            memCacheWidth: px,
+            memCacheHeight: px,
             fit: fit,
             fadeInDuration: Motion.slow,
             fadeOutDuration: Duration.zero,
@@ -551,26 +557,75 @@ class Pill extends StatelessWidget {
   }
 }
 
+/// A designed empty or error state: an icon in a soft disc, a title, a line of help, and an
+/// action. Used for errors, offline, no results and empty lists.
+class EmptyState extends StatelessWidget {
+  const EmptyState({super.key, required this.icon, required this.title, this.body, this.action, this.onAction});
+  final IconData icon;
+  final String title;
+  final String? body, action;
+  final VoidCallback? onAction;
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 72,
+            height: 72,
+            decoration: BoxDecoration(color: c.text.withValues(alpha: 0.07), shape: BoxShape.circle),
+            child: Icon(icon, size: 30, color: c.muted),
+          ),
+          const SizedBox(height: 18),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, letterSpacing: -0.3),
+          ),
+          if (body != null) ...[
+            const SizedBox(height: 6),
+            Text(body!, textAlign: TextAlign.center, style: TextStyle(color: c.muted, height: 1.45)),
+          ],
+          if (action != null && onAction != null) ...[
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: onAction,
+              style: FilledButton.styleFrom(
+                backgroundColor: c.solid,
+                foregroundColor: c.solidFg,
+                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+                shape: const StadiumBorder(),
+              ),
+              child: Text(action!, style: const TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// A failed load: offline (no connection) or the server's problem (with its message), and a
+/// retry.
 class ErrorRetry extends StatelessWidget {
-  const ErrorRetry({super.key, required this.onRetry, this.message});
+  const ErrorRetry({super.key, required this.onRetry, this.message, this.error});
   final VoidCallback onRetry;
   final String? message;
+  final Object? error;
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.all(32),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          message ?? context.l.offline,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: context.sfm.muted),
-        ),
-        const SizedBox(height: 12),
-        OutlinedButton(onPressed: onRetry, child: Text(context.l.retry)),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final server = error is ApiError;
+    return EmptyState(
+      icon: server ? AppIcons.warning : AppIcons.offline,
+      title: server ? context.l.serverErrorTitle : context.l.offlineTitle,
+      body: message ?? (server ? (error as ApiError).message : context.l.offline),
+      action: context.l.retry,
+      onAction: onRetry,
+    );
+  }
 }
 
 /// Loads once and rebuilds with the result; `retry` re-runs. [frame], when given, wraps the
@@ -596,6 +651,7 @@ class _LoaderState<T> extends State<Loader<T>> {
         return frame(
           context,
           ErrorRetry(
+            error: s.error,
             onRetry: () => setState(() {
               _f = widget.load();
             }),

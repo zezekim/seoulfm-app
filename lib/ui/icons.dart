@@ -28,12 +28,14 @@ abstract final class AppIcons {
   static const IconData more = LucideIcons.ellipsis;
   static const IconData music = LucideIcons.music;
   static const IconData next = LucideIcons.chevronRight;
+  static const IconData offline = LucideIcons.wifiOff;
   static const IconData output = LucideIcons.speaker;
   static const IconData privacy = LucideIcons.shield;
   static const IconData quality = LucideIcons.audioLines;
   static const IconData radio = LucideIcons.radio;
   static const IconData request = LucideIcons.listMusic;
   static const IconData search = LucideIcons.search;
+  static const IconData searchEmpty = LucideIcons.searchX;
   static const IconData share = LucideIcons.share;
   static const IconData shuffle = LucideIcons.shuffle;
   static const IconData sleep = LucideIcons.moon;
