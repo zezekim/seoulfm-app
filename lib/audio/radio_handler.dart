@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:seoulfm/data/app_language.dart';
@@ -98,6 +99,25 @@ class RadioHandler extends BaseAudioHandler {
   bool _useFallback = false;
   Timer? _recoverTimer, _beatTimer, _sleepTimer;
   String? _lastBeatState;
+
+  /// Analytics names for the heartbeat's `player`. Fixed: the dashboard groups by them.
+  static const _playerName = {TargetPlatform.iOS: 'flutter-ios', TargetPlatform.android: 'flutter-android'};
+
+  /// The session has sent a beat (so the next fresh play starts a new one), and when it paused.
+  bool _sessionBeaten = false;
+  DateTime? _pausedAt;
+
+  /// A pause longer than this, or a stop, ends the listening session.
+  static const _sessionGap = Duration(minutes: 30);
+
+  /// Interrupted by the system (a call, another app's audio): reported as paused.
+  bool _interrupted = false;
+
+  /// What the device is on (`net_type`), kept current by connectivity_plus.
+  String? _netType;
+
+  /// Whether the app is on screen (the heartbeat's `visibility`); set by `AppState`.
+  bool appVisible = true;
   int _beatEvery = 30;
   DateTime? _startAt;
   int? _startupMs;
@@ -117,11 +137,19 @@ class RadioHandler extends BaseAudioHandler {
     await session.configure(const AudioSessionConfiguration.music());
     session.interruptionEventStream.listen((e) {
       if (e.begin && e.type != AudioInterruptionType.duck) {
-        if (wantPlaying.value) _player.pause();
+        if (wantPlaying.value) {
+          _interrupted = true;
+          _player.pause();
+          _heartbeatOnChange(force: true);
+        }
       } else if (!e.begin && e.type == AudioInterruptionType.pause && wantPlaying.value) {
+        _interrupted = false;
         play();
+      } else if (!e.begin) {
+        _interrupted = false;
       }
     });
+    _watchNetwork();
     session.becomingNoisyEventStream.listen((_) => pause());
 
     _player.playbackEventStream.listen((_) => _broadcast(), onError: (Object e, StackTrace _) => _recover('$e'));
@@ -284,6 +312,15 @@ class RadioHandler extends BaseAudioHandler {
       if (list.isEmpty) return;
       _channel = list.first;
     }
+    final fresh = _lastBeatState == 'stopped' ||
+        (_pausedAt != null && DateTime.now().difference(_pausedAt!) > _sessionGap);
+    if (_sessionBeaten && fresh) {
+      Session.newListeningSession();
+      _sessionBeaten = false;
+      _rebuffers = 0;
+    }
+    _pausedAt = null;
+    _interrupted = false;
     wantPlaying.value = true;
     _broadcast();
     final stale = _freshAt == null || DateTime.now().difference(_freshAt!) > _freshFor;
@@ -300,6 +337,7 @@ class RadioHandler extends BaseAudioHandler {
   @override
   Future<void> pause() async {
     wantPlaying.value = false;
+    _pausedAt = DateTime.now();
     listeningSince.value = null;
     _recoverTimer?.cancel();
     await _fade(0, _fadeOut);
@@ -493,21 +531,50 @@ class RadioHandler extends BaseAudioHandler {
     if (name == 'tune' && extras?['key'] is String) return playFromMediaId(extras!['key'] as String);
   }
 
+  /// Swiped away from recents (Android). A paused radio stops, and says so, so the session
+  /// ends now rather than timing out on the dashboard.
   @override
   Future<void> onTaskRemoved() async {
     if (!wantPlaying.value) await stop();
   }
 
+  /// The app is going away (process detached): tell the dashboard the session is over.
+  Future<void> finalBeat() => _beat(state: 'stopped');
+
+  void _watchNetwork() {
+    String? name(List<ConnectivityResult> r) {
+      if (r.contains(ConnectivityResult.wifi)) return 'wifi';
+      if (r.contains(ConnectivityResult.ethernet)) return 'ethernet';
+      if (r.contains(ConnectivityResult.mobile)) return 'cellular';
+      if (r.contains(ConnectivityResult.bluetooth)) return 'bluetooth';
+      if (r.contains(ConnectivityResult.none)) return 'none';
+      return r.isEmpty ? null : 'other';
+    }
+
+    final c = Connectivity();
+    c.checkConnectivity().then((r) => _netType = name(r)).catchError((_) => null);
+    c.onConnectivityChanged.listen((r) => _netType = name(r), onError: (_) {});
+  }
+
   // ── Listener heartbeat ──────────────────────────────────────────────────
 
   String get _beatState {
+    if (_interrupted) return 'paused';
     if (wantPlaying.value) return _player.playing && !buffering.value ? 'playing' : 'buffering';
     return _player.processingState == ProcessingState.idle ? 'stopped' : 'paused';
   }
 
+  DateTime? _lastBeatAt;
+
   void _heartbeatOnChange({bool force = false}) {
     final state = _beatState;
-    if (!force && state == _lastBeatState) return;
+    // Nothing to report until the session has played (a tune-in at launch is not a listen).
+    if (!_sessionBeaten && state != 'playing' && state != 'buffering') return;
+    if (state == _lastBeatState) {
+      if (!force) return;
+      // The same state twice in a row (pause() and the player's own event): send it once.
+      if (_lastBeatAt != null && DateTime.now().difference(_lastBeatAt!) < const Duration(seconds: 2)) return;
+    }
     _lastBeatState = state;
     _beat();
     _rearm();
@@ -520,24 +587,29 @@ class RadioHandler extends BaseAudioHandler {
     }
   }
 
-  Future<void> _beat() async {
+  Future<void> _beat({String? state}) async {
     final c = _channel;
     if (c == null) return;
+    _sessionBeaten = true;
+    _lastBeatAt = DateTime.now();
     try {
-      final ack = await api.heartbeat({
+      final body = {
         'session_id': Session.sessionId,
         'station': c.key,
-        'state': _beatState,
-        'player': kIsWeb ? 'flutter-web' : 'flutter-${defaultTargetPlatform.name.toLowerCase()}',
+        'state': state ?? _beatState,
+        'player': _playerName[defaultTargetPlatform] ?? 'flutter-${defaultTargetPlatform.name.toLowerCase()}',
         'app_version': Config.appVersion,
-        // AAC rung unknown on the native players; the API keeps the last non-null value.
-        'bitrate_kbps': null,
+        // The AAC rung playing (one variant, not the adaptive master); none for lossless.
+        'bitrate_kbps': losslessActive.value ? null : aacKbps.value,
+        'net_type': _netType,
         'startup_ms': _startupMs,
         'rebuffer_count': _rebuffers,
-        'visibility': 'visible',
+        'visibility': appVisible ? 'visible' : 'hidden',
         'volume': _player.volume.clamp(0, 1),
         'muted': false,
-      });
+      };
+      if (kDebugMode) debugPrint('radio: beat ${body['state']} ${body['bitrate_kbps']}kbps ${body['net_type']} ${body['visibility']} session=${(body['session_id'] as String).substring(0, 6)}');
+      final ack = await api.heartbeat(body);
       final next = ack['next_heartbeat_seconds'];
       if (next is num && next >= 5 && next.toInt() != _beatEvery) {
         _beatEvery = next.toInt();
@@ -546,3 +618,4 @@ class RadioHandler extends BaseAudioHandler {
     } catch (_) {}
   }
 }
+

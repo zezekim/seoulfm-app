@@ -3,12 +3,16 @@ import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-/// Identity shared by heartbeats, requests, votes and ratings (lib/session.ts):
-/// a random session id per app launch, and an anonymous listener id kept on the device.
+/// Identity shared by heartbeats, requests, votes and ratings (lib/session.ts): a random id per
+/// listening session (new on each fresh play, kept across station changes; see
+/// `RadioHandler`), and an anonymous listener id kept on the device.
 class Session {
   Session._();
   static late final SharedPreferences prefs;
-  static final String sessionId = _hex32();
+  static String sessionId = _hex32();
+
+  /// Starts a new listening session (a fresh play after a stop or a long pause).
+  static void newListeningSession() => sessionId = _hex32();
   static late final String listenerId;
 
   static Future<void> init() async {

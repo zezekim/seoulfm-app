@@ -119,7 +119,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _foreground = state == AppLifecycleState.resumed;
+    radio.appVisible = _foreground;
     _syncStationsPolling();
+    // The app is being torn down: end the listening session on the dashboard now.
+    if (state == AppLifecycleState.detached) radio.finalBeat();
   }
 
   /// Other stations are polled while the app is on screen, or while it plays (the car lists them).
