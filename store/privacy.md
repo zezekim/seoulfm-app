@@ -18,14 +18,14 @@ update all three.
 | Bot checks for requests and votes (Cloudflare Turnstile, in a web view) | Cloudflare | Fraud and spam prevention | `lib/ui/widgets/turnstile.dart` |
 | A report of a dedication (the dedication's details and the listener ID) | Email to the team, if the listener sends it | Moderation | `lib/ui/widgets/dedication_actions.dart` |
 | Crash reports | Sentry, **only if `SENTRY_DSN` is set** (it isn't today) | Fixing crashes | `lib/main.dart` |
+| The IP address of every API call, which the API stores and turns into a country | SeoulFM API | Where listeners are, for the dashboard | (server side) |
 
-No account, no email address, no contacts, no location, no photos, no advertising ID, no
+No account, no email address, no contacts, no precise location (no GPS), no photos, no advertising ID, no
 third-party analytics or advertising SDKs. Purchases (tips, the monthly supporter subscription)
 are handled entirely by Apple and Google; the app doesn't send them anywhere.
 
-**Confirm with the backend team before submitting:** does the API store IP addresses, or turn
-them into a country or city for the dashboard? If it does, add **Coarse Location** (Apple) /
-**Approximate location** (Google), purpose Analytics, not linked to identity.
+The backend team confirmed (2026-10-02) that the API stores IP addresses and turns them into
+countries, so both stores list approximate location.
 
 ## Apple: App Privacy (App Store Connect → App Privacy)
 
@@ -39,6 +39,7 @@ them into a country or city for the dashboard? If it does, add **Coarse Location
 | Diagnostics → **Performance Data** (bitrate, start-up time, rebuffers) | Analytics | No | No |
 | Diagnostics → **Other Diagnostic Data** (Turnstile's bot checks) | App Functionality | No | No |
 | User Content → **Other User Content** (display name and dedication on a request) | App Functionality | No | No |
+| Location → **Coarse Location** (country, from the IP address) | Analytics | No | No |
 
 If Sentry is turned on, add Diagnostics → **Crash Data**, App Functionality, not linked.
 
@@ -62,11 +63,12 @@ anything that identifies a person (there are no accounts).
 | App info and performance → **Diagnostics** | Yes | Required | Analytics, App functionality (fraud prevention) |
 | App info and performance → **Crash logs** | Only with Sentry on | Required | App functionality |
 | Device or other IDs → **Device or other IDs** | Yes | Required | Analytics, App functionality |
+| Location → **Approximate location** (country, from the IP address) | Yes | Required | Analytics |
 
 Mark none of them as processed ephemerally, except Turnstile's checks.
 
 ## Privacy policy
 
 Both stores need a privacy policy URL: `https://seoul.fm/privacy/`. It should mention the
-anonymous listener ID, heartbeats, dedications being public, Cloudflare Turnstile, and (if on)
-Sentry.
+anonymous listener ID, heartbeats, IP addresses and the country taken from them, dedications
+being public, Cloudflare Turnstile, and (if on) Sentry.

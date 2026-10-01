@@ -60,11 +60,16 @@ class Api {
     }
     if (res.statusCode < 200 || res.statusCode >= 300) {
       final err = body is Map ? (body['error'] as Map?)?.cast<String, dynamic>() : null;
+      final detail = (err?['detail'] as Map?)?.cast<String, dynamic>() ?? const <String, dynamic>{};
+      // A validation error's own message is generic ("request body or parameters are
+      // invalid"); the field's says what to do ("The captcha was not accepted…").
+      final errors = detail['errors'];
+      final fieldMessage = errors is List && errors.isNotEmpty && errors.first is Map ? (errors.first as Map)['msg'] : null;
       throw ApiError(
         res.statusCode,
         (err?['code'] as String?) ?? 'http_error',
-        (err?['message'] as String?) ?? 'API error: ${res.statusCode}',
-        (err?['detail'] as Map?)?.cast<String, dynamic>() ?? const {},
+        fieldMessage is String && fieldMessage.isNotEmpty ? fieldMessage : (err?['message'] as String?) ?? 'API error: ${res.statusCode}',
+        detail,
       );
     }
     return body is Map ? body.cast<String, dynamic>() : <String, dynamic>{};

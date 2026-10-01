@@ -18,7 +18,9 @@ class Config {
 
   /// Cloudflare Turnstile site key; empty disables the captcha (development only:
   /// the API requires it for writes in production).
-  static const turnstileSiteKey = String.fromEnvironment('TURNSTILE_SITE_KEY');
+  /// The site's Turnstile key (public: the site serves it in its pages). The API requires a
+  /// captcha for requests and votes, so builds default to it rather than to none.
+  static const turnstileSiteKey = String.fromEnvironment('TURNSTILE_SITE_KEY', defaultValue: '0x4AAAAAAEz6FaAbjWEfG2eN');
   static bool get captchaEnabled => turnstileSiteKey.isNotEmpty;
 
   /// Sentry DSN for crash and error reports; empty turns reporting off (nothing is sent).

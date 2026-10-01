@@ -3,6 +3,7 @@ import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/screens/album_screen.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
@@ -142,21 +143,27 @@ class ArtistScreen extends StatelessWidget {
                       separatorBuilder: (_, _) => const SizedBox(width: 12),
                       itemBuilder: (_, i) {
                         final a = p.albums[i];
-                        return SizedBox(
-                          width: 140,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Artwork(a.artworkUrl, size: 140, radius: Radii.md),
-                              const SizedBox(height: 6),
-                              Text(
-                                a.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-                              ),
-                              if (a.year != null) Text('${a.year}', style: TextStyle(color: c.muted, fontSize: 12)),
-                            ],
+                        return Pressable(
+                          onTap: () => Nav.push(
+                            AlbumScreen(album: a, artist: p.artist.name.isEmpty ? (name ?? '') : p.artist.name),
+                          ),
+                          semanticLabel: a.title,
+                          child: SizedBox(
+                            width: 140,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Artwork(a.artworkUrl, size: 140, radius: Radii.md),
+                                const SizedBox(height: 6),
+                                Text(
+                                  a.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                                ),
+                                if (a.year != null) Text('${a.year}', style: TextStyle(color: c.muted, fontSize: 12)),
+                              ],
+                            ),
                           ),
                         );
                       },

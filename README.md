@@ -27,7 +27,7 @@ every REST call returns 401 and only the tuned station's live feed works.
 | define | default | what |
 |---|---|---|
 | `SEOULFM_API_KEY` | none | A **publishable** v3 key for the app. Never a partner key. |
-| `TURNSTILE_SITE_KEY` | none (captcha off) | Turnstile for requests and votes. The API requires it in production. |
+| `TURNSTILE_SITE_KEY` | the site's key | Turnstile for requests and votes (the API requires it). Leave it out: an empty value turns the captcha off and every request fails. |
 | `SEOULFM_API_URL` | `https://api.seoul.fm/v3` | |
 | `SEOULFM_SITE_URL` | `https://seoul.fm` | Artwork copies (`/api/art/`), artist photos, share links. |
 | `SEOULFM_RUNTIME_CONFIG_URL` | dash-api runtime config | Operators' notices and listener delay. |

@@ -35,7 +35,6 @@ class _TurnstileState extends State<Turnstile> {
   @override
   void initState() {
     super.initState();
-    final dark = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.transparent)
@@ -61,10 +60,21 @@ class _TurnstileState extends State<Turnstile> {
               widget.onToken(m.message);
           }
         },
-      )
-      ..loadHtmlString(_html(dark ? 'dark' : 'light'), baseUrl: '${Config.siteUrl}/');
+      );
     // Nothing rendered in time (offline, script blocked): don't leave the user waiting.
     if (Config.captchaEnabled) _timeout = Timer(const Duration(seconds: 15), _fail);
+  }
+
+  bool _loaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_loaded) return;
+    _loaded = true;
+    // The app's theme, not the phone's: a dark app gets a dark captcha even in light mode.
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    _controller.loadHtmlString(_html(dark ? 'dark' : 'light'), baseUrl: '${Config.siteUrl}/');
   }
 
   void _fail() {
