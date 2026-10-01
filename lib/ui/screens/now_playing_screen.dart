@@ -4,24 +4,27 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
+import 'package:seoulfm/platform/screenshots.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/state/stations_now_playing.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
+import 'package:seoulfm/ui/screens/lyrics_screen.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/marathon_panel.dart';
 import 'package:seoulfm/ui/widgets/notices.dart';
+import 'package:seoulfm/ui/widgets/player_progress.dart';
 import 'package:seoulfm/ui/widgets/request_shelf.dart';
+import 'package:seoulfm/ui/widgets/share_sheet.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 
 /// The full-screen player, opened from the player bar (`Nav.showNowPlaying`). The player fills
@@ -51,9 +54,30 @@ class _NowPlayingPage extends StatefulWidget {
 
 class _NowPlayingPageState extends State<_NowPlayingPage> {
   final _scroll = ScrollController();
-  bool _showLyrics = false;
   String? _lyricsFor;
   Lyrics? _lyrics;
+
+  @override
+  void initState() {
+    super.initState();
+    Screenshots.taken.addListener(_onScreenshot);
+  }
+
+  /// A screenshot of the player: offer the share sheet, on the lyrics card when there are lyrics.
+  void _onScreenshot() {
+    if (mounted && ModalRoute.of(context)?.isCurrent == true) _share(lyricsFirst: true);
+  }
+
+  void _share({bool lyricsFirst = false}) {
+    final t = context.read<NowPlayingController>().track;
+    final channel = context.read<ChannelController>().active;
+    if (t == null) {
+      shareStation(context, channel);
+      return;
+    }
+    final lyrics = _lyrics != null && !_lyrics!.isEmpty ? _lyrics : null;
+    showShareSheet(context, track: t, lyrics: lyrics, color: lyricsColor(channel.color), lyricsFirst: lyricsFirst);
+  }
 
   void _loadLyrics(Track? t) {
     final id = t?.id;
@@ -70,12 +94,13 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
   }
 
   void _openLyrics() {
-    setState(() => _showLyrics = true);
-    _scroll.animateTo(0, duration: Motion.slow, curve: Motion.inOut);
+    final t = context.read<NowPlayingController>().track;
+    if (_lyrics != null && t != null) openLyrics(context, lyrics: _lyrics!, track: t);
   }
 
   @override
   void dispose() {
+    Screenshots.taken.removeListener(_onScreenshot);
     _scroll.dispose();
     super.dispose();
   }
@@ -87,7 +112,6 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
     final t = np.track;
     _loadLyrics(t);
     final hasLyrics = _lyrics != null && !_lyrics!.isEmpty;
-    final showLyrics = _showLyrics && hasLyrics;
 
     return Scaffold(
       backgroundColor: const Color(0xFF09090B),
@@ -114,11 +138,7 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
                 SliverToBoxAdapter(
                   child: SizedBox(
                     height: box.maxHeight - 28,
-                    child: _Player(
-                      lyrics: showLyrics ? _lyrics : null,
-                      hasLyrics: hasLyrics,
-                      onToggleLyrics: () => setState(() => _showLyrics = !_showLyrics),
-                    ),
+                    child: _Player(hasLyrics: hasLyrics, onOpenLyrics: _openLyrics, onShare: _share),
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -142,8 +162,13 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
                           ),
                         ),
                         const Notices(lossless: true),
-                        if (hasLyrics && !showLyrics)
-                          _LyricsCard(lyrics: _lyrics!, color: channel.color, onExpand: _openLyrics),
+                        if (hasLyrics)
+                          _LyricsCard(
+                            lyrics: _lyrics!,
+                            color: lyricsColor(channel.color),
+                            onExpand: _openLyrics,
+                            onShare: () => _share(lyricsFirst: true),
+                          ),
                         const _UpNext(),
                         if (channel.marathon) const MarathonPanel() else RequestShelf(key: ValueKey(channel.key)),
                         const _Recent(),
@@ -190,12 +215,10 @@ class _NowPlayingPageState extends State<_NowPlayingPage> {
 // ── The player ────────────────────────────────────────────────────────────
 
 class _Player extends StatelessWidget {
-  const _Player({required this.lyrics, required this.hasLyrics, required this.onToggleLyrics});
+  const _Player({required this.hasLyrics, required this.onOpenLyrics, required this.onShare});
 
-  /// The lyrics to show in place of the cover, or null for the cover.
-  final Lyrics? lyrics;
   final bool hasLyrics;
-  final VoidCallback onToggleLyrics;
+  final VoidCallback onOpenLyrics, onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -268,10 +291,9 @@ class _Player extends StatelessWidget {
                   opacity: hasLyrics ? 1 : 0,
                   duration: Motion.base,
                   child: IconButton(
-                    onPressed: hasLyrics ? onToggleLyrics : null,
+                    onPressed: hasLyrics ? onOpenLyrics : null,
                     tooltip: context.l.lyrics,
-                    style: IconButton.styleFrom(backgroundColor: lyrics != null ? white.withValues(alpha: 0.15) : null),
-                    icon: Icon(Icons.lyrics_outlined, color: white.withValues(alpha: lyrics != null ? 1 : 0.75)),
+                    icon: Icon(Icons.lyrics_outlined, color: white.withValues(alpha: 0.85)),
                   ),
                 ),
               ],
@@ -286,12 +308,7 @@ class _Player extends StatelessWidget {
                 if (v.abs() < 300) return;
                 v < 0 ? radio.skipToNext() : radio.skipToPrevious();
               },
-              child: lyrics != null
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(28, 16, 28, 20),
-                      child: LyricsView(key: const ValueKey('lyrics'), lyrics: lyrics!),
-                    )
-                  : const SizedBox.expand(),
+              child: const SizedBox.expand(),
             ),
           ),
           Padding(
@@ -352,7 +369,7 @@ class _Player extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 18),
-                const _Progress(),
+                const PlayerProgress(),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -413,7 +430,7 @@ class _Player extends StatelessWidget {
                     const Spacer(),
                     IconButton(
                       tooltip: context.l.share,
-                      onPressed: () => t != null ? shareSong(context, t) : shareStation(context, channel),
+                      onPressed: onShare,
                       icon: Icon(Icons.ios_share_rounded, color: white.withValues(alpha: 0.75), size: 22),
                     ),
                   ],
@@ -426,7 +443,7 @@ class _Player extends StatelessWidget {
     );
 
     // The cover runs edge to edge from the top of the screen and melts into its own glow
-    // (Apple Music's full-bleed player). With lyrics up, the glow alone is the backdrop.
+    // (Apple Music's full-bleed player).
     return LayoutBuilder(
       builder: (context, box) {
         // Down to just above the title, as square as that allows: on a tall phone the sides of
@@ -439,12 +456,7 @@ class _Player extends StatelessWidget {
               left: 0,
               right: 0,
               height: art,
-              child: AnimatedOpacity(
-                opacity: lyrics == null ? 1 : 0,
-                duration: Motion.slow,
-                curve: Motion.out,
-                child: _BleedArt(url: t?.artworkUrl),
-              ),
+              child: _BleedArt(url: t?.artworkUrl),
             ),
             // Keeps the header readable on a bright cover.
             Positioned(
@@ -529,64 +541,6 @@ class _QualityBadge extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-/// Elapsed and −remaining on the listener's own clock (`positionMs`), ticking each second.
-class _Progress extends StatefulWidget {
-  const _Progress();
-  @override
-  State<_Progress> createState() => _ProgressState();
-}
-
-class _ProgressState extends State<_Progress> {
-  late final Timer _t;
-
-  @override
-  void initState() {
-    super.initState();
-    _t = Timer.periodic(const Duration(seconds: 1), (_) => setState(() {}));
-  }
-
-  @override
-  void dispose() {
-    _t.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final np = context.read<NowPlayingController>();
-    final pos = np.positionMs() ?? 0;
-    final dur = np.track?.durationMs ?? 0;
-    final f = dur > 0 ? (pos / dur).clamp(0.0, 1.0) : 0.0;
-    final style = TextStyle(
-      fontSize: 11,
-      fontWeight: FontWeight.w500,
-      color: Colors.white.withValues(alpha: 0.5),
-      fontFeatures: tabular,
-    );
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(9),
-          child: LinearProgressIndicator(
-            value: f,
-            minHeight: 4,
-            backgroundColor: Colors.white.withValues(alpha: 0.2),
-            valueColor: AlwaysStoppedAnimation(Colors.white.withValues(alpha: 0.9)),
-          ),
-        ),
-        const SizedBox(height: 6),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(fmtDuration(pos), style: style),
-            Text(dur > 0 ? '−${fmtDuration(dur - pos)}' : '', style: style),
-          ],
-        ),
-      ],
     );
   }
 }
@@ -749,50 +703,61 @@ class _StationRow extends StatelessWidget {
 
 /// A peek at the lyrics in the station's colour; "Show lyrics" puts them in place of the cover.
 class _LyricsCard extends StatelessWidget {
-  const _LyricsCard({required this.lyrics, required this.color, required this.onExpand});
+  const _LyricsCard({required this.lyrics, required this.color, required this.onExpand, required this.onShare});
   final Lyrics lyrics;
   final Color color;
-  final VoidCallback onExpand;
+  final VoidCallback onExpand, onShare;
 
   @override
   Widget build(BuildContext context) {
+    final fg = LyricsPalette.on(color).sung;
+    Widget round(IconData icon, String tip, VoidCallback onTap) => IconButton(
+      tooltip: tip,
+      onPressed: onTap,
+      style: IconButton.styleFrom(backgroundColor: Colors.black.withValues(alpha: 0.22), fixedSize: const Size(40, 40)),
+      icon: Icon(icon, size: 20, color: fg),
+    );
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
-      child: Container(
-        height: 320,
-        decoration: BoxDecoration(
-          color: Color.lerp(color, Colors.black, 0.45),
-          borderRadius: BorderRadius.circular(Radii.lg),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(18, 10, 6, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      context.l.lyrics,
-                      style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
+      child: GestureDetector(
+        onTap: onExpand,
+        child: Container(
+          height: 360,
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(Radii.lg)),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 14, 12, 0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        context.l.lyrics,
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: fg),
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: onExpand,
-                    style: TextButton.styleFrom(foregroundColor: Colors.white),
-                    child: Text(context.l.showLyrics),
-                  ),
-                ],
+                    round(Icons.ios_share_rounded, context.l.share, onShare),
+                    const SizedBox(width: 8),
+                    round(Icons.open_in_full_rounded, context.l.showLyrics, onExpand),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: LyricsView(lyrics: lyrics, compact: true),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: LyricsView(
+                    lyrics: lyrics,
+                    background: color,
+                    fontSize: 24,
+                    interactive: false,
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -925,102 +890,6 @@ class _Recent extends StatelessWidget {
             ),
           ),
       ],
-    );
-  }
-}
-
-// ── Lyrics ────────────────────────────────────────────────────────────────
-
-/// Lyrics: synced lines follow the listener's position and scroll themselves; plain text scrolls.
-/// [compact] is the smaller type for the card under the player.
-class LyricsView extends StatefulWidget {
-  const LyricsView({super.key, required this.lyrics, this.onImage = true, this.compact = false});
-  final Lyrics lyrics;
-  final bool onImage, compact;
-  @override
-  State<LyricsView> createState() => _LyricsViewState();
-}
-
-class _LyricsViewState extends State<LyricsView> {
-  final _scroll = ScrollController();
-  final _keys = <int, GlobalKey>{};
-  Timer? _t;
-  int _active = -1;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.lyrics.synced) _t = Timer.periodic(const Duration(milliseconds: 300), (_) => _follow());
-  }
-
-  void _follow() {
-    final pos = context.read<NowPlayingController>().positionMs();
-    if (pos == null) return;
-    final lines = widget.lyrics.lines;
-    var i = -1;
-    for (var k = 0; k < lines.length; k++) {
-      if (lines[k].startMs <= pos) i = k;
-    }
-    if (i == _active) return;
-    setState(() => _active = i);
-    // Scroll only this list: `Scrollable.ensureVisible` would also move the page around it.
-    final box = _keys[i]?.currentContext?.findRenderObject();
-    if (box == null || !_scroll.hasClients) return;
-    final target = RenderAbstractViewport.of(box).getOffsetToReveal(box, 0.35).offset;
-    final p = _scroll.position;
-    _scroll.animateTo(target.clamp(p.minScrollExtent, p.maxScrollExtent), duration: Motion.slow, curve: Motion.inOut);
-  }
-
-  @override
-  void dispose() {
-    _t?.cancel();
-    _scroll.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final base = widget.onImage ? Colors.white : context.sfm.text;
-    final size = widget.compact ? 18.0 : 22.0;
-    if (!widget.lyrics.synced) {
-      return SingleChildScrollView(
-        controller: _scroll,
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Text(
-          widget.lyrics.plain ?? '',
-          style: TextStyle(
-            fontSize: size - 4,
-            height: 1.6,
-            fontWeight: FontWeight.w600,
-            color: base.withValues(alpha: 0.85),
-          ),
-        ),
-      );
-    }
-    return ListView.builder(
-      controller: _scroll,
-      itemCount: widget.lyrics.lines.length,
-      padding: EdgeInsets.symmetric(vertical: widget.compact ? 40 : 120),
-      itemBuilder: (_, i) {
-        final key = _keys.putIfAbsent(i, GlobalKey.new);
-        final line = widget.lyrics.lines[i];
-        final active = i == _active;
-        return AnimatedDefaultTextStyle(
-          key: key,
-          duration: Motion.base,
-          style: TextStyle(
-            fontSize: size,
-            height: 1.35,
-            fontWeight: FontWeight.w700,
-            color: base.withValues(alpha: active ? 1 : (i < _active ? 0.35 : 0.5)),
-            fontFamilyFallback: const ['Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR'],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(line.text.isEmpty ? '♪' : line.text),
-          ),
-        );
-      },
     );
   }
 }

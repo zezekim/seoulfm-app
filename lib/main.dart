@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
+import 'package:seoulfm/platform/screenshots.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/theme.dart';
@@ -33,6 +34,7 @@ Future<void> main() async {
   );
 
   final app = AppState(radio)..start();
+  Screenshots.start();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(ChangeNotifierProvider.value(value: app, child: const SeoulFmApp()));
 }

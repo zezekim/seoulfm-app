@@ -434,4 +434,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showLyrics => 'Show lyrics';
+
+  @override
+  String get shareCardSong => 'Song';
+
+  @override
+  String get editLyrics => 'Edit lyrics';
+
+  @override
+  String get copyLink => 'Copy link';
+
+  @override
+  String get linkCopied => 'Copied';
+
+  @override
+  String get shareImage => 'Share image';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String pickLines(int count) {
+    return 'Pick up to $count lines';
+  }
 }

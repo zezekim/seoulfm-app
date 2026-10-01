@@ -829,6 +829,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show lyrics'**
   String get showLyrics;
+
+  /// No description provided for @shareCardSong.
+  ///
+  /// In en, this message translates to:
+  /// **'Song'**
+  String get shareCardSong;
+
+  /// No description provided for @editLyrics.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit lyrics'**
+  String get editLyrics;
+
+  /// No description provided for @copyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get copyLink;
+
+  /// No description provided for @linkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied'**
+  String get linkCopied;
+
+  /// No description provided for @shareImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share image'**
+  String get shareImage;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @pickLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up to {count} lines'**
+  String pickLines(int count);
 }
 
 class _AppLocalizationsDelegate

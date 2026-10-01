@@ -121,5 +121,12 @@
   "playingFrom": "재생 중인 채널",
   "chooseStation": "채널 선택",
   "listenNow": "지금 듣기",
-  "showLyrics": "가사 보기"
+  "showLyrics": "가사 보기",
+  "shareCardSong": "곡",
+  "editLyrics": "가사 고르기",
+  "copyLink": "링크 복사",
+  "linkCopied": "복사됨",
+  "shareImage": "이미지 공유",
+  "done": "완료",
+  "pickLines": "최대 {count}줄까지 고를 수 있어요"
 }

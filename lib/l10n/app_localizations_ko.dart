@@ -417,4 +417,27 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get showLyrics => '가사 보기';
+
+  @override
+  String get shareCardSong => '곡';
+
+  @override
+  String get editLyrics => '가사 고르기';
+
+  @override
+  String get copyLink => '링크 복사';
+
+  @override
+  String get linkCopied => '복사됨';
+
+  @override
+  String get shareImage => '이미지 공유';
+
+  @override
+  String get done => '완료';
+
+  @override
+  String pickLines(int count) {
+    return '최대 $count줄까지 고를 수 있어요';
+  }
 }

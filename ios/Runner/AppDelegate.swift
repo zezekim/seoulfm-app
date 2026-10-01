@@ -14,11 +14,19 @@ import UIKit
     return engine
   }()
 
+  /// Tells Dart when the listener takes a screenshot, so the player can offer to share.
+  private lazy var screenshots = FlutterMethodChannel(name: "fm.seoul/screenshots", binaryMessenger: engine.binaryMessenger)
+
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     _ = engine
+    NotificationCenter.default.addObserver(
+      forName: UIApplication.userDidTakeScreenshotNotification, object: nil, queue: .main
+    ) { [weak self] _ in
+      self?.screenshots.invokeMethod("taken", arguments: nil)
+    }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

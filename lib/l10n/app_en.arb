@@ -267,5 +267,19 @@
   "playingFrom": "Playing from",
   "chooseStation": "Choose a station",
   "listenNow": "Listen now",
-  "showLyrics": "Show lyrics"
+  "showLyrics": "Show lyrics",
+  "shareCardSong": "Song",
+  "editLyrics": "Edit lyrics",
+  "copyLink": "Copy link",
+  "linkCopied": "Copied",
+  "shareImage": "Share image",
+  "done": "Done",
+  "pickLines": "Pick up to {count} lines",
+  "@pickLines": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
