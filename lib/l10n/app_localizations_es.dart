@@ -677,6 +677,23 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI reproduce FLAC sin pérdida cuando aceptas su aviso.';
+
+  @override
+  String get moreOptions => 'Más opciones';
+
+  @override
+  String get reportDedication => 'Denunciar';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Ocultar dedicatorias de $name';
+  }
+
+  @override
+  String get reportThanks => 'Gracias por avisarnos. Lo revisaremos.';
+
+  @override
+  String get showHiddenDedications => 'Mostrar dedicatorias ocultas';
 }
 
 /// The translations for Spanish Castilian, as used in Spain (`es_ES`).
@@ -1352,4 +1369,21 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
   @override
   String get qualityLosslessNote =>
       'HIFI reproduce FLAC sin pérdidas cuando aceptas su aviso.';
+
+  @override
+  String get moreOptions => 'Más opciones';
+
+  @override
+  String get reportDedication => 'Denunciar';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Ocultar dedicatorias de $name';
+  }
+
+  @override
+  String get reportThanks => 'Gracias por avisarnos. Lo revisaremos.';
+
+  @override
+  String get showHiddenDedications => 'Mostrar dedicatorias ocultas';
 }

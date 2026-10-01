@@ -65,13 +65,27 @@ xcrun devicectl device install app --device <device udid> ../build/device/Build/
 Then trust the developer on the phone (Settings → General → VPN & Device Management). Free
 builds expire after 7 days.
 
-## Store screenshots
+## Store listings and screenshots
 
-`tool/store_screenshots.sh <simulator udid | adb serial> <locale> <dir>` drives the real app
-(`integration_test/store_test.dart`) and captures six screens with a clean 9:41 status bar;
-`python3 tool/compose_store.py <dir> <out> <locale> [WxH]` frames them with a headline. Use the
-iPhone 18 Pro Max simulator for the App Store (1320 x 2868, 6.9-inch) and an Android emulator with
-`1080x1920` for Google Play (which allows at most 2:1). Headlines are in the script (en, ko).
+`store/` holds everything the App Store and Google Play ask for, in every language:
+
+- `store/ios/<locale>/` and `store/android/<locale>/`: name, subtitle, keywords, descriptions
+  and release notes, in fastlane's `deliver` and `supply` layout. `store/locales.json` maps the
+  app's languages to the stores' codes (the App Store has no Kazakh).
+- `store/captions/<tag>.json`: the screenshot headlines and Play's feature graphic tagline.
+- `store/privacy.md`: the App Privacy and Data safety answers, from what the code sends.
+- `store/review.md`: categories, in-app purchases, review notes, age rating, the upload checklist.
+
+`python3 store/check_store.py` checks every file against the stores' limits.
+
+Screenshots: `tool/store_all.sh <simulator udid | adb serial> <raw dir> [tags]` drives the real
+app (`integration_test/store_test.dart`) in each language and captures six screens with a clean
+status bar; `swift tool/compose_store.swift <raw dir> <out dir> <tag> [WxH]` frames them with the
+headline (macOS sets the text, so Arabic, Thai and CJK shape properly), and
+`swift tool/compose_store.swift --feature <out.png> <tag>` draws Play's 1024 x 500 feature
+graphic. Use the iPhone 18 Pro Max simulator (1320 x 2868) and the iPad Pro 13-inch
+(2064 x 2752) for the App Store, and an Android emulator framed to `1080x1920` for Google Play
+(which allows at most 2:1). The images are large, so they live outside the repo.
 
 ## Languages
 

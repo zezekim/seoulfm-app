@@ -1,0 +1,7 @@
+A nova SeoulFM, refeita do zero.
+• Uma nova tela inicial que destaca todas as estações
+• Letras sincronizadas, com cards para compartilhar
+• Peça qualquer música e adicione uma dedicatória
+• Escolha a qualidade do streaming
+• Widget, Atividade ao Vivo e controles na Tela Bloqueada
+• 20 idiomas

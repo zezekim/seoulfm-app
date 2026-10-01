@@ -680,4 +680,22 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI memainkan FLAC tanpa kehilangan apabila anda menerima notisnya.';
+
+  @override
+  String get moreOptions => 'Lebih banyak pilihan';
+
+  @override
+  String get reportDedication => 'Laporkan';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Sembunyikan dedikasi daripada $name';
+  }
+
+  @override
+  String get reportThanks =>
+      'Terima kasih kerana memberitahu kami. Kami akan menyemaknya.';
+
+  @override
+  String get showHiddenDedications => 'Tunjukkan dedikasi yang disembunyikan';
 }

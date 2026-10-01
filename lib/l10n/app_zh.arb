@@ -193,5 +193,10 @@
   "qualityNormal": "标准",
   "qualityDataSaver": "省流量",
   "qualityFixedBody": "始终使用此音质，即使网络较弱。",
-  "qualityLosslessNote": "接受HIFI的提示后，即可播放无损FLAC。"
+  "qualityLosslessNote": "接受HIFI的提示后，即可播放无损FLAC。",
+  "moreOptions": "更多选项",
+  "reportDedication": "举报",
+  "hideDedicationsFrom": "隐藏{name}的留言",
+  "reportThanks": "感谢反馈，我们会去看看。",
+  "showHiddenDedications": "显示已隐藏的留言"
 }

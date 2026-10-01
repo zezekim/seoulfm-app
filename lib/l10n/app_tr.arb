@@ -193,5 +193,10 @@
   "qualityNormal": "Normal",
   "qualityDataSaver": "Veri tasarrufu",
   "qualityFixedBody": "Bağlantı zayıf olsa bile hep bu kalite.",
-  "qualityLosslessNote": "HIFI, uyarısını kabul ettiğinde kayıpsız FLAC çalar."
+  "qualityLosslessNote": "HIFI, uyarısını kabul ettiğinde kayıpsız FLAC çalar.",
+  "moreOptions": "Diğer seçenekler",
+  "reportDedication": "Bildir",
+  "hideDedicationsFrom": "{name} kişisinin ithaflarını gizle",
+  "reportThanks": "Bildirdiğin için teşekkürler. Bir göz atacağız.",
+  "showHiddenDedications": "Gizlenen ithafları göster"
 }

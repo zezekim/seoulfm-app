@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/state/app_state.dart';
+import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/wall_screen.dart';
@@ -37,6 +38,12 @@ class MoreScreen extends StatelessWidget {
                 trailing: Icon(AppIcons.next, color: c.muted),
                 onTap: () => Nav.push(const WallScreen()),
               ),
+              if (context.watch<Moderation>().hidesAny)
+                ListTile(
+                  leading: const Icon(AppIcons.hide),
+                  title: Text(l.showHiddenDedications),
+                  onTap: () => context.read<Moderation>().showAll(),
+                ),
               SectionHeader(l.settings),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

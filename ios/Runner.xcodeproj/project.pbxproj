@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05527CAE53E26AEFD849AA19 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F26E5FC25A4D3F37FA25D5BF /* PrivacyInfo.xcprivacy */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		173BBBE4775B22C5C90EE7A5 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 342BEBE04108C5CF12C04ACE /* WidgetKit.framework */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
@@ -18,6 +19,7 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		AB93577EAAC29B375EFC57CA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1E60A77283124CB67A328884 /* PrivacyInfo.xcprivacy */; };
 		AC04DA837820001C07D0D99F /* NowPlayingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75ADCEC5B29A4BE3E9084A7 /* NowPlayingWidget.swift */; };
 		B979938EE7DB57DC3E4225CA /* RadioLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02185B5D289A4E08429D8E51 /* RadioLiveActivity.swift */; };
 		C488C24774EB91514627F99A /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DCFE00D046370F87B8C6B01 /* ActivityKit.framework */; };
@@ -74,6 +76,7 @@
 		03364253BB07229EEAA1F0C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		1E60A77283124CB67A328884 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		2CFAC50ED3797FA246019170 /* NowPlayingWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = NowPlayingWidget.entitlements; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,6 +100,7 @@
 		CFBE25E98ADB6D15694D5C1A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D75ADCEC5B29A4BE3E9084A7 /* NowPlayingWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NowPlayingWidget.swift; sourceTree = "<group>"; };
 		E70EF6E1FC0730D22E39F596 /* NowPlayingWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NowPlayingWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F26E5FC25A4D3F37FA25D5BF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F7AE3DB73C7460E4CC84668D /* RadioActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RadioActivity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +154,7 @@
 				2CFAC50ED3797FA246019170 /* NowPlayingWidget.entitlements */,
 				F7AE3DB73C7460E4CC84668D /* RadioActivity.swift */,
 				02185B5D289A4E08429D8E51 /* RadioLiveActivity.swift */,
+				1E60A77283124CB67A328884 /* PrivacyInfo.xcprivacy */,
 			);
 			name = NowPlayingWidget;
 			path = NowPlayingWidget;
@@ -202,6 +207,7 @@
 				7884E8672EC3CC0400C636F2 /* SceneDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				601574BE6B8548C3B31180DC /* RadioActivityController.swift */,
+				F26E5FC25A4D3F37FA25D5BF /* PrivacyInfo.xcprivacy */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -331,6 +337,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB93577EAAC29B375EFC57CA /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +349,7 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				05527CAE53E26AEFD849AA19 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

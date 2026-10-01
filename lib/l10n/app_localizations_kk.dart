@@ -676,4 +676,21 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'Ескертуін қабылдасаң, HIFI шығынсыз FLAC форматында ойнайды.';
+
+  @override
+  String get moreOptions => 'Қосымша опциялар';
+
+  @override
+  String get reportDedication => 'Шағымдану';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return '$name арнауларын жасыру';
+  }
+
+  @override
+  String get reportThanks => 'Хабарлағаның үшін рахмет. Қарап шығамыз.';
+
+  @override
+  String get showHiddenDedications => 'Жасырылған арнауларды көрсету';
 }

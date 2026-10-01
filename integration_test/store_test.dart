@@ -13,9 +13,11 @@ void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   const tag = String.fromEnvironment('LOCALE', defaultValue: 'en');
 
+  // Held long enough for the capture: the log line can reach the script seconds late (the iPad
+  // simulator especially).
   Future<void> shot(WidgetTester t, String name) async {
     debugPrint('SHOT $tag-$name');
-    await wait(t, 5);
+    await wait(t, 9);
   }
 
   testWidgets('store', (t) async {

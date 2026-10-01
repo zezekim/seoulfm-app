@@ -33,6 +33,8 @@ abstract final class AppIcons {
   static const IconData lyrics = LucideIcons.micVocal;
   static const IconData mail = LucideIcons.mail;
   static const IconData more = LucideIcons.ellipsis;
+  static const IconData report = LucideIcons.flag;
+  static const IconData hide = LucideIcons.eyeOff;
   static const IconData music = LucideIcons.music;
   static const IconData next = LucideIcons.chevronRight;
   static const IconData offline = LucideIcons.wifiOff;

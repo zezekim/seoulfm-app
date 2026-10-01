@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/widgets/dedication_actions.dart';
+import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -52,7 +54,8 @@ class _WallScreenState extends State<WallScreen> {
               );
             }
             if (!s.hasData) return const SingleChildScrollView(child: SkeletonList());
-            final items = s.data!.where((w) => w.dedication != null).toList();
+            final moderation = context.watch<Moderation>();
+            final items = s.data!.where((w) => w.dedication != null && !moderation.hides(w.dedication, entryId: w.entryId)).toList();
             if (items.isEmpty) {
               return ListView(
                 children: [
@@ -103,6 +106,16 @@ class _WallScreenState extends State<WallScreen> {
                               ),
                             ),
                             Text(timeAgo(context, w.requestedAtEpoch), style: TextStyle(fontSize: 11, color: c.faint)),
+                            SizedBox(
+                              width: 32,
+                              height: 32,
+                              child: IconButton(
+                                padding: EdgeInsets.zero,
+                                tooltip: context.l.moreOptions,
+                                icon: Icon(AppIcons.more, size: 18, color: c.muted),
+                                onPressed: () => showDedicationActions(context, dedication: w.dedication!, track: w.track, entryId: w.entryId),
+                              ),
+                            ),
                           ],
                         ),
                         if (w.dedication!.message != null) ...[

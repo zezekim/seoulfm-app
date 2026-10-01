@@ -193,5 +193,10 @@
   "qualityNormal": "Biasa",
   "qualityDataSaver": "Penjimat data",
   "qualityFixedBody": "Sentiasa kualiti ini, walaupun sambungan lemah.",
-  "qualityLosslessNote": "HIFI memainkan FLAC tanpa kehilangan apabila anda menerima notisnya."
+  "qualityLosslessNote": "HIFI memainkan FLAC tanpa kehilangan apabila anda menerima notisnya.",
+  "moreOptions": "Lebih banyak pilihan",
+  "reportDedication": "Laporkan",
+  "hideDedicationsFrom": "Sembunyikan dedikasi daripada {name}",
+  "reportThanks": "Terima kasih kerana memberitahu kami. Kami akan menyemaknya.",
+  "showHiddenDedications": "Tunjukkan dedikasi yang disembunyikan"
 }

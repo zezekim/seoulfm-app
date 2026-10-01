@@ -1,0 +1,7 @@
+SeoulFM yang baru, dibangun ulang dari nol.
+• Beranda baru yang menampilkan semua stasiun
+• Lirik sinkron, dengan kartu untuk dibagikan
+• Request lagu apa pun dan tambahkan dedikasi
+• Pilih kualitas streaming
+• Android Auto dan kontrol layar kunci
+• 20 bahasa

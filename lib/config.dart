@@ -28,6 +28,9 @@ class Config {
 
   /// The commit the build came from (`--dart-define=GIT_COMMIT=$(git rev-parse --short HEAD)`).
   static const gitCommit = String.fromEnvironment('GIT_COMMIT');
+
+  /// Where reported dedications go.
+  static const reportEmail = String.fromEnvironment('SEOULFM_REPORT_EMAIL', defaultValue: 'hi@seoul.fm');
 }
 
 /// The installed build: version and build number from the app itself (pubspec's

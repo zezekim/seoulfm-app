@@ -1,0 +1,7 @@
+Le nouveau SeoulFM, entièrement reconstruit.
+• Un nouvel accueil qui met en avant toutes les stations
+• Paroles synchronisées, avec cartes à partager
+• Demandez n’importe quelle chanson et ajoutez une dédicace
+• Choisissez la qualité du streaming
+• Widget, Activité en direct et commandes sur l’écran verrouillé
+• 20 langues

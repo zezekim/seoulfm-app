@@ -193,5 +193,10 @@
   "qualityNormal": "عادية",
   "qualityDataSaver": "توفير البيانات",
   "qualityFixedBody": "هذه الجودة دائمًا، حتى مع اتصال ضعيف.",
-  "qualityLosslessNote": "يُشغّل HIFI ملفات FLAC بلا فقدان عند قبولك تنبيهه."
+  "qualityLosslessNote": "يُشغّل HIFI ملفات FLAC بلا فقدان عند قبولك تنبيهه.",
+  "moreOptions": "المزيد من الخيارات",
+  "reportDedication": "إبلاغ",
+  "hideDedicationsFrom": "إخفاء الإهداءات من ⁨{name}⁩",
+  "reportThanks": "شكرًا لإبلاغنا. سنلقي نظرة.",
+  "showHiddenDedications": "إظهار الإهداءات المخفية"
 }

@@ -1,0 +1,23 @@
+{
+  "_doc": "App language tag -> App Store Connect and Google Play locale codes. null: the store has no such language.",
+  "en":      {"ios": "en-US",   "android": "en-US"},
+  "ko":      {"ios": "ko",      "android": "ko-KR"},
+  "es":      {"ios": "es-MX",   "android": "es-419"},
+  "es-ES":   {"ios": "es-ES",   "android": "es-ES"},
+  "pt":      {"ios": "pt-BR",   "android": "pt-BR"},
+  "fr":      {"ios": "fr-FR",   "android": "fr-FR"},
+  "de":      {"ios": "de-DE",   "android": "de-DE"},
+  "it":      {"ios": "it",      "android": "it-IT"},
+  "pl":      {"ios": "pl",      "android": "pl-PL"},
+  "tr":      {"ios": "tr",      "android": "tr-TR"},
+  "ru":      {"ios": "ru",      "android": "ru-RU"},
+  "kk":      {"ios": null,      "android": "kk"},
+  "ar":      {"ios": "ar-SA",   "android": "ar"},
+  "id":      {"ios": "id",      "android": "id"},
+  "ms":      {"ios": "ms",      "android": "ms"},
+  "th":      {"ios": "th",      "android": "th"},
+  "vi":      {"ios": "vi",      "android": "vi"},
+  "ja":      {"ios": "ja",      "android": "ja-JP"},
+  "zh":      {"ios": "zh-Hans", "android": "zh-CN"},
+  "zh-Hant": {"ios": "zh-Hant", "android": "zh-TW"}
+}

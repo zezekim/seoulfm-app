@@ -677,4 +677,21 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI, uyarısını kabul ettiğinde kayıpsız FLAC çalar.';
+
+  @override
+  String get moreOptions => 'Diğer seçenekler';
+
+  @override
+  String get reportDedication => 'Bildir';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return '$name kişisinin ithaflarını gizle';
+  }
+
+  @override
+  String get reportThanks => 'Bildirdiğin için teşekkürler. Bir göz atacağız.';
+
+  @override
+  String get showHiddenDedications => 'Gizlenen ithafları göster';
 }

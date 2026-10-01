@@ -673,4 +673,21 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI เล่น FLAC แบบไม่สูญเสียคุณภาพเมื่อคุณยอมรับประกาศ';
+
+  @override
+  String get moreOptions => 'ตัวเลือกเพิ่มเติม';
+
+  @override
+  String get reportDedication => 'รายงาน';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'ซ่อนข้อความถึงของ $name';
+  }
+
+  @override
+  String get reportThanks => 'ขอบคุณที่แจ้งให้เรารู้ เราจะตรวจสอบ';
+
+  @override
+  String get showHiddenDedications => 'แสดงข้อความถึงที่ซ่อนไว้';
 }

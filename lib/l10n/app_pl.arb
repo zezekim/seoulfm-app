@@ -193,5 +193,10 @@
   "qualityNormal": "Normalna",
   "qualityDataSaver": "Oszczędzanie danych",
   "qualityFixedBody": "Zawsze ta jakość, nawet przy słabym połączeniu.",
-  "qualityLosslessNote": "HIFI odtwarza bezstratny FLAC, gdy zaakceptujesz jego komunikat."
+  "qualityLosslessNote": "HIFI odtwarza bezstratny FLAC, gdy zaakceptujesz jego komunikat.",
+  "moreOptions": "Więcej opcji",
+  "reportDedication": "Zgłoś",
+  "hideDedicationsFrom": "Ukryj dedykacje użytkownika {name}",
+  "reportThanks": "Dziękujemy za zgłoszenie. Przyjrzymy się temu.",
+  "showHiddenDedications": "Pokaż ukryte dedykacje"
 }

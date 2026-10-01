@@ -1,0 +1,7 @@
+Nowe SeoulFM, zbudowane od podstaw.
+• Nowy ekran główny, który pokazuje wszystkie stacje
+• Zsynchronizowane teksty z kartami do udostępniania
+• Zamów dowolny utwór i dodaj dedykację
+• Wybierz jakość streamingu
+• Android Auto i sterowanie na ekranie blokady
+• 20 języków

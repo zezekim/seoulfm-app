@@ -193,5 +193,10 @@
   "qualityNormal": "Қалыпты",
   "qualityDataSaver": "Трафикті үнемдеу",
   "qualityFixedBody": "Байланыс әлсіз болса да, әрқашан осы сапа.",
-  "qualityLosslessNote": "Ескертуін қабылдасаң, HIFI шығынсыз FLAC форматында ойнайды."
+  "qualityLosslessNote": "Ескертуін қабылдасаң, HIFI шығынсыз FLAC форматында ойнайды.",
+  "moreOptions": "Қосымша опциялар",
+  "reportDedication": "Шағымдану",
+  "hideDedicationsFrom": "{name} арнауларын жасыру",
+  "reportThanks": "Хабарлағаның үшін рахмет. Қарап шығамыз.",
+  "showHiddenDedications": "Жасырылған арнауларды көрсету"
 }

@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/widgets/dedication_actions.dart';
+import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
@@ -370,14 +372,27 @@ class _Player extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontSize: 16, color: white.withValues(alpha: 0.6)),
                             ),
-                            if (t?.dedication?.name != null)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 4),
-                                child: Text(
-                                  context.l.dedicatedBy(t!.dedication!.name!),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 12, color: white.withValues(alpha: 0.5)),
+                            if (t?.dedication?.name != null && !context.watch<Moderation>().hides(t!.dedication))
+                              // Tap for Report / Hide (the ⋯ says it can be).
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () => showDedicationActions(context, dedication: t.dedication!, track: t),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 4, bottom: 4),
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          context.l.dedicatedBy(t.dedication!.name!),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(fontSize: 12, color: white.withValues(alpha: 0.5)),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Icon(AppIcons.more, size: 14, color: white.withValues(alpha: 0.5)),
+                                    ],
+                                  ),
                                 ),
                               ),
                           ],

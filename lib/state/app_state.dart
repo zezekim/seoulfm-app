@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
@@ -37,6 +38,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final requests = RequestTracker();
   final covers = CoverColors();
   final support = SupportStore();
+  final moderation = Moderation();
   late final CarPlayBridge carPlay = CarPlayBridge(onTune: (key) => tuneIn(key, play: true, fromCar: true));
 
   final ValueNotifier<LosslessPrompt?> losslessPrompt = ValueNotifier(null);

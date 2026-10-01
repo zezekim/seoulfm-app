@@ -679,4 +679,21 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'O HIFI toca FLAC sem perdas quando você aceita o aviso dele.';
+
+  @override
+  String get moreOptions => 'Mais opções';
+
+  @override
+  String get reportDedication => 'Denunciar';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Ocultar dedicatórias de $name';
+  }
+
+  @override
+  String get reportThanks => 'Obrigado por nos avisar. Vamos dar uma olhada.';
+
+  @override
+  String get showHiddenDedications => 'Mostrar dedicatórias ocultas';
 }

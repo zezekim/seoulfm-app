@@ -360,5 +360,17 @@
   "qualityNormal": "Normal",
   "qualityDataSaver": "Data saver",
   "qualityFixedBody": "Always this quality, even on a weak connection.",
-  "qualityLosslessNote": "HIFI plays lossless FLAC when you accept its notice."
+  "qualityLosslessNote": "HIFI plays lossless FLAC when you accept its notice.",
+  "moreOptions": "More options",
+  "reportDedication": "Report",
+  "hideDedicationsFrom": "Hide dedications from {name}",
+  "@hideDedicationsFrom": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportThanks": "Thanks for telling us. We’ll take a look.",
+  "showHiddenDedications": "Show hidden dedications"
 }

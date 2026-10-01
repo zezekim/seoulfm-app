@@ -193,5 +193,10 @@
   "qualityNormal": "보통",
   "qualityDataSaver": "데이터 절약",
   "qualityFixedBody": "연결이 약해도 항상 이 음질로 재생해요.",
-  "qualityLosslessNote": "HIFI는 안내에 동의하면 무손실 FLAC으로 재생돼요."
+  "qualityLosslessNote": "HIFI는 안내에 동의하면 무손실 FLAC으로 재생돼요.",
+  "moreOptions": "더보기",
+  "reportDedication": "신고하기",
+  "hideDedicationsFrom": "{name}님의 사연 숨기기",
+  "reportThanks": "알려 주셔서 고마워요. 확인해 볼게요.",
+  "showHiddenDedications": "숨긴 사연 다시 보기"
 }

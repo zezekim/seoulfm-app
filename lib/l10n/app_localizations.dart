@@ -1295,6 +1295,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'HIFI plays lossless FLAC when you accept its notice.'**
   String get qualityLosslessNote;
+
+  /// No description provided for @moreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// No description provided for @reportDedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get reportDedication;
+
+  /// No description provided for @hideDedicationsFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide dedications from {name}'**
+  String hideDedicationsFrom(String name);
+
+  /// No description provided for @reportThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for telling us. We’ll take a look.'**
+  String get reportThanks;
+
+  /// No description provided for @showHiddenDedications.
+  ///
+  /// In en, this message translates to:
+  /// **'Show hidden dedications'**
+  String get showHiddenDedications;
 }
 
 class _AppLocalizationsDelegate

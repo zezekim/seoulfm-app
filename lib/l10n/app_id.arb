@@ -193,5 +193,10 @@
   "qualityNormal": "Normal",
   "qualityDataSaver": "Hemat data",
   "qualityFixedBody": "Selalu kualitas ini, meski koneksi lemah.",
-  "qualityLosslessNote": "HIFI memutar FLAC lossless setelah kamu menyetujui pemberitahuannya."
+  "qualityLosslessNote": "HIFI memutar FLAC lossless setelah kamu menyetujui pemberitahuannya.",
+  "moreOptions": "Opsi lainnya",
+  "reportDedication": "Laporkan",
+  "hideDedicationsFrom": "Sembunyikan dedikasi dari {name}",
+  "reportThanks": "Terima kasih sudah memberi tahu kami. Kami akan memeriksanya.",
+  "showHiddenDedications": "Tampilkan dedikasi tersembunyi"
 }

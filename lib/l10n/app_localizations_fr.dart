@@ -679,4 +679,22 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI diffuse en FLAC sans perte quand vous acceptez son avertissement.';
+
+  @override
+  String get moreOptions => 'Plus d’options';
+
+  @override
+  String get reportDedication => 'Signaler';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Masquer les dédicaces de $name';
+  }
+
+  @override
+  String get reportThanks =>
+      'Merci de nous l’avoir signalé. Nous allons y jeter un œil.';
+
+  @override
+  String get showHiddenDedications => 'Afficher les dédicaces masquées';
 }

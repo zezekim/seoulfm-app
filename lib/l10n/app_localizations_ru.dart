@@ -683,4 +683,21 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI звучит в FLAC без потерь, когда ты принимаешь его уведомление.';
+
+  @override
+  String get moreOptions => 'Ещё';
+
+  @override
+  String get reportDedication => 'Пожаловаться';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Скрыть посвящения от $name';
+  }
+
+  @override
+  String get reportThanks => 'Спасибо, что дал знать. Мы разберёмся.';
+
+  @override
+  String get showHiddenDedications => 'Показать скрытые посвящения';
 }

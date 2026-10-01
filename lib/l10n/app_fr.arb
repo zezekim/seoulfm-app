@@ -193,5 +193,10 @@
   "qualityNormal": "Normale",
   "qualityDataSaver": "Économie de données",
   "qualityFixedBody": "Toujours cette qualité, même avec une connexion faible.",
-  "qualityLosslessNote": "HIFI diffuse en FLAC sans perte quand vous acceptez son avertissement."
+  "qualityLosslessNote": "HIFI diffuse en FLAC sans perte quand vous acceptez son avertissement.",
+  "moreOptions": "Plus d’options",
+  "reportDedication": "Signaler",
+  "hideDedicationsFrom": "Masquer les dédicaces de {name}",
+  "reportThanks": "Merci de nous l’avoir signalé. Nous allons y jeter un œil.",
+  "showHiddenDedications": "Afficher les dédicaces masquées"
 }

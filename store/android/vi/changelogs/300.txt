@@ -1,0 +1,7 @@
+SeoulFM hoàn toàn mới, xây dựng lại từ đầu.
+• Trang chủ mới giới thiệu mọi kênh
+• Lời bài hát đồng bộ, kèm thẻ chia sẻ
+• Yêu cầu bất kỳ bài nào và gửi kèm lời nhắn
+• Tự chọn chất lượng stream
+• Android Auto và điều khiển trên màn hình khóa
+• 20 ngôn ngữ

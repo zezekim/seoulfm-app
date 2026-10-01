@@ -193,5 +193,10 @@
   "qualityNormal": "ปกติ",
   "qualityDataSaver": "ประหยัดดาต้า",
   "qualityFixedBody": "ใช้คุณภาพนี้เสมอ แม้สัญญาณจะอ่อน",
-  "qualityLosslessNote": "HIFI เล่น FLAC แบบไม่สูญเสียคุณภาพเมื่อคุณยอมรับประกาศ"
+  "qualityLosslessNote": "HIFI เล่น FLAC แบบไม่สูญเสียคุณภาพเมื่อคุณยอมรับประกาศ",
+  "moreOptions": "ตัวเลือกเพิ่มเติม",
+  "reportDedication": "รายงาน",
+  "hideDedicationsFrom": "ซ่อนข้อความถึงของ {name}",
+  "reportThanks": "ขอบคุณที่แจ้งให้เรารู้ เราจะตรวจสอบ",
+  "showHiddenDedications": "แสดงข้อความถึงที่ซ่อนไว้"
 }

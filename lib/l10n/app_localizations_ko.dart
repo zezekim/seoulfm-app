@@ -649,4 +649,21 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get qualityLosslessNote => 'HIFI는 안내에 동의하면 무손실 FLAC으로 재생돼요.';
+
+  @override
+  String get moreOptions => '더보기';
+
+  @override
+  String get reportDedication => '신고하기';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return '$name님의 사연 숨기기';
+  }
+
+  @override
+  String get reportThanks => '알려 주셔서 고마워요. 확인해 볼게요.';
+
+  @override
+  String get showHiddenDedications => '숨긴 사연 다시 보기';
 }

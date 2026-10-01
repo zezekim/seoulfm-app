@@ -678,4 +678,22 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI phát FLAC lossless khi bạn chấp nhận thông báo của nó.';
+
+  @override
+  String get moreOptions => 'Thêm tùy chọn';
+
+  @override
+  String get reportDedication => 'Báo cáo';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Ẩn lời nhắn từ $name';
+  }
+
+  @override
+  String get reportThanks =>
+      'Cảm ơn bạn đã báo cho chúng tôi. Chúng tôi sẽ xem xét.';
+
+  @override
+  String get showHiddenDedications => 'Hiện lại lời nhắn đã ẩn';
 }

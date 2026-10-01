@@ -193,5 +193,10 @@
   "qualityNormal": "Normal",
   "qualityDataSaver": "Economia de dados",
   "qualityFixedBody": "Sempre nesta qualidade, mesmo com conexão fraca.",
-  "qualityLosslessNote": "O HIFI toca FLAC sem perdas quando você aceita o aviso dele."
+  "qualityLosslessNote": "O HIFI toca FLAC sem perdas quando você aceita o aviso dele.",
+  "moreOptions": "Mais opções",
+  "reportDedication": "Denunciar",
+  "hideDedicationsFrom": "Ocultar dedicatórias de {name}",
+  "reportThanks": "Obrigado por nos avisar. Vamos dar uma olhada.",
+  "showHiddenDedications": "Mostrar dedicatórias ocultas"
 }

@@ -680,4 +680,21 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get qualityLosslessNote =>
       'HIFI spielt verlustfreies FLAC, wenn du den Hinweis akzeptierst.';
+
+  @override
+  String get moreOptions => 'Weitere Optionen';
+
+  @override
+  String get reportDedication => 'Melden';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return 'Widmungen von $name ausblenden';
+  }
+
+  @override
+  String get reportThanks => 'Danke für deinen Hinweis. Wir schauen es uns an.';
+
+  @override
+  String get showHiddenDedications => 'Ausgeblendete Widmungen anzeigen';
 }

@@ -193,5 +193,10 @@
   "qualityNormal": "標準",
   "qualityDataSaver": "データ節約",
   "qualityFixedBody": "接続が弱くても、常にこの音質で再生します。",
-  "qualityLosslessNote": "HIFIは、注意事項に同意するとロスレスFLACで再生されます。"
+  "qualityLosslessNote": "HIFIは、注意事項に同意するとロスレスFLACで再生されます。",
+  "moreOptions": "その他",
+  "reportDedication": "報告する",
+  "hideDedicationsFrom": "{name}さんのメッセージを非表示",
+  "reportThanks": "お知らせありがとうございます。確認しますね。",
+  "showHiddenDedications": "非表示にしたメッセージを再表示"
 }

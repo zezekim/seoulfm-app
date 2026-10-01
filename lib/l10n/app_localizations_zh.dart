@@ -656,6 +656,23 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get qualityLosslessNote => '接受HIFI的提示后，即可播放无损FLAC。';
+
+  @override
+  String get moreOptions => '更多选项';
+
+  @override
+  String get reportDedication => '举报';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return '隐藏$name的留言';
+  }
+
+  @override
+  String get reportThanks => '感谢反馈，我们会去看看。';
+
+  @override
+  String get showHiddenDedications => '显示已隐藏的留言';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1309,4 +1326,21 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get qualityLosslessNote => '接受HIFI的提示後，即可播放無損FLAC。';
+
+  @override
+  String get moreOptions => '更多選項';
+
+  @override
+  String get reportDedication => '檢舉';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return '隱藏$name的留言';
+  }
+
+  @override
+  String get reportThanks => '感謝回報，我們會去看看。';
+
+  @override
+  String get showHiddenDedications => '顯示已隱藏的留言';
 }

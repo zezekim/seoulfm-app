@@ -193,5 +193,10 @@
   "qualityNormal": "Bình thường",
   "qualityDataSaver": "Tiết kiệm dữ liệu",
   "qualityFixedBody": "Luôn ở chất lượng này, kể cả khi kết nối yếu.",
-  "qualityLosslessNote": "HIFI phát FLAC lossless khi bạn chấp nhận thông báo của nó."
+  "qualityLosslessNote": "HIFI phát FLAC lossless khi bạn chấp nhận thông báo của nó.",
+  "moreOptions": "Thêm tùy chọn",
+  "reportDedication": "Báo cáo",
+  "hideDedicationsFrom": "Ẩn lời nhắn từ {name}",
+  "reportThanks": "Cảm ơn bạn đã báo cho chúng tôi. Chúng tôi sẽ xem xét.",
+  "showHiddenDedications": "Hiện lại lời nhắn đã ẩn"
 }

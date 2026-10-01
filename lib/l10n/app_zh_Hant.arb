@@ -193,5 +193,10 @@
   "qualityNormal": "標準",
   "qualityDataSaver": "節省數據",
   "qualityFixedBody": "一律使用此音質，即使連線不佳。",
-  "qualityLosslessNote": "接受HIFI的提示後，即可播放無損FLAC。"
+  "qualityLosslessNote": "接受HIFI的提示後，即可播放無損FLAC。",
+  "moreOptions": "更多選項",
+  "reportDedication": "檢舉",
+  "hideDedicationsFrom": "隱藏{name}的留言",
+  "reportThanks": "感謝回報，我們會去看看。",
+  "showHiddenDedications": "顯示已隱藏的留言"
 }

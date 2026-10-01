@@ -193,5 +193,10 @@
   "qualityNormal": "Обычное",
   "qualityDataSaver": "Экономия трафика",
   "qualityFixedBody": "Всегда это качество, даже при слабом соединении.",
-  "qualityLosslessNote": "HIFI звучит в FLAC без потерь, когда ты принимаешь его уведомление."
+  "qualityLosslessNote": "HIFI звучит в FLAC без потерь, когда ты принимаешь его уведомление.",
+  "moreOptions": "Ещё",
+  "reportDedication": "Пожаловаться",
+  "hideDedicationsFrom": "Скрыть посвящения от {name}",
+  "reportThanks": "Спасибо, что дал знать. Мы разберёмся.",
+  "showHiddenDedications": "Показать скрытые посвящения"
 }

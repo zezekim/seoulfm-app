@@ -1,0 +1,7 @@
+Baştan sona yeniden yapılan yeni SeoulFM.
+• Tüm istasyonları öne çıkaran yeni bir ana sayfa
+• Paylaşım kartlarıyla senkron sözler
+• İstediğin şarkıyı iste, ithaf ekle
+• Yayın kalitesini seç
+• Android Auto ve kilit ekranı kontrolleri
+• 20 dil

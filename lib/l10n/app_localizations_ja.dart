@@ -660,4 +660,21 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get qualityLosslessNote => 'HIFIは、注意事項に同意するとロスレスFLACで再生されます。';
+
+  @override
+  String get moreOptions => 'その他';
+
+  @override
+  String get reportDedication => '報告する';
+
+  @override
+  String hideDedicationsFrom(String name) {
+    return '$nameさんのメッセージを非表示';
+  }
+
+  @override
+  String get reportThanks => 'お知らせありがとうございます。確認しますね。';
+
+  @override
+  String get showHiddenDedications => '非表示にしたメッセージを再表示';
 }

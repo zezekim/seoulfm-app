@@ -193,5 +193,10 @@
   "qualityNormal": "Normal",
   "qualityDataSaver": "Datensparmodus",
   "qualityFixedBody": "Immer diese Qualität, auch bei schwacher Verbindung.",
-  "qualityLosslessNote": "HIFI spielt verlustfreies FLAC, wenn du den Hinweis akzeptierst."
+  "qualityLosslessNote": "HIFI spielt verlustfreies FLAC, wenn du den Hinweis akzeptierst.",
+  "moreOptions": "Weitere Optionen",
+  "reportDedication": "Melden",
+  "hideDedicationsFrom": "Widmungen von {name} ausblenden",
+  "reportThanks": "Danke für deinen Hinweis. Wir schauen es uns an.",
+  "showHiddenDedications": "Ausgeblendete Widmungen anzeigen"
 }
