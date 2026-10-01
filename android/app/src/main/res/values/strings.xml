@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">What\'s playing on SeoulFM, with play and pause</string>
+    <string name="widget_play_pause">Play or pause</string>
+    <string name="widget_idle">Tap to listen</string>
+</resources>

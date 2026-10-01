@@ -25,6 +25,15 @@ class MainActivity : AudioServiceActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         screenshots = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "fm.seoul/screenshots")
+        val app = applicationContext
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "fm.seoul/widgets").setMethodCallHandler { call, result ->
+            if (call.method == "update" && call.arguments is Map<*, *>) {
+                NowPlayingWidget.update(app, call.arguments as Map<*, *>)
+                result.success(null)
+            } else {
+                result.notImplemented()
+            }
+        }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "fm.seoul/output").setMethodCallHandler { call, result ->
             if (call.method == "pick") {
                 showOutputSwitcher()

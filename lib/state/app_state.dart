@@ -4,6 +4,7 @@ import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/platform/carplay_bridge.dart';
+import 'package:seoulfm/platform/home_widgets.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
@@ -66,6 +67,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     nowPlaying.addListener(_onHeard);
     stations.addListener(_syncCar);
     radio.wantPlaying.addListener(_syncCar);
+    radio.wantPlaying.addListener(_syncWidgets);
     radio.wantPlaying.addListener(_syncStationsPolling);
     ratings.start();
     carPlay.start();
@@ -100,12 +102,16 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
 
   void _onHeard() {
     final t = nowPlaying.track;
+    _syncWidgets();
     radio.updateTrack(channels.active, t);
     if (t?.id != _heardTrackId) {
       _heardTrackId = t?.id;
       ratings.load(t?.id);
     }
   }
+
+  /// The home-screen widgets follow the station, the heard song and the play state.
+  void _syncWidgets() => HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
 
   void _syncCar() => carPlay.update(
     channels: channels.channels,

@@ -1,6 +1,7 @@
 import AVKit
 import Flutter
 import UIKit
+import WidgetKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -14,6 +15,9 @@ import UIKit
     CarPlayBridge.shared.attach(messenger: engine.binaryMessenger)
     return engine
   }()
+
+  /// What is on air, for the home-screen widget (`HomeWidgets` in Dart), through the App Group.
+  private lazy var widgets = FlutterMethodChannel(name: "fm.seoul/widgets", binaryMessenger: engine.binaryMessenger)
 
   /// Opens the system AirPlay picker for the player's output button (`OutputDeviceButton`).
   private lazy var output = FlutterMethodChannel(name: "fm.seoul/output", binaryMessenger: engine.binaryMessenger)
@@ -44,6 +48,20 @@ import UIKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     _ = engine
+    widgets.setMethodCallHandler { call, result in
+      guard call.method == "update", let data = call.arguments as? [String: Any] else {
+        result(FlutterMethodNotImplemented)
+        return
+      }
+      let shared = UserDefaults(suiteName: "group.com.seoulfm.seoulfm")
+      for (key, value) in data {
+        if value is NSNull { shared?.removeObject(forKey: key) } else { shared?.set(value, forKey: key) }
+      }
+      shared?.set(Date().timeIntervalSince1970, forKey: "savedAt")
+      WidgetCenter.shared.reloadAllTimelines()
+      if #available(iOS 16.2, *) { RadioActivityController.shared.update(data) }
+      result(nil)
+    }
     output.setMethodCallHandler { [weak self] call, result in
       if call.method == "pick" {
         self?.showAirPlayPicker()
