@@ -41,7 +41,7 @@ and earlier one failing host fails verification for all of them.
 
 No file extension, served as `Content-Type: application/json`.
 
-`<TEAM_ID>` is the Apple Developer Team ID (10 characters, developer.apple.com → Membership).
+The Apple Developer Team ID is `296555UMRR` (Anne Bianca Lapuz, individual).
 **Replace it once the Apple developer account is active**; until then Universal Links can't
 work (and the associated-domains entitlement in `Runner.entitlements` needs the paid team to
 sign; `Dev.entitlements`, for free-team test builds, deliberately doesn't have it).
@@ -52,7 +52,7 @@ sign; `Dev.entitlements`, for free-team test builds, deliberately doesn't have i
     "details": [
       {
         "appIDs": [
-          "<TEAM_ID>.com.seoulfm.seoulfm"
+          "296555UMRR.com.seoulfm.seoulfm"
         ],
         "components": [
           { "/": "/song/*" },
@@ -213,6 +213,6 @@ the host is verified (or the user enabled the link in the app's settings), else 
 > `/.well-known/assetlinks.json`, with the exact content in the app repo's `docs/deep-links.md`.
 > Exclude `.well-known/` from the `middleware.ts` matcher (otherwise the AASA path is rewritten
 > to `/en/…` and 404s), and set the AASA content type (a `public/_headers` rule, or a route
-> handler). Fill in `<TEAM_ID>` (Apple Team ID, once the developer account is active) and the
+> handler). The Apple Team ID is filled in (296555UMRR); fill in the
 > Play App Signing SHA-256 (Play Console → App integrity). When a station is added, add its slug
 > to the AASA `components` as well.

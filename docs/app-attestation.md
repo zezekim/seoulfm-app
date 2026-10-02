@@ -33,7 +33,7 @@ station-scoped (no `?station=`).
 
 ## Identifiers you need
 
-- **iOS App ID:** `<TEAM_ID>.com.seoulfm.seoulfm` (the Team ID of the account that owns the app;
+- **iOS App ID:** `296555UMRR.com.seoulfm.seoulfm` (the Team ID of the account that owns the app;
   ask the app owner). The app's entitlement is `com.apple.developer.devicecheck.appattest-environment
   = production`, so keys come from the **production** environment in every build signed with the
   paid team, including TestFlight and debug builds on a developer's phone.
@@ -102,7 +102,7 @@ Verify the attestation as in Apple's "Validating apps that connect to your serve
 4. `clientDataHash = SHA256(utf8(challenge))`. Compute `nonce = SHA256(authData || clientDataHash)`.
 5. The `credCert` extension `1.2.840.113635.100.8.2` must contain `nonce`.
 6. `SHA256(credCert public key, uncompressed point)` must equal the decoded `key_id`.
-7. `authData.rpIdHash == SHA256("<TEAM_ID>.com.seoulfm.seoulfm")`.
+7. `authData.rpIdHash == SHA256("296555UMRR.com.seoulfm.seoulfm")`.
 8. `authData.signCount == 0`.
 9. `authData.aaguid == "appattest" + 7 zero bytes` (production). Reject `appattestdevelop`.
 10. `authData.credentialId == key_id`.
@@ -154,7 +154,7 @@ n1
 4. `clientDataHash = SHA256(utf8(clientData))`; `nonce = SHA256(authenticatorData || clientDataHash)`.
 5. Verify `signature` (ECDSA P-256, DER) over `nonce` with SHA-256, using the stored public key
    (in Node: `crypto.verify('sha256', nonce, publicKey, signature)`).
-6. `authenticatorData.rpIdHash == SHA256("<TEAM_ID>.com.seoulfm.seoulfm")`.
+6. `authenticatorData.rpIdHash == SHA256("296555UMRR.com.seoulfm.seoulfm")`.
 7. `authenticatorData.signCount > stored sign_count`; then store the new count, **atomically**
    (compare-and-set), so two concurrent replays can't both pass.
 

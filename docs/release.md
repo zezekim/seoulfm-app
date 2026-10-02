@@ -128,7 +128,7 @@ person should approve each upload, and a deployment tag rule `v*.*.*`). Secrets 
 | `ANDROID_KEY_ALIAS` | the key alias |
 | `ANDROID_KEY_PASSWORD` | the key password |
 | `PLAY_SERVICE_ACCOUNT_JSON` | the service account's JSON key |
-| `APPLE_TEAM_ID` | the Apple Team ID |
+| `APPLE_TEAM_ID` | the Apple Team ID: `296555UMRR` |
 | `ASC_KEY_ID` | the App Store Connect API key id |
 | `ASC_ISSUER_ID` | its issuer id |
 | `ASC_KEY_P8_BASE64` | the `.p8` file, base64 |

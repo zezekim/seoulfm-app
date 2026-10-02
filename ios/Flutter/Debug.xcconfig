@@ -2,3 +2,6 @@
 
 // The app's bundle id; a personal test build overrides it (SFM_BUNDLE_ID=... on the command line).
 SFM_BUNDLE_ID = com.seoulfm.seoulfm
+
+// The App Store team: Anne Bianca Lapuz (individual). Free-team test builds override it.
+DEVELOPMENT_TEAM = 296555UMRR
