@@ -9,6 +9,7 @@ import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/platform/accessibility_prefs.dart';
+import 'package:seoulfm/platform/deep_links.dart';
 import 'package:seoulfm/platform/screenshots.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/session.dart';
@@ -58,6 +59,7 @@ Future<void> _start() async {
   final app = AppState(radio)..start();
   Screenshots.start();
   await AccessibilityPrefs.start();
+  DeepLinks.instance.start();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(
     ChangeNotifierProvider.value(

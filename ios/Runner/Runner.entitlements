@@ -7,5 +7,12 @@
 	<array>
 		<string>group.com.seoulfm.seoulfm</string>
 	</array>
+	<!-- Universal Links: seoul.fm pages open in the app (docs/deep-links.md). Release only: the free
+	     team behind Dev.entitlements can't sign this capability. -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:seoul.fm</string>
+		<string>applinks:www.seoul.fm</string>
+	</array>
 </dict>
 </plist>

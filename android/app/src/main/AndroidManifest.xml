@@ -26,9 +26,67 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Links go to app_links only, not to Flutter's own router as well. -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="false" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- App Links: seoul.fm pages the app has its own screen for (lib/platform/deep_links.dart,
+                 docs/deep-links.md). Each path bare and under a two-letter language prefix (/kr/, /jp/);
+                 "/wall/*" is "/wall" then any number of slashes. Other pages stay in the browser, so the
+                 in-app browser never bounces back here. Keep the station slugs in step with
+                 lib/data/channels.dart; the site serves /.well-known/assetlinks.json on both hosts. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="seoul.fm" />
+                <data android:host="www.seoul.fm" />
+                <data android:pathPrefix="/song/" />
+                <data android:pathPattern="/../song/.*" />
+                <data android:pathPrefix="/artist/" />
+                <data android:pathPattern="/../artist/.*" />
+                <data android:pathPattern="/wall/*" />
+                <data android:pathPattern="/../wall/*" />
+                <data android:pathPattern="/support/*" />
+                <data android:pathPattern="/../support/*" />
+                <data android:pathPattern="/pop/*" />
+                <data android:pathPattern="/../pop/*" />
+                <data android:pathPattern="/hifi/*" />
+                <data android:pathPattern="/../hifi/*" />
+                <data android:pathPattern="/new-releases/*" />
+                <data android:pathPattern="/../new-releases/*" />
+                <data android:pathPattern="/marathon/*" />
+                <data android:pathPattern="/../marathon/*" />
+                <data android:pathPattern="/dance/*" />
+                <data android:pathPattern="/../dance/*" />
+                <data android:pathPattern="/2010s/*" />
+                <data android:pathPattern="/../2010s/*" />
+                <data android:pathPattern="/classics/*" />
+                <data android:pathPattern="/../classics/*" />
+                <data android:pathPattern="/indie/*" />
+                <data android:pathPattern="/../indie/*" />
+                <data android:pathPattern="/hiphop/*" />
+                <data android:pathPattern="/../hiphop/*" />
+                <data android:pathPattern="/rnb/*" />
+                <data android:pathPattern="/../rnb/*" />
+                <data android:pathPattern="/ballad/*" />
+                <data android:pathPattern="/../ballad/*" />
+                <data android:pathPattern="/ost/*" />
+                <data android:pathPattern="/../ost/*" />
+                <data android:pathPattern="/seoulfm/*" />
+                <data android:pathPattern="/../seoulfm/*" />
+                <data android:pathPattern="/2010/*" />
+                <data android:pathPattern="/../2010/*" />
+            </intent-filter>
+            <!-- seoulfm://song/{id}, seoulfm://pop, …: any page, same paths as the site. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="seoulfm" />
             </intent-filter>
         </activity>
 

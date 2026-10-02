@@ -118,6 +118,10 @@ class Api {
   Future<List<Track>> random({int limit = 24}) async => tracksOf(await get('/tracks/random', {'limit': limit}));
   Future<List<Track>> newTracks({int limit = 40, int? days}) async => tracksOf(await get('/tracks/new', {'limit': limit, 'days': days}));
   Future<TrackDetail> track(String id) async => TrackDetail.fromJson(await get('/tracks/${_e(id)}'));
+
+  /// The song a site address (`/song/{artist-slug}/{title-slug}/`) names; its body has a track's shape.
+  Future<TrackDetail> trackLookup(String artist, String title) async =>
+      TrackDetail.fromJson(await get('/tracks/lookup', {'artist': artist, 'title': title}));
   Future<Lyrics> lyrics(String id) async => Lyrics.fromJson(await get('/tracks/${_e(id)}/lyrics'));
 
   // ── Ratings ─────────────────────────────────────────────────────────────
