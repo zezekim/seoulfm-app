@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/platform/accessibility_prefs.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/theme.dart';
@@ -147,8 +148,10 @@ class _RootShellState extends State<RootShell> {
     );
     // While the player rises, the app sinks back behind it into a dimmed card (Apple Music).
     final corner = MediaQuery.paddingOf(context).top > 30 ? 48.0 : 16.0;
-    // The same widgets whether or not the player is up, so the tabs keep their state; at rest
-    // they cost nothing (no scale, no clip, a clear veil).
+    // Reduce Motion: no sinking, only the veil dims as the player fades in over it.
+    final still = context.reduceMotion;
+    // The same widgets whether or not the player is up (or motion is reduced), so the tabs keep
+    // their state; at rest they cost nothing (no scale, no clip, a clear veil).
     return ValueListenableBuilder<Animation<double>?>(
       valueListenable: Nav.playerPresentation,
       child: shell,
@@ -157,13 +160,14 @@ class _RootShellState extends State<RootShell> {
         child: shell,
         builder: (_, shell) {
           final v = Curves.easeOutCubic.transform(presentation?.value ?? 0);
+          final sink = still ? 0.0 : v;
           return ColoredBox(
             color: Colors.black,
             child: Transform.scale(
-              scale: 1 - 0.07 * v,
+              scale: 1 - 0.07 * sink,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(corner * v),
-                clipBehavior: v == 0 ? Clip.none : Clip.antiAlias,
+                borderRadius: BorderRadius.circular(corner * sink),
+                clipBehavior: sink == 0 ? Clip.none : Clip.antiAlias,
                 child: Stack(
                   children: [
                     shell!,
@@ -209,9 +213,10 @@ class GlassTabBar extends StatelessWidget {
               return Stack(
                 children: [
                   // The lens behind the selected tab.
+                  // Reduce Motion: a short move with no overshoot.
                   AnimatedPositionedDirectional(
-                    duration: const Duration(milliseconds: 380),
-                    curve: Curves.easeOutBack,
+                    duration: Duration(milliseconds: context.reduceMotion ? 150 : 380),
+                    curve: context.reduceMotion ? Curves.easeOut : Curves.easeOutBack,
                     start: 4 + w * selected,
                     top: 4,
                     bottom: 4,

@@ -1,19 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:seoulfm/platform/accessibility_prefs.dart';
 
 /// Apple's Liquid Glass, as iOS 26 draws its tab bar and player bar: what is behind is blurred
 /// and brightened through a thin tinted pane, lit along its top edge, with a hairline rim that
 /// catches the light. [tint] colours the pane (the player bar takes its cover's colour).
 class Glass extends StatelessWidget {
-  const Glass({
-    super.key,
-    required this.child,
-    this.radius = 28,
-    this.tint,
-    this.blur = 22,
-    this.shadow = true,
-  });
+  const Glass({super.key, required this.child, this.radius = 28, this.tint, this.blur = 22, this.shadow = true});
 
   final Widget child;
   final double radius;
@@ -26,13 +20,47 @@ class Glass extends StatelessWidget {
     final dark = Theme.of(context).brightness == Brightness.dark;
     final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius));
     final pane = tint ?? (dark ? const Color(0xFF1C1C1F) : Colors.white);
+    final shadows = shadow
+        ? [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: dark ? 0.45 : 0.14),
+              blurRadius: 28,
+              offset: const Offset(0, 10),
+            ),
+          ]
+        : null;
+    // Reduce Transparency or a high-contrast setting: the same shape, opaque and unblurred, as
+    // Apple's own bars become; high contrast also gets a clear edge.
+    if (context.solidGlass) {
+      final strong = context.highContrast;
+      final edge = strong
+          ? BorderSide(
+              color: dark ? Colors.white.withValues(alpha: 0.6) : Colors.black.withValues(alpha: 0.5),
+              width: 1.5,
+            )
+          : BorderSide(
+              color: dark ? Colors.white.withValues(alpha: 0.12) : Colors.black.withValues(alpha: 0.08),
+              width: 0.5,
+            );
+      return DecoratedBox(
+        decoration: ShapeDecoration(shape: shape, shadows: shadows),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(radius),
+          child: ColoredBox(
+            color: pane.withValues(alpha: 1),
+            child: DecoratedBox(
+              position: DecorationPosition.foreground,
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius), side: edge),
+              ),
+              child: child,
+            ),
+          ),
+        ),
+      );
+    }
     return DecoratedBox(
-      decoration: ShapeDecoration(
-        shape: shape,
-        shadows: shadow
-            ? [BoxShadow(color: Colors.black.withValues(alpha: dark ? 0.45 : 0.14), blurRadius: 28, offset: const Offset(0, 10))]
-            : null,
-      ),
+      decoration: ShapeDecoration(shape: shape, shadows: shadows),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radius),
         child: BackdropFilter(
@@ -46,7 +74,10 @@ class Glass extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Color.alphaBlend(Colors.white.withValues(alpha: dark ? 0.10 : 0.35), pane.withValues(alpha: dark ? 0.55 : 0.6)),
+                    Color.alphaBlend(
+                      Colors.white.withValues(alpha: dark ? 0.10 : 0.35),
+                      pane.withValues(alpha: dark ? 0.55 : 0.6),
+                    ),
                     pane.withValues(alpha: dark ? 0.62 : 0.72),
                   ],
                 ),

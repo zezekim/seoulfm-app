@@ -39,14 +39,17 @@ class Nav {
   /// player bar (a shared Hero); pulling down at its top, or the chevron, closes it.
   static Future<void> showNowPlaying(BuildContext context) async {
     if (_player?.mounted ?? false) return;
+    // Reduce Motion: a quick fade in place, no slide and no card (the shell drops its scale too).
+    final still = MediaQuery.disableAnimationsOf(context);
     final route = PageRouteBuilder<void>(
-      transitionDuration: const Duration(milliseconds: 420),
-      reverseTransitionDuration: const Duration(milliseconds: 320),
+      transitionDuration: Duration(milliseconds: still ? 200 : 420),
+      reverseTransitionDuration: Duration(milliseconds: still ? 150 : 320),
       pageBuilder: (page, _, _) {
         _player = page;
         return const NowPlayingScreen();
       },
       transitionsBuilder: (context, a, _, child) {
+        final still = MediaQuery.disableAnimationsOf(context);
         final curved = CurvedAnimation(
           parent: a,
           curve: const Cubic(0.2, 0.9, 0.25, 1),
@@ -54,13 +57,19 @@ class Nav {
         );
         // A card while it moves (the screen's own corner radius), square once it settles.
         final corner = MediaQuery.paddingOf(context).top > 30 ? 48.0 : 16.0;
-        return SlideTransition(
-          position: Tween(begin: const Offset(0, 1), end: Offset.zero).animate(curved),
-          child: AnimatedBuilder(
-            animation: a,
-            builder: (_, child) =>
-                a.isCompleted ? child! : ClipRRect(borderRadius: BorderRadius.circular(corner), child: child),
-            child: child,
+        return FadeTransition(
+          opacity: still ? a.drive(CurveTween(curve: Curves.easeOut)) : kAlwaysCompleteAnimation,
+          child: SlideTransition(
+            position: still
+                ? const AlwaysStoppedAnimation(Offset.zero)
+                : Tween(begin: const Offset(0, 1), end: Offset.zero).animate(curved),
+            child: AnimatedBuilder(
+              animation: a,
+              builder: (_, child) => a.isCompleted || still
+                  ? child!
+                  : ClipRRect(borderRadius: BorderRadius.circular(corner), child: child),
+              child: child,
+            ),
           ),
         );
       },

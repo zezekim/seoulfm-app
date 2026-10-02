@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
+import 'package:flutter/cupertino.dart' show CupertinoPageTransition, CupertinoPageTransitionsBuilder;
 import 'package:seoulfm/data/app_language.dart';
 
 /// The site's design tokens (`app/globals.css`): a neutral base, near-black surfaces,
@@ -103,7 +103,12 @@ const _fallback = ['Apple SD Gothic Neo', 'Hiragino Sans', 'PingFang SC', 'Noto 
 ThemeData buildTheme(Brightness brightness, Color accent) {
   final c = brightness == Brightness.dark ? SfmColors.dark : SfmColors.light;
   final base = ThemeData(brightness: brightness, useMaterial3: true);
-  final p = base.textTheme.apply(bodyColor: c.text, displayColor: c.text, fontFamily: fontFamily, fontFamilyFallback: _fallback);
+  final p = base.textTheme.apply(
+    bodyColor: c.text,
+    displayColor: c.text,
+    fontFamily: fontFamily,
+    fontFamilyFallback: _fallback,
+  );
   // One scale for the app. Pretendard reads best tracked in a little.
   TextStyle? s(TextStyle? t, double size, FontWeight w, {double track = -0.2, double? height}) =>
       t?.copyWith(fontSize: size, fontWeight: w, letterSpacing: track, height: height);
@@ -122,11 +127,11 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
   );
   return base.copyWith(
     // Apple Music's navigation on both platforms: pages slide in from the side over a dimmed,
-    // parallaxed page behind, and swipe back from the edge.
+    // parallaxed page behind, and swipe back from the edge (a cross-fade with Reduce Motion).
     pageTransitionsTheme: const PageTransitionsTheme(
       builders: {
-        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.iOS: MotionAwarePageTransitionsBuilder(),
+        TargetPlatform.android: MotionAwarePageTransitionsBuilder(),
       },
     ),
     scaffoldBackgroundColor: c.bg,
@@ -190,6 +195,51 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
     ),
     extensions: [c],
   );
+}
+
+/// iOS's page transition, or with Reduce Motion (iOS) / Remove animations (Android) a short
+/// cross-fade, as iOS itself does. The swipe back still works: it drives the fade. Both ways
+/// build the same widgets (only the animations differ), so the setting can change mid-route.
+class MotionAwarePageTransitionsBuilder extends PageTransitionsBuilder {
+  const MotionAwarePageTransitionsBuilder();
+
+  static const _slide = CupertinoPageTransitionsBuilder();
+
+  @override
+  Duration get transitionDuration => _slide.transitionDuration;
+
+  // The page behind keeps still under a cross-fade (no parallax).
+  @override
+  DelegatedTransitionBuilder? get delegatedTransition =>
+      (context, animation, secondaryAnimation, allowSnapshotting, child) => CupertinoPageTransition.delegatedTransition(
+        context,
+        animation,
+        MediaQuery.disableAnimationsOf(context) ? kAlwaysDismissedAnimation : secondaryAnimation,
+        allowSnapshotting,
+        child,
+      );
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    final still = MediaQuery.disableAnimationsOf(context);
+    return FadeTransition(
+      // Done in the first third of the route's time: a quick fade.
+      opacity: still ? animation.drive(CurveTween(curve: const Interval(0, 0.35))) : kAlwaysCompleteAnimation,
+      child: _slide.buildTransitions(
+        route,
+        context,
+        still ? kAlwaysCompleteAnimation : animation,
+        still ? kAlwaysDismissedAnimation : secondaryAnimation,
+        child,
+      ),
+    );
+  }
 }
 
 /// `#rrggbb` → Color; null for anything else.

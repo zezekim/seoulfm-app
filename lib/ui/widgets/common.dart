@@ -1,4 +1,5 @@
 import 'dart:ui' show ImageFilter;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
+import 'package:seoulfm/platform/accessibility_prefs.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
@@ -82,8 +84,19 @@ class LiveDot extends StatefulWidget {
 }
 
 class _LiveDotState extends State<LiveDot> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))
-    ..repeat(reverse: true);
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600));
+
+  // With Reduce Motion the dot holds still, fully lit.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (context.reduceMotion) {
+      _c.value = 1;
+    } else if (!_c.isAnimating) {
+      _c.repeat(reverse: true);
+    }
+  }
+
   @override
   void dispose() {
     _c.dispose();
@@ -121,17 +134,26 @@ class EqBars extends StatefulWidget {
 class _EqBarsState extends State<EqBars> with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
 
+  // With Reduce Motion the bars stand still, at staggered heights so they still read as playing.
+  bool _still = false;
+  bool get _bounce => widget.animate && !_still;
+
+  void _sync() {
+    if (_bounce && !_c.isAnimating) _c.repeat();
+    if (!_bounce) _c.stop();
+  }
+
   @override
-  void initState() {
-    super.initState();
-    if (widget.animate) _c.repeat();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _still = context.reduceMotion;
+    _sync();
   }
 
   @override
   void didUpdateWidget(EqBars old) {
     super.didUpdateWidget(old);
-    if (widget.animate && !_c.isAnimating) _c.repeat();
-    if (!widget.animate) _c.stop();
+    _sync();
   }
 
   @override
@@ -149,7 +171,11 @@ class _EqBarsState extends State<EqBars> with SingleTickerProviderStateMixin {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: List.generate(4, (i) {
           final t = (_c.value + i * 0.23) % 1.0;
-          final h = widget.animate ? 0.25 + 0.75 * (t < 0.5 ? t * 2 : (1 - t) * 2) : 0.3;
+          final h = !widget.animate
+              ? 0.3
+              : _still
+              ? const [0.55, 0.9, 0.4, 0.7][i]
+              : 0.25 + 0.75 * (t < 0.5 ? t * 2 : (1 - t) * 2);
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 1.2),
             width: 3,
@@ -410,7 +436,11 @@ class TrackRow extends StatelessWidget {
                               track.displayTitle,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500, color: onAir ? accent : c.text),
+                              style: TextStyle(
+                                fontSize: 15.5,
+                                fontWeight: FontWeight.w500,
+                                color: onAir ? accent : c.text,
+                              ),
                             ),
                           ),
                         ],
@@ -592,7 +622,11 @@ class EmptyState extends StatelessWidget {
           ),
           if (body != null) ...[
             const SizedBox(height: 6),
-            Text(body!, textAlign: TextAlign.center, style: TextStyle(color: c.muted, height: 1.45)),
+            Text(
+              body!,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: c.muted, height: 1.45),
+            ),
           ],
           if (action != null && onAction != null) ...[
             const SizedBox(height: 20),
@@ -765,8 +799,18 @@ class Skeleton extends StatefulWidget {
 }
 
 class _SkeletonState extends State<Skeleton> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1400))
-    ..repeat();
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1400));
+
+  // With Reduce Motion the shimmer holds still, its highlight across the middle.
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (context.reduceMotion) {
+      _c.value = 0.5;
+    } else if (!_c.isAnimating) {
+      _c.repeat();
+    }
+  }
 
   @override
   void dispose() {
@@ -982,18 +1026,32 @@ SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWid
         final min = top + kToolbarHeight + bottomHeight;
         final t = ((box.maxHeight - min) / large).clamp(0.0, 1.0); // 1 = fully expanded
         final frost = (1 - t * 2.5).clamp(0.0, 1.0);
+        // Reduce Transparency or high contrast: an opaque bar, its edge clearer at high contrast.
+        final strong = context.highContrast;
         return Stack(
           children: [
             Positioned.fill(
-              child: frost == 0
-                  ? ColoredBox(color: c.bg)
+              child: frost == 0 || context.solidGlass
+                  ? DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: c.bg,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: (strong ? c.muted : c.border).withValues(alpha: frost),
+                            width: strong ? 1 : 0.5,
+                          ),
+                        ),
+                      ),
+                    )
                   : ClipRect(
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 24 * frost, sigmaY: 24 * frost),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: Color.lerp(c.bg, c.bg.withValues(alpha: 0.72), frost),
-                            border: Border(bottom: BorderSide(color: c.border.withValues(alpha: frost), width: 0.5)),
+                            border: Border(
+                              bottom: BorderSide(color: c.border.withValues(alpha: frost), width: 0.5),
+                            ),
                           ),
                         ),
                       ),

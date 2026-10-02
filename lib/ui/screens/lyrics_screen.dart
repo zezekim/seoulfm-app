@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
+import 'package:seoulfm/platform/accessibility_prefs.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/cover_colors.dart';
@@ -103,7 +104,13 @@ class _LyricsViewState extends State<LyricsView> {
     if (box == null || !_scroll.hasClients) return;
     final target = RenderAbstractViewport.of(box).getOffsetToReveal(box, 0.3).offset;
     final p = _scroll.position;
-    _scroll.animateTo(target.clamp(p.minScrollExtent, p.maxScrollExtent), duration: Motion.slow, curve: Motion.inOut);
+    final to = target.clamp(p.minScrollExtent, p.maxScrollExtent);
+    // Reduce Motion: the next line is simply there, not scrolled to.
+    if (context.reduceMotion) {
+      _scroll.jumpTo(to);
+    } else {
+      _scroll.animateTo(to, duration: Motion.slow, curve: Motion.inOut);
+    }
   }
 
   @override
@@ -116,12 +123,7 @@ class _LyricsViewState extends State<LyricsView> {
   @override
   Widget build(BuildContext context) {
     final palette = LyricsPalette.on(widget.background);
-    final style = TextStyle(
-      fontSize: widget.fontSize,
-      height: 1.28,
-      fontWeight: FontWeight.w800,
-      letterSpacing: -0.4,
-          );
+    final style = TextStyle(fontSize: widget.fontSize, height: 1.28, fontWeight: FontWeight.w800, letterSpacing: -0.4);
     final physics = widget.interactive ? null : const NeverScrollableScrollPhysics();
     final Widget body;
     if (!widget.lyrics.synced) {
@@ -176,10 +178,22 @@ Future<void> openLyrics(BuildContext context, {required Lyrics lyrics, required 
         transitionDuration: Motion.slow,
         reverseTransitionDuration: Motion.base,
         pageBuilder: (_, _, _) => LyricsScreen(lyrics: lyrics, track: track),
-        transitionsBuilder: (_, a, _, child) => SlideTransition(
-          position: Tween(begin: const Offset(0, 1), end: Offset.zero).animate(CurvedAnimation(parent: a, curve: Motion.out)),
-          child: child,
-        ),
+        // Reduce Motion: a fade in place instead of the slide up.
+        transitionsBuilder: (context, a, _, child) {
+          final still = context.reduceMotion;
+          return FadeTransition(
+            opacity: still ? a : kAlwaysCompleteAnimation,
+            child: SlideTransition(
+              position: still
+                  ? const AlwaysStoppedAnimation(Offset.zero)
+                  : Tween(
+                      begin: const Offset(0, 1),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(parent: a, curve: Motion.out)),
+              child: child,
+            ),
+          );
+        },
       ),
     );
 
@@ -257,7 +271,8 @@ class _LyricsScreenState extends State<LyricsScreen> {
                   ),
                   IconButton(
                     tooltip: context.l.share,
-                    onPressed: () => showShareSheet(context, track: _track, lyrics: lyrics, color: bg, lyricsFirst: true),
+                    onPressed: () =>
+                        showShareSheet(context, track: _track, lyrics: lyrics, color: bg, lyricsFirst: true),
                     icon: Icon(AppIcons.share, color: fg, size: 22),
                   ),
                 ],
@@ -268,7 +283,12 @@ class _LyricsScreenState extends State<LyricsScreen> {
                   ? Center(child: Icon(AppIcons.lyrics, size: 48, color: fg.withValues(alpha: 0.4)))
                   : Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: LyricsView(lyrics: lyrics, background: bg, fontSize: 30, padding: const EdgeInsets.symmetric(vertical: 80)),
+                      child: LyricsView(
+                        lyrics: lyrics,
+                        background: bg,
+                        fontSize: 30,
+                        padding: const EdgeInsets.symmetric(vertical: 80),
+                      ),
                     ),
             ),
             Padding(
@@ -286,7 +306,8 @@ class _LyricsScreenState extends State<LyricsScreen> {
                         buffering: buffering,
                         size: 64,
                         onImage: true,
-                        onPressed: () => playing ? radio.pause() : context.read<AppState>().tuneIn(channel.key, play: true),
+                        onPressed: () =>
+                            playing ? radio.pause() : context.read<AppState>().tuneIn(channel.key, play: true),
                       ),
                     ),
                   ),

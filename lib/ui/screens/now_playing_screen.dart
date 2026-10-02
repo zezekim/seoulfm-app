@@ -14,6 +14,7 @@ import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/data/channels.dart';
+import 'package:seoulfm/platform/accessibility_prefs.dart';
 import 'package:seoulfm/platform/output_devices.dart';
 import 'package:seoulfm/platform/screenshots.dart';
 import 'package:seoulfm/state/app_state.dart';
@@ -573,16 +574,24 @@ class _BleedArt extends StatefulWidget {
 class _BleedArtState extends State<_BleedArt> with SingleTickerProviderStateMixin {
   late final AnimationController _drift = AnimationController(vsync: this, duration: const Duration(seconds: 28));
   late final RadioHandler _radio = context.read<RadioHandler>();
+  // Reduce Motion: the cover holds still where it is.
+  bool _still = false;
 
   @override
   void initState() {
     super.initState();
     _radio.wantPlaying.addListener(_sync);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _still = context.reduceMotion;
     _sync();
   }
 
   void _sync() {
-    if (_radio.wantPlaying.value) {
+    if (_radio.wantPlaying.value && !_still) {
       if (!_drift.isAnimating) _drift.repeat(reverse: true);
     } else {
       _drift.stop();

@@ -43,6 +43,10 @@ import WidgetKit
   /// Tells Dart when the listener takes a screenshot, so the player can offer to share.
   private lazy var screenshots = FlutterMethodChannel(name: "fm.seoul/screenshots", binaryMessenger: engine.binaryMessenger)
 
+  /// Reduce Transparency, which Flutter doesn't report: Dart draws its glass solid while it is on
+  /// (`AccessibilityPrefs`). Answers "reduceTransparency", and sends the same on every change.
+  private lazy var a11y = FlutterMethodChannel(name: "fm.seoul/a11y", binaryMessenger: engine.binaryMessenger)
+
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -74,6 +78,18 @@ import WidgetKit
       forName: UIApplication.userDidTakeScreenshotNotification, object: nil, queue: .main
     ) { [weak self] _ in
       self?.screenshots.invokeMethod("taken", arguments: nil)
+    }
+    a11y.setMethodCallHandler { call, result in
+      if call.method == "reduceTransparency" {
+        result(UIAccessibility.isReduceTransparencyEnabled)
+      } else {
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    NotificationCenter.default.addObserver(
+      forName: UIAccessibility.reduceTransparencyStatusDidChangeNotification, object: nil, queue: .main
+    ) { [weak self] _ in
+      self?.a11y.invokeMethod("reduceTransparency", arguments: UIAccessibility.isReduceTransparencyEnabled)
     }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
