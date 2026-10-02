@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
+import 'package:seoulfm/state/saved_songs.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/widgets/save_button.dart';
 import 'package:seoulfm/ui/icons.dart';
 
-/// A song: cover, title and artist, request it live, its lyrics, songs like it.
+/// A song: cover, title and artist, save it, request it live, its lyrics, songs like it.
 class SongScreen extends StatelessWidget {
   const SongScreen({super.key, required this.track});
   final Track track;
@@ -19,6 +22,7 @@ class SongScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          SaveButton(track: track),
           IconButton(tooltip: context.l.share, onPressed: () => shareSong(context, track), icon: const Icon(AppIcons.share)),
         ],
       ),
@@ -26,6 +30,10 @@ class SongScreen extends StatelessWidget {
         load: () => api.track(track.id!),
         builder: (context, d) {
           final t = d.track;
+          // A saved copy from the live feed lacks some of what the page knows (the artist's key).
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (context.mounted) context.read<SavedSongs>().enrich(track, t);
+          });
           final meta = [t.album, t.releaseYear?.toString(), t.genre].whereType<String>().where((s) => s.isNotEmpty).join(' · ');
           return ListView(
             padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 32),

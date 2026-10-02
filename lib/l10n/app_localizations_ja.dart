@@ -720,4 +720,38 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get requestNotificationChannelDescription =>
       'Tells you when a song you requested is coming up and when it’s on air.';
+
+  @override
+  String get yourSongs => 'Your songs';
+
+  @override
+  String get favourite => 'Favourite';
+
+  @override
+  String get saveToYourSongs => 'Save to Your songs';
+
+  @override
+  String get removeFromYourSongs => 'Remove from Your songs';
+
+  @override
+  String get savedToYourSongs => 'Saved to Your songs';
+
+  @override
+  String get removedFromYourSongs => 'Removed from Your songs';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get yourSongsEmptyTitle => 'Keep the songs you love';
+
+  @override
+  String get yourSongsEmptyBody =>
+      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+
+  @override
+  String get requestFromYourSongs => 'Request one of them';
 }

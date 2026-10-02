@@ -703,4 +703,38 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get requestNotificationChannelDescription =>
       '신청한 곡이 곧 나올 때와 방송될 때 알려 드려요.';
+
+  @override
+  String get yourSongs => '저장한 곡';
+
+  @override
+  String get favourite => '즐겨찾기';
+
+  @override
+  String get saveToYourSongs => '저장한 곡에 추가';
+
+  @override
+  String get removeFromYourSongs => '저장한 곡에서 삭제';
+
+  @override
+  String get savedToYourSongs => '저장한 곡에 추가했어요';
+
+  @override
+  String get removedFromYourSongs => '저장한 곡에서 삭제했어요';
+
+  @override
+  String get view => '보기';
+
+  @override
+  String get undo => '실행 취소';
+
+  @override
+  String get yourSongsEmptyTitle => '좋아하는 곡을 모아 보세요';
+
+  @override
+  String get yourSongsEmptyBody =>
+      '플레이어나 곡 페이지에서 하트를 누르거나, 곡 메뉴에서 ‘저장한 곡에 추가’를 고르세요. 계정 없이 이 휴대폰에 저장돼요.';
+
+  @override
+  String get requestFromYourSongs => '이 중에서 한 곡 신청하기';
 }

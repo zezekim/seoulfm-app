@@ -209,5 +209,16 @@
   "stationsFolder": "채널",
   "spatialAudioBody": "SeoulFM은 BS2B(Bauer stereophonic-to-binaural) 크로스피드로 헤드폰에 맞게 믹스돼요. 방 안의 스피커처럼 각 채널의 소리가 반대쪽 귀에도 살짝 전해져, 더 넓고 자연스럽게 들리고 오래 들어도 귀가 편해요.",
   "requestNotificationChannel": "내 신청곡",
-  "requestNotificationChannelDescription": "신청한 곡이 곧 나올 때와 방송될 때 알려 드려요."
+  "requestNotificationChannelDescription": "신청한 곡이 곧 나올 때와 방송될 때 알려 드려요.",
+  "yourSongs": "저장한 곡",
+  "favourite": "즐겨찾기",
+  "saveToYourSongs": "저장한 곡에 추가",
+  "removeFromYourSongs": "저장한 곡에서 삭제",
+  "savedToYourSongs": "저장한 곡에 추가했어요",
+  "removedFromYourSongs": "저장한 곡에서 삭제했어요",
+  "view": "보기",
+  "undo": "실행 취소",
+  "yourSongsEmptyTitle": "좋아하는 곡을 모아 보세요",
+  "yourSongsEmptyBody": "플레이어나 곡 페이지에서 하트를 누르거나, 곡 메뉴에서 ‘저장한 곡에 추가’를 고르세요. 계정 없이 이 휴대폰에 저장돼요.",
+  "requestFromYourSongs": "이 중에서 한 곡 신청하기"
 }

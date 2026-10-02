@@ -31,6 +31,7 @@ import 'package:seoulfm/ui/widgets/mini_player.dart';
 import 'package:seoulfm/ui/widgets/notices.dart';
 import 'package:seoulfm/ui/widgets/player_progress.dart';
 import 'package:seoulfm/ui/widgets/request_shelf.dart';
+import 'package:seoulfm/ui/widgets/save_button.dart';
 import 'package:seoulfm/ui/widgets/share_sheet.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 import 'package:seoulfm/ui/icons.dart';
@@ -421,6 +422,9 @@ class _Player extends StatelessWidget {
                       ),
                     ),
                     RatingButtons(trackId: t?.id, onImage: true, size: 24),
+                    // Where Apple Music keeps its favourite star: just before the ⋯, apart from the
+                    // thumbs (those tell the station; the heart keeps the song for the listener).
+                    SaveButton(track: t, onImage: true, size: 23, compact: true),
                     if (t != null)
                       IconButton(
                         tooltip: context.l.moreOptions,

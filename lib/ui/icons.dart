@@ -13,6 +13,7 @@ abstract final class AppIcons {
   static const IconData close = LucideIcons.x;
   static const IconData collapse = LucideIcons.chevronDown;
   static const IconData dedications = LucideIcons.heart;
+  static const IconData delete = LucideIcons.trash2;
   static const IconData support = LucideIcons.heartHandshake;
   static const IconData supporter = LucideIcons.sparkles;
   static const IconData coffee = LucideIcons.coffee;
@@ -46,6 +47,7 @@ abstract final class AppIcons {
   static const IconData quality = LucideIcons.audioLines;
   static const IconData radio = LucideIcons.radio;
   static const IconData request = LucideIcons.listMusic;
+  static const IconData saved = LucideIcons.heart;
   static const IconData search = LucideIcons.search;
   static const IconData searchEmpty = LucideIcons.searchX;
   static const IconData share = LucideIcons.share;
