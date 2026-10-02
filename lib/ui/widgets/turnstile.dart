@@ -23,6 +23,11 @@ class Turnstile extends StatefulWidget {
   /// or Turnstile reported an error. Rebuild with a new key to try again.
   final VoidCallback? onError;
 
+  /// Drawn instead of the web view, which can't run in widget tests (test/goldens): the sheets
+  /// around the captcha are then laid out as they are on a phone, waiting for its token.
+  @visibleForTesting
+  static WidgetBuilder? standIn;
+
   @override
   State<Turnstile> createState() => _TurnstileState();
 }
@@ -35,6 +40,7 @@ class _TurnstileState extends State<Turnstile> {
   @override
   void initState() {
     super.initState();
+    if (Turnstile.standIn != null) return;
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(Colors.transparent)
@@ -70,7 +76,7 @@ class _TurnstileState extends State<Turnstile> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_loaded) return;
+    if (_loaded || Turnstile.standIn != null) return;
     _loaded = true;
     // The app's theme, not the phone's: a dark app gets a dark captcha even in light mode.
     final dark = Theme.of(context).brightness == Brightness.dark;
@@ -106,6 +112,8 @@ theme:'$theme',size:'flexible',callback:send,'expired-callback':function(){send(
   @override
   Widget build(BuildContext context) {
     if (!Config.captchaEnabled) return const SizedBox.shrink();
+    final standIn = Turnstile.standIn;
+    if (standIn != null) return standIn(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(Radii.md),
       child: SizedBox(height: 70, child: WebViewWidget(controller: _controller)),

@@ -1,0 +1,4 @@
+# Test tags; see docs/golden-tests.md.
+tags:
+  # Screen snapshots (test/goldens): images are compared on macOS only, layout is checked everywhere.
+  golden:

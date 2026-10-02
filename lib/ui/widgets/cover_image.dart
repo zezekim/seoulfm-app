@@ -2,8 +2,13 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
+
+/// The file behind a cover URL: cached on disk, fetched once. Tests swap it for in-memory
+/// images (test/goldens), so covers draw without the network; nothing else sets it.
+ImageProvider Function(String url) coverProvider = CachedNetworkImageProvider.new;
 
 /// Decode sizes, in pixels. A cover is decoded at the first one that covers it, so a few sizes
 /// serve every list and the same file decoded for a 42 and a 48 pt row is one cache entry.

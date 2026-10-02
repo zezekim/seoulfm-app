@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
+import 'package:seoulfm/ui/widgets/cover_image.dart';
 
 /// The colour of a cover, as Spotify and Apple Music tint their players: the most vivid hue
 /// in the artwork, settled to a lightness white type reads on. Grey covers get a grey.
@@ -43,7 +43,7 @@ class CoverColors extends ChangeNotifier {
   }
 
   static Future<Uint8List?> _pixels(String url) async {
-    final provider = ResizeImage(CachedNetworkImageProvider(url), width: 32, height: 32);
+    final provider = ResizeImage(coverProvider(url), width: 32, height: 32);
     final done = Completer<ui.Image?>();
     final stream = provider.resolve(ImageConfiguration.empty);
     late final ImageStreamListener listener;

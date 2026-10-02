@@ -98,7 +98,11 @@ extension SfmTheme on BuildContext {
 /// Pretendard (bundled, variable): Inter's Latin drawn together with Hangul, so a title like
 /// "AHOF(아홉)" is one face at one weight. Scripts it lacks fall to the system.
 const fontFamily = 'Pretendard';
-const _fallback = ['Apple SD Gothic Neo', 'Hiragino Sans', 'PingFang SC', 'Noto Sans CJK KR', 'Noto Sans'];
+
+/// Tried in order for what Pretendard can't draw, before the system's own fallback. The golden
+/// tests (test/goldens) add their bundled Arabic, Thai and Japanese faces here.
+@visibleForTesting
+final fontFallback = <String>['Apple SD Gothic Neo', 'Hiragino Sans', 'PingFang SC', 'Noto Sans CJK KR', 'Noto Sans'];
 
 ThemeData buildTheme(Brightness brightness, Color accent) {
   final c = brightness == Brightness.dark ? SfmColors.dark : SfmColors.light;
@@ -107,7 +111,7 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
     bodyColor: c.text,
     displayColor: c.text,
     fontFamily: fontFamily,
-    fontFamilyFallback: _fallback,
+    fontFamilyFallback: List.of(fontFallback),
   );
   // One scale for the app. Pretendard reads best tracked in a little.
   TextStyle? s(TextStyle? t, double size, FontWeight w, {double track = -0.2, double? height}) =>
