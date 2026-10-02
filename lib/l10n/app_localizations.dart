@@ -1379,6 +1379,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SeoulFM is mixed for headphones with BS2B (Bauer stereophonic-to-binaural) crossfeed. A little of each channel reaches the other ear, as it would from speakers in a room, so the sound feels wider, more natural and easier on the ears for hours.'**
   String get spatialAudioBody;
+
+  /// No description provided for @requestNotificationChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your requests'**
+  String get requestNotificationChannel;
+
+  /// No description provided for @requestNotificationChannelDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Tells you when a song you requested is coming up and when it’s on air.'**
+  String get requestNotificationChannelDescription;
 }
 
 class _AppLocalizationsDelegate

@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:seoulfm/config.dart';
+import 'package:seoulfm/platform/request_notifications.dart';
 import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
@@ -10,6 +14,7 @@ import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
+import 'package:seoulfm/state/review_prompt.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/state/runtime_config.dart';
 import 'package:seoulfm/state/session.dart';
@@ -34,11 +39,15 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final runtime = RuntimeConfigController();
   late final NowPlayingController nowPlaying = NowPlayingController(delayMs: _delayMs);
   final stations = StationsNowPlaying();
-  late final RatingsController ratings = RatingsController(listeningSince: radio.listeningSince, station: () => channels.active.key);
+  late final RatingsController ratings = RatingsController(
+    listeningSince: radio.listeningSince,
+    station: () => channels.active.key,
+  );
   final requests = RequestTracker();
   final covers = CoverColors();
   final support = SupportStore();
   final moderation = Moderation();
+  late final ReviewPrompt review = ReviewPrompt(Session.prefs, version: AppBuild.version);
   late final CarPlayBridge carPlay = CarPlayBridge(onTune: (key) => tuneIn(key, play: true, fromCar: true));
 
   final ValueNotifier<LosslessPrompt?> losslessPrompt = ValueNotifier(null);
@@ -114,11 +123,20 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     support.listen();
     carPlay.start();
     WidgetsBinding.instance.addObserver(this);
+    requests.addListener(_onRequestChange);
+    unawaited(RequestNotifications.init());
+    review.start();
+    radio.streamFailing.addListener(_onPlaybackTrouble);
+    radio.losslessFailed.addListener(_onPlaybackTrouble);
+    Timer.periodic(const Duration(minutes: 1), (_) => _countListening());
     _onChannels();
     _syncStationsPolling();
   }
 
   bool _foreground = true;
+
+  /// Whether the app is on screen (resumed).
+  bool get foreground => _foreground;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -127,6 +145,39 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     _syncStationsPolling();
     // The app is being torn down: end the listening session on the dashboard now.
     if (state == AppLifecycleState.detached) radio.finalBeat();
+  }
+
+  /// The listener's requests: a notification for the moments that matter while the app is out
+  /// of sight, and a rating prompt soon after they hear one of theirs with the app open.
+  void _onRequestChange() {
+    final s = requests.lastChange;
+    if (s == null) return;
+    final moment = RequestNotifications.onChange(s, background: !_foreground);
+    if (moment == RequestMoment.onAir && _foreground) {
+      // Once the toast has had its moment and the song has started.
+      Timer(const Duration(seconds: 8), () {
+        if (_foreground) review.maybeAsk(ReviewMoment.ownRequestPlayed);
+      });
+    }
+  }
+
+  void _onPlaybackTrouble() {
+    if (radio.streamFailing.value || radio.losslessFailed.value) review.noteError();
+  }
+
+  DateTime _lastListeningTick = DateTime.now();
+
+  /// Counts listening time (sound actually playing, in the background too) toward the rating
+  /// prompt's listening days, and asks on a qualifying day while the listener is in the app.
+  void _countListening() {
+    final now = DateTime.now();
+    final elapsed = now.difference(_lastListeningTick);
+    _lastListeningTick = now;
+    final hearing = radio.wantPlaying.value && radio.listeningSince.value != null && !radio.buffering.value;
+    if (!hearing) return;
+    // A suspended timer (the app asleep) doesn't count as listening.
+    review.addListening(elapsed > const Duration(seconds: 90) ? const Duration(minutes: 1) : elapsed);
+    if (_foreground && !radio.streamFailing.value) review.maybeAsk(ReviewMoment.listeningDay);
   }
 
   /// Other stations are polled while the app is on screen, or while it plays (the car lists them).
@@ -156,7 +207,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   /// The home-screen widgets follow the station, the heard song and the play state.
-  void _syncWidgets() => HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
+  void _syncWidgets() =>
+      HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
 
   void _syncCar() => carPlay.update(
     channels: channels.channels,

@@ -1,6 +1,7 @@
 import AVKit
 import Flutter
 import UIKit
+import UserNotifications
 import WidgetKit
 
 @main
@@ -52,6 +53,8 @@ import WidgetKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     _ = engine
+    // Request notifications (flutter_local_notifications): taps reach Dart through the app delegate.
+    UNUserNotificationCenter.current().delegate = self
     widgets.setMethodCallHandler { call, result in
       guard call.method == "update", let data = call.arguments as? [String: Any] else {
         result(FlutterMethodNotImplemented)

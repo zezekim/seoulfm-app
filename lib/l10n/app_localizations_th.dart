@@ -728,4 +728,11 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM มิกซ์เสียงมาสำหรับหูฟังด้วยครอสฟีด BS2B (Bauer stereophonic-to-binaural) เสียงจากแต่ละช่องจะส่งไปถึงหูอีกข้างเล็กน้อยเหมือนฟังจากลำโพงในห้อง ทำให้เสียงกว้างและเป็นธรรมชาติขึ้น และฟังได้นานหลายชั่วโมงโดยไม่เมื่อยหู';
+
+  @override
+  String get requestNotificationChannel => 'Your requests';
+
+  @override
+  String get requestNotificationChannelDescription =>
+      'Tells you when a song you requested is coming up and when it’s on air.';
 }

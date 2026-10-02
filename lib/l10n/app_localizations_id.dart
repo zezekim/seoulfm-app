@@ -733,4 +733,11 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM dimiks untuk headphone dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit suara dari tiap kanal sampai juga ke telinga sebelahnya, seperti dari speaker di dalam ruangan, sehingga suara terasa lebih luas, lebih alami, dan nyaman di telinga berjam-jam.';
+
+  @override
+  String get requestNotificationChannel => 'Your requests';
+
+  @override
+  String get requestNotificationChannelDescription =>
+      'Tells you when a song you requested is coming up and when it’s on air.';
 }

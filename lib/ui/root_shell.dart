@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/platform/accessibility_prefs.dart';
 import 'package:seoulfm/platform/deep_links.dart';
+import 'package:seoulfm/platform/request_notifications.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/theme.dart';
@@ -46,11 +47,15 @@ class _RootShellState extends State<RootShell> {
     _app.losslessPrompt.addListener(_onLosslessPrompt);
     _app.requests.addListener(_onRequestChange);
     Nav.tab.addListener(_onTab);
+    RequestNotifications.opened.addListener(_onNotificationTap);
+    _app.review.screenClear = () => mounted && Nav.isClear(context);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await showWelcomeIfNeeded(context);
       _onLosslessPrompt();
       // Links to seoul.fm wait for the welcome, then open over the shell.
       if (mounted) DeepLinks.instance.ready((uri) => openDeepLink(context, _app, uri));
+      // A notification tap that launched the app.
+      _onNotificationTap();
     });
   }
 
@@ -59,6 +64,8 @@ class _RootShellState extends State<RootShell> {
     _app.losslessPrompt.removeListener(_onLosslessPrompt);
     _app.requests.removeListener(_onRequestChange);
     Nav.tab.removeListener(_onTab);
+    RequestNotifications.opened.removeListener(_onNotificationTap);
+    _app.review.screenClear = () => false;
     super.dispose();
   }
 
@@ -67,9 +74,19 @@ class _RootShellState extends State<RootShell> {
     if (p != null && mounted) showLosslessSheet(context, _app, p);
   }
 
+  /// A request notification was tapped: show what is playing (once per tap).
+  int _tapsHandled = 0;
+  void _onNotificationTap() {
+    final taps = RequestNotifications.opened.value;
+    if (taps == _tapsHandled || !mounted) return;
+    _tapsHandled = taps;
+    Nav.showNowPlaying(context);
+  }
+
   void _onRequestChange() {
     final s = context.read<RequestTracker>().lastChange;
-    if (s == null || !mounted) return;
+    // Out of sight, the moments that matter are notifications instead (AppState).
+    if (s == null || !mounted || !_app.foreground) return;
     final l = context.l;
     final title = s.track.displayTitle;
     final text = switch (s.status) {
