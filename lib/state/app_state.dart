@@ -135,7 +135,12 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     _syncStationsPolling();
   }
 
-  bool _foreground = true;
+  // On screen from the start, unless the system woke the app with no screen (Android media
+  // resumption after a reboot, Android Auto, a Quick Settings tap): then it waits to be shown.
+  bool _foreground = switch (WidgetsBinding.instance.lifecycleState) {
+    null || AppLifecycleState.resumed || AppLifecycleState.inactive => true,
+    _ => false,
+  };
 
   /// Whether the app is on screen (resumed).
   bool get foreground => _foreground;
