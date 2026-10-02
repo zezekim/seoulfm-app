@@ -225,14 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      sha256: "41e005c33bd814be4d3096aff55b1908d419fde52ca656c8c47719ec745873cd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.9"
   cupertino_ui:
     dependency: transitive
     description:
@@ -591,10 +583,9 @@ packages:
   lucide_icons_flutter:
     dependency: "direct main"
     description:
-      name: lucide_icons_flutter
-      sha256: "41329b0493e799d481a59e704f5d950d0382414596c57ccf4bb620faec345c97"
-      url: "https://pub.dev"
-    source: hosted
+      path: "third_party/lucide_icons_flutter"
+      relative: true
+    source: path
     version: "3.1.21"
   matcher:
     dependency: transitive
@@ -661,7 +652,7 @@ packages:
     source: hosted
     version: "9.5.0"
   octo_image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: octo_image
       sha256: "49c4f93afc10f1ad4fdef9db88fed9c65a8eb5d9ad0a4fa9b128d7fedeb41418"

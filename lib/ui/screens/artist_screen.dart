@@ -73,8 +73,8 @@ class ArtistScreen extends StatelessWidget {
             background: Stack(
               fit: StackFit.expand,
               children: [
-                Artwork(fallbackArt, radius: 0),
-                Artwork(photo, radius: 0),
+                Artwork(fallbackArt, radius: 0, fullResolution: true),
+                Artwork(photo, radius: 0, fullResolution: true),
                 DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(

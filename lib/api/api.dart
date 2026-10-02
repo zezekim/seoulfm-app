@@ -125,15 +125,18 @@ class Api {
   String _e(String s) => Uri.encodeComponent(s);
 
   // ── Stations & streams ──────────────────────────────────────────────────
-  Future<List<StationSummary>> stations() async => ((await get('/stations'))['items'] as List? ?? [])
-      .map((e) => StationSummary.fromJson((e as Map).cast()))
-      .toList();
+  Future<List<StationSummary>> stations() async => (await stationsJson()).map(StationSummary.fromJson).toList();
+
+  /// The line-up as the API sent it (kept on the device for the next launch).
+  Future<List<Json>> stationsJson() async =>
+      ((await get('/stations'))['items'] as List? ?? []).map((e) => (e as Map).cast<String, dynamic>()).toList();
   Future<LosslessTier> losslessTier(String stream) async =>
       LosslessTier.fromJson(await get('/streams/${_e(stream)}/lossless'));
 
   // ── Live ────────────────────────────────────────────────────────────────
   Future<NowPlaying> nowPlaying({String? station, int? at}) async =>
-      NowPlaying.fromJson(await get('/now-playing', {'station': station, 'at': at}));
+      NowPlaying.fromJson(await nowPlayingJson(station: station, at: at));
+  Future<Json> nowPlayingJson({String? station, int? at}) => get('/now-playing', {'station': station, 'at': at});
   Future<List<Track>> recent({int limit = 30, String? station}) async =>
       tracksOf(await get('/recent', {'limit': limit, 'station': station}));
   Future<List<Track>> upcoming({int limit = 12, String? station}) async =>

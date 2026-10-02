@@ -54,6 +54,9 @@ android {
 
     buildTypes {
         release {
+            // R8 (minify) and resource shrinking are on: the Flutter Gradle plugin sets both for
+            // release, with its keep rules and each plugin's consumer rules. Add an
+            // android/app/proguard-rules.pro (picked up automatically) if a plugin ever needs more.
             signingConfig = if (keystoreProperties.isNotEmpty()) signingConfigs.getByName("release") else signingConfigs.getByName("debug")
         }
     }

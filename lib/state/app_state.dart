@@ -120,6 +120,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     api.attestor = attestation;
     runtime.addListener(attestation.warmUp);
     runtime.start();
+    // The last line-up and songs paint the first frame; both refresh straight after.
+    stations.restore();
     channels.addListener(_onChannels);
     channels.start();
     nowPlaying.addListener(_onHeard);
@@ -128,7 +130,6 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.wantPlaying.addListener(_syncWidgets);
     radio.wantPlaying.addListener(_syncStationsPolling);
     ratings.start();
-    support.listen();
     carPlay.start();
     WidgetsBinding.instance.addObserver(this);
     requests.addListener(_onRequestChange);

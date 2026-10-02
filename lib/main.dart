@@ -23,9 +23,11 @@ import 'package:seoulfm/ui/widgets/launch_curtain.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Two platform round trips before the first frame: ask for both at once.
+  final prefs = Session.init();
   await AppBuild.load();
   // Crash and error reports go to Sentry when a DSN is configured; otherwise straight to the app.
-  if (Config.sentryDsn.isEmpty) return _start();
+  if (Config.sentryDsn.isEmpty) return _start(prefs);
   await SentryFlutter.init((o) {
     o.dsn = Config.sentryDsn;
     o.release = 'seoulfm@${AppBuild.version}+${AppBuild.number}';
@@ -34,12 +36,16 @@ Future<void> main() async {
     o.tracesSampleRate = 0.1;
     // Listeners are anonymous: no IPs, no request bodies, no screenshots.
     o.sendDefaultPii = false;
-  }, appRunner: _start);
+  }, appRunner: () => _start(prefs));
 }
 
-Future<void> _start() async {
+Future<void> _start(Future<void> prefs) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Session.init();
+  await prefs;
+  // Covers are decoded at the size they are drawn (see Artwork), so this holds a few hundred.
+  PaintingBinding.instance.imageCache
+    ..maximumSize = 300
+    ..maximumSizeBytes = 64 << 20;
 
   // The radio lives in the audio service: it outlives every screen, plays in the
   // background, and answers the lock screen, CarPlay and Android Auto (which can start
@@ -64,7 +70,6 @@ Future<void> _start() async {
   );
 
   final app = AppState(radio)..start();
-  Screenshots.start();
   await AccessibilityPrefs.start();
   DeepLinks.instance.start();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -74,6 +79,21 @@ Future<void> _start() async {
       child: AccessibilityScope(child: const SeoulFmApp()),
     ),
   );
+  // Not needed to draw Home: the screenshot listener (the store connection starts in AppState).
+  _afterFirstFrame(Screenshots.start);
+}
+
+/// Runs [f] once the first frame is out, or after 2 s: started by the car there may be no frame.
+void _afterFirstFrame(VoidCallback f) {
+  var done = false;
+  void run() {
+    if (done) return;
+    done = true;
+    f();
+  }
+
+  WidgetsBinding.instance.addPostFrameCallback((_) => run());
+  Timer(const Duration(seconds: 2), run);
 }
 
 /// The radio, already on the last station. When the system starts the app to play (the Quick
