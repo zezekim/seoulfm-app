@@ -1,6 +1,7 @@
 import CarPlay
 import Flutter
 import UIKit
+import app_links
 
 // MARK: - Phone
 
@@ -20,6 +21,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window.rootViewController = FlutterViewController(engine: app.engine, nibName: nil, bundle: nil)
     window.makeKeyAndVisible()
     self.window = window
+    // The link that launched the app. This is a plain scene delegate (not FlutterSceneDelegate),
+    // so links reach app_links only through these calls.
+    _ = AppLinks.shared.scene(scene, willConnectTo: session, options: connectionOptions)
+  }
+
+  /// seoulfm:// links while the app runs.
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+    _ = AppLinks.shared.scene(scene, openURLContexts: URLContexts)
+  }
+
+  /// Universal Links (seoul.fm) while the app runs.
+  func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+    _ = AppLinks.shared.scene(scene, continue: userActivity)
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {

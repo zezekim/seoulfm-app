@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/platform/deep_links.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/theme.dart';
+import 'package:seoulfm/ui/deep_link_routes.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/charts_screen.dart';
 import 'package:seoulfm/ui/screens/home_screen.dart';
@@ -46,6 +48,8 @@ class _RootShellState extends State<RootShell> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await showWelcomeIfNeeded(context);
       _onLosslessPrompt();
+      // Links to seoul.fm wait for the welcome, then open over the shell.
+      if (mounted) DeepLinks.instance.ready((uri) => openDeepLink(context, _app, uri));
     });
   }
 
