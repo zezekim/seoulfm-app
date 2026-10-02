@@ -13,6 +13,11 @@ struct RadioActivityAttributes: ActivityAttributes {
     var accent: Int
     /// The cover's file name in the App Group container; changes with the song.
     var artFile: String?
+    /// The listener's request on its way: its title, when it should start (nil: not known)
+    /// and whether it is playing now. Optional, so states saved before these existed decode.
+    var requestTitle: String?
+    var requestAt: Date?
+    var requestPlaying: Bool?
   }
 }
 

@@ -1,0 +1,11 @@
+/* Siri phrases for the App Shortcuts (SeoulFMShortcuts in RadioIntents.swift): what the
+   listener says. Keep ${applicationName} and ${station}; one line per English phrase. */
+
+"Play ${station} on ${applicationName}" = "Play ${station} on ${applicationName}";
+"Listen to ${station} on ${applicationName}" = "Listen to ${station} on ${applicationName}";
+"Put on ${station} on ${applicationName}" = "Put on ${station} on ${applicationName}";
+"Play ${applicationName}" = "Play ${applicationName}";
+"Resume ${applicationName}" = "Resume ${applicationName}";
+"Listen to ${applicationName}" = "Listen to ${applicationName}";
+"Pause ${applicationName}" = "Pause ${applicationName}";
+"Stop ${applicationName}" = "Stop ${applicationName}";

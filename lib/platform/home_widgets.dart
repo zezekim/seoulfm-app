@@ -39,4 +39,28 @@ class HomeWidgets {
       // A build without the widget bridge.
     } catch (_) {}
   }
+
+  static String _lastRequest = '';
+
+  /// The listener's request on its way, for the iOS Live Activity's countdown: its title, when
+  /// it should start ([at], null when not known) and whether it plays now; [title] null once it
+  /// has played or gone.
+  static Future<void> request({required String? title, DateTime? at, bool playing = false}) async {
+    if (kIsWeb || defaultTargetPlatform != TargetPlatform.iOS) return;
+    final data = title == null
+        ? null
+        : <String, Object?>{
+            'title': title,
+            'at': at == null ? null : at.millisecondsSinceEpoch / 1000,
+            'playing': playing,
+          };
+    final key = data.toString();
+    if (key == _lastRequest) return;
+    _lastRequest = key;
+    try {
+      await _channel.invokeMethod('request', data);
+    } on MissingPluginException {
+      // A build without the widget bridge.
+    } catch (_) {}
+  }
 }

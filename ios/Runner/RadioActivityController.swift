@@ -12,6 +12,21 @@ final class RadioActivityController {
   private var artFor: String?
   private var artFile: String?
   private var pauseEnd: DispatchWorkItem?
+  /// The last state shown, so a request change can redraw it.
+  private var last: RadioActivityAttributes.ContentState?
+  private var request: (title: String, at: Date?, playing: Bool)?
+
+  /// The listener's request on its way (`HomeWidgets.request` in Dart), or nil once it has
+  /// played or gone. Shown on the activity while there is one; never starts one by itself.
+  func setRequest(_ data: [String: Any]?) {
+    if let data, let title = data["title"] as? String {
+      let at = (data["at"] as? NSNumber).map { Date(timeIntervalSince1970: $0.doubleValue) }
+      request = (title, at, data["playing"] as? Bool ?? false)
+    } else {
+      request = nil
+    }
+    if let last, activity != nil { apply(last) }
+  }
 
   func update(_ data: [String: Any]) {
     guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
@@ -60,7 +75,12 @@ final class RadioActivityController {
     }
   }
 
-  private func apply(_ state: RadioActivityAttributes.ContentState) {
+  private func apply(_ base: RadioActivityAttributes.ContentState) {
+    last = base
+    var state = base
+    state.requestTitle = request?.title
+    state.requestAt = request?.at
+    state.requestPlaying = request?.playing
     let content = ActivityContent(state: state, staleDate: nil)
     if let activity, activity.activityState == .active {
       Task { await activity.update(content) }
@@ -72,6 +92,7 @@ final class RadioActivityController {
   private func end() {
     guard let activity else { return }
     self.activity = nil
+    last = nil
     Task { await activity.end(nil, dismissalPolicy: .immediate) }
   }
 }

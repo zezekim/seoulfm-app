@@ -14,11 +14,15 @@ import WidgetKit
     engine.run()
     GeneratedPluginRegistrant.register(with: engine)
     CarPlayBridge.shared.attach(messenger: engine.binaryMessenger)
+    IntentBridge.shared.attach(messenger: engine.binaryMessenger)
     return engine
   }()
 
   /// What is on air, for the home-screen widget (`HomeWidgets` in Dart), through the App Group.
   private lazy var widgets = FlutterMethodChannel(name: "fm.seoul/widgets", binaryMessenger: engine.binaryMessenger)
+
+  /// The play state Control Center last showed.
+  private var controlPlaying: Bool?
 
   /// Opens the system AirPlay picker for the player's output button (`OutputDeviceButton`).
   private lazy var output = FlutterMethodChannel(name: "fm.seoul/output", binaryMessenger: engine.binaryMessenger)
@@ -55,7 +59,12 @@ import WidgetKit
     _ = engine
     // Request notifications (flutter_local_notifications): taps reach Dart through the app delegate.
     UNUserNotificationCenter.current().delegate = self
-    widgets.setMethodCallHandler { call, result in
+    widgets.setMethodCallHandler { [weak self] call, result in
+      // The listener's request on its way, for the Live Activity's countdown (null: none).
+      if call.method == "request" {
+        if #available(iOS 16.2, *) { RadioActivityController.shared.setRequest(call.arguments as? [String: Any]) }
+        return result(nil)
+      }
       guard call.method == "update", let data = call.arguments as? [String: Any] else {
         result(FlutterMethodNotImplemented)
         return
@@ -67,6 +76,12 @@ import WidgetKit
       shared?.set(Date().timeIntervalSince1970, forKey: "savedAt")
       WidgetCenter.shared.reloadAllTimelines()
       if #available(iOS 16.2, *) { RadioActivityController.shared.update(data) }
+      // Control Center's play/pause shows the play state; it only needs telling when that changes.
+      let playing = data["playing"] as? Bool
+      if #available(iOS 18.0, *), let playing, playing != self?.controlPlaying {
+        self?.controlPlaying = playing
+        ControlCenter.shared.reloadControls(ofKind: "PlaybackControl")
+      }
       result(nil)
     }
     output.setMethodCallHandler { [weak self] call, result in

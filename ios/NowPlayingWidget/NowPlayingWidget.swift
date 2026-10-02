@@ -27,17 +27,22 @@ struct Provider: TimelineProvider {
 
   func getSnapshot(in context: Context, completion: @escaping (NowPlayingEntry) -> Void) {
     if context.isPreview { return completion(.sample) }
-    Task { completion(await load()) }
+    Task { completion(await load(art: Self.showsArt(context.family))) }
   }
 
   func getTimeline(in context: Context, completion: @escaping (Timeline<NowPlayingEntry>) -> Void) {
     Task {
-      let entry = await load()
+      let entry = await load(art: Self.showsArt(context.family))
       completion(Timeline(entries: [entry], policy: .after(entry.refreshAt)))
     }
   }
 
-  private func load() async -> NowPlayingEntry {
+  /// The lock screen's families draw no cover, so they don't download one.
+  private static func showsArt(_ family: WidgetFamily) -> Bool {
+    family == .systemSmall || family == .systemMedium
+  }
+
+  private func load(art: Bool) async -> NowPlayingEntry {
     let d = UserDefaults(suiteName: appGroup)
     let station = d?.string(forKey: "stationName") ?? "SeoulFM Pop!"
     let accent = color(argb: d?.integer(forKey: "accent") ?? 0)
@@ -56,7 +61,7 @@ struct Provider: TimelineProvider {
       if let ends = fresh.endsAt { refreshAt = max(ends.addingTimeInterval(5), .now.addingTimeInterval(60)) }
     }
     return NowPlayingEntry(
-      date: .now, station: station, title: title, artist: artist, art: await image(artURL), accent: accent,
+      date: .now, station: station, title: title, artist: artist, art: art ? await image(artURL) : nil, accent: accent,
       playing: playing, refreshAt: refreshAt)
   }
 
@@ -113,6 +118,10 @@ struct NowPlayingView: View {
     }
   }
 
+  var title: Text {
+    entry.title.map { Text($0) } ?? Text("Tap to listen")
+  }
+
   var text: some View {
     VStack(alignment: .leading, spacing: 2) {
       HStack(spacing: 5) {
@@ -122,7 +131,7 @@ struct NowPlayingView: View {
         Text(entry.station.uppercased()).font(.system(size: 10, weight: .bold)).kerning(1.2)
           .foregroundStyle(entry.accent).lineLimit(1)
       }
-      Text(entry.title ?? "Tap to listen").font(.system(size: 16, weight: .bold)).foregroundStyle(.white).lineLimit(1)
+      title.font(.system(size: 16, weight: .bold)).foregroundStyle(.white).lineLimit(1)
       if let artist = entry.artist {
         Text(artist).font(.system(size: 13)).foregroundStyle(.white.opacity(0.7)).lineLimit(1)
       }
@@ -131,6 +140,48 @@ struct NowPlayingView: View {
 
   var body: some View {
     switch family {
+    case .accessoryRectangular:
+      // Lock screen: the station over the song, in the system's tint.
+      VStack(alignment: .leading, spacing: 0) {
+        HStack(spacing: 4) {
+          Image(systemName: entry.playing ? "waveform" : "dot.radiowaves.left.and.right")
+          Text(entry.station).lineLimit(1)
+        }
+        .font(.system(size: 13, weight: .bold))
+        .widgetAccentable()
+        title.font(.system(size: 15, weight: .semibold)).lineLimit(1)
+        if let artist = entry.artist {
+          Text(artist).font(.system(size: 13)).foregroundStyle(.secondary).lineLimit(1)
+        }
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .containerBackground(for: .widget) { Color.clear }
+    case .accessoryCircular:
+      // The monogram, with a waveform while it plays.
+      ZStack {
+        AccessoryWidgetBackground()
+        VStack(spacing: 1) {
+          Text("SFM").font(.system(size: 15, weight: .black)).minimumScaleFactor(0.6).lineLimit(1)
+          Image(systemName: entry.playing ? "waveform" : "play.fill").font(.system(size: 11, weight: .bold))
+            .widgetAccentable()
+        }
+        .padding(4)
+      }
+      .accessibilityElement(children: .ignore)
+      .accessibilityLabel(Text(entry.station))
+      .containerBackground(for: .widget) { Color.clear }
+    case .accessoryInline:
+      // One line, above the clock: the song, or the station before there is one.
+      Label {
+        if let t = entry.title {
+          Text(entry.artist.map { "\(t) · \($0)" } ?? t)
+        } else {
+          Text(entry.station)
+        }
+      } icon: {
+        Image(systemName: entry.playing ? "waveform" : "dot.radiowaves.left.and.right")
+      }
+      .containerBackground(for: .widget) { Color.clear }
     case .systemSmall:
       // The cover fills the widget, the song over a shade at the bottom.
       ZStack(alignment: .bottomLeading) {
@@ -179,12 +230,16 @@ struct StationCover: View {
   }
 }
 
-/// The extension's widgets: the home-screen widget and the Live Activity.
+/// The extension's widgets: the home-screen and lock-screen widget, the Live Activity and
+/// Control Center's play/pause.
 @main
 struct SeoulFMWidgets: WidgetBundle {
   var body: some Widget {
     NowPlayingWidget()
     RadioLiveActivity()
+    if #available(iOS 18.0, *) {
+      PlaybackControl()
+    }
   }
 }
 
@@ -193,7 +248,7 @@ struct NowPlayingWidget: Widget {
     StaticConfiguration(kind: "NowPlaying", provider: Provider()) { NowPlayingView(entry: $0) }
       .configurationDisplayName("SeoulFM")
       .description("What's playing on your station.")
-      .supportedFamilies([.systemSmall, .systemMedium])
+      .supportedFamilies([.systemSmall, .systemMedium, .accessoryRectangular, .accessoryCircular, .accessoryInline])
       .contentMarginsDisabled()
   }
 }

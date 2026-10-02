@@ -1,0 +1,206 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "2010s" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2010년대"
+          }
+        }
+      }
+    },
+    "Ballad" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "발라드"
+          }
+        }
+      }
+    },
+    "Classics" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클래식"
+          }
+        }
+      }
+    },
+    "Dance" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "댄스"
+          }
+        }
+      }
+    },
+    "Fresh K-Pop!" : {
+      "comment" : "Station name (a brand, kept as is).",
+      "shouldTranslate" : false
+    },
+    "HIFI" : {
+      "comment" : "Station name (a brand, kept as is).",
+      "shouldTranslate" : false
+    },
+    "HipHop" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "힙합"
+          }
+        }
+      }
+    },
+    "Indie" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인디"
+          }
+        }
+      }
+    },
+    "Marathon" : {
+      "comment" : "Station name; Siri matches the spoken name against it.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마라톤"
+          }
+        }
+      }
+    },
+    "OST" : {
+      "comment" : "Station name.",
+      "shouldTranslate" : false
+    },
+    "Pause SeoulFM" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SeoulFM 일시정지"
+          }
+        }
+      }
+    },
+    "Pauses the radio." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라디오를 일시정지해요."
+          }
+        }
+      }
+    },
+    "Play ${station}" : {
+      "comment" : "Shortcuts: the action's summary, with the station picker.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "${station} 재생"
+          }
+        }
+      }
+    },
+    "Play SeoulFM" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SeoulFM 재생"
+          }
+        }
+      }
+    },
+    "Play Station" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "채널 재생"
+          }
+        }
+      }
+    },
+    "Play or Pause SeoulFM" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SeoulFM 재생 또는 일시정지"
+          }
+        }
+      }
+    },
+    "Playing" : {
+      "comment" : "Control Center toggle's parameter: whether the radio plays.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "재생 중"
+          }
+        }
+      }
+    },
+    "Plays a SeoulFM station." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SeoulFM 채널을 재생해요."
+          }
+        }
+      }
+    },
+    "Plays the station you last listened to." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "마지막으로 들은 채널을 재생해요."
+          }
+        }
+      }
+    },
+    "Pop!" : {
+      "comment" : "Station name (a brand, kept as is).",
+      "shouldTranslate" : false
+    },
+    "R&B" : {
+      "comment" : "Station name.",
+      "shouldTranslate" : false
+    },
+    "Station" : {
+      "comment" : "Siri and Shortcuts: what the station parameter is called.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "채널"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

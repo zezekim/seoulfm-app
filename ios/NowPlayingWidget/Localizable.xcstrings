@@ -1,0 +1,118 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Paused" : {
+      "comment" : "Control Center: the radio is paused.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일시정지됨"
+          }
+        }
+      }
+    },
+    "Play SeoulFM" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SeoulFM 재생"
+          }
+        }
+      }
+    },
+    "Play or Pause SeoulFM" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SeoulFM 재생 또는 일시정지"
+          }
+        }
+      }
+    },
+    "Playing" : {
+      "comment" : "Control Center: the radio plays.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "재생 중"
+          }
+        }
+      }
+    },
+    "Playing now" : {
+      "comment" : "Live Activity: the listener's requested song is playing.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 재생 중"
+          }
+        }
+      }
+    },
+    "Plays or pauses the radio." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "라디오를 재생하거나 일시정지해요."
+          }
+        }
+      }
+    },
+    "SFM" : {
+      "comment" : "The SeoulFM monogram on the lock screen widget.",
+      "shouldTranslate" : false
+    },
+    "SeoulFM" : {
+      "shouldTranslate" : false
+    },
+    "Tap to listen" : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "탭해서 들어 보세요"
+          }
+        }
+      }
+    },
+    "Up next" : {
+      "comment" : "Live Activity: the listener's requested song plays next (no ETA).",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음 곡"
+          }
+        }
+      }
+    },
+    "What's playing on your station." : {
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내 채널에서 지금 나오는 곡이에요."
+          }
+        }
+      }
+    },
+    "Your request" : {
+      "comment" : "Live Activity: the listener's requested song is on its way.",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내 신청곡"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
