@@ -71,7 +71,11 @@ class _RequestSheetState extends State<_RequestSheet> {
       });
       if (!mounted) return;
       if (r.accepted && r.requestId != null && r.statusToken != null) {
-        context.read<RequestTracker>().follow(r.requestId!, r.statusToken!);
+        context.read<RequestTracker>().follow(
+          r.requestId!,
+          r.statusToken!,
+          initial: RequestStatus(r.requestId!, r.status.isEmpty ? 'queued' : r.status, r.track, r.eta, null),
+        );
       }
       if (r.accepted) {
         HapticFeedback.heavyImpact();

@@ -190,11 +190,17 @@ struct NowPlayingView: View {
       }
       .containerBackground(for: .widget) { cover }
     default:
+      // The cover as tall as the widget allows, with the same margin all round (as Apple Music's
+      // widget): content margins are off for the small size's full-bleed cover, so set them here.
       HStack(spacing: 14) {
-        cover.frame(width: 110, height: 110).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        Color.clear
+          .aspectRatio(1, contentMode: .fit)
+          .overlay(cover)
+          .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
         text
         Spacer(minLength: 0)
       }
+      .padding(16)
       .containerBackground(for: .widget) {
         ZStack {
           Color(red: 0.07, green: 0.07, blue: 0.08)

@@ -598,6 +598,29 @@ class RadioHandler extends BaseAudioHandler {
     unawaited(_player.play());
     unawaited(_fade(1, _fadeIn));
     _heartbeatOnChange(force: true);
+    _watchStart();
+  }
+
+  /// A load can stall without an error (a weak connection, a playlist that never readies), and
+  /// recovery only answers errors: if play hasn't really started within [_startDeadline],
+  /// reload once, as a station change would.
+  Timer? _startWatch;
+  static const _startDeadline = Duration(seconds: 8);
+
+  void _watchStart() {
+    _startWatch?.cancel();
+    _startWatch = Timer(_startDeadline, () {
+      if (!wantPlaying.value || _switching || _interrupted) return;
+      final s = _player.playerState;
+      if (s.playing && s.processingState == ProcessingState.ready) return;
+      _trail('start stalled (${s.processingState}), reloading');
+      unawaited(() async {
+        await _load();
+        if (!_loaded || !wantPlaying.value) return;
+        await _player.play();
+        unawaited(_fade(1, _fadeIn));
+      }());
+    });
   }
 
   /// The listener's Retry on the "can't reach the stream" notice: try now, not at the next backoff.
@@ -613,6 +636,7 @@ class RadioHandler extends BaseAudioHandler {
   @override
   Future<void> pause() async {
     wantPlaying.value = false;
+    _startWatch?.cancel();
     _cancelSwitch();
     streamFailing.value = false;
     _pausedAt = DateTime.now();
@@ -627,6 +651,7 @@ class RadioHandler extends BaseAudioHandler {
   @override
   Future<void> stop() async {
     wantPlaying.value = false;
+    _startWatch?.cancel();
     _cancelSwitch();
     _warm = false;
     streamFailing.value = false;

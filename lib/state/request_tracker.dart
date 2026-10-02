@@ -29,9 +29,15 @@ class RequestTracker extends ChangeNotifier {
     current.value = open.isEmpty ? null : open.last;
   }
 
-  void follow(String requestId, String token) {
+  /// Follows a request. [initial] is its status from the submission itself, so the pill above
+  /// the player shows at once instead of waiting for the stream's first event.
+  void follow(String requestId, String token, {RequestStatus? initial}) {
     if (_follows.containsKey(requestId)) return;
     _follows[requestId] = _Follow(token);
+    if (initial != null && !initial.isFinal) {
+      active[requestId] = initial;
+      _syncCurrent();
+    }
     _connect(requestId);
   }
 
