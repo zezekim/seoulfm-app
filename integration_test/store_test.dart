@@ -46,6 +46,12 @@ void main() {
     }
     await t.dragFrom(const Offset(200, 300), const Offset(0, 1500));
     await wait(t, 3);
+    // The pull doesn't always close the player (it can scroll the page instead): close it
+    // properly, or the tabs stay hidden behind it.
+    for (var i = 0; i < 3 && find.byType(GlassTabBar).evaluate().isEmpty; i++) {
+      await Navigator.of(t.element(find.byType(Scaffold).last), rootNavigator: true).maybePop();
+      await wait(t, 2);
+    }
 
     await t.drag(find.byType(CustomScrollView).first, const Offset(0, -760));
     await wait(t, 3);
