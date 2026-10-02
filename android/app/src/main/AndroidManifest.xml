@@ -93,6 +93,13 @@
 
         <!-- The radio: background playback, the media notification, Bluetooth and
              Android Auto all talk to this one service (audio_service). -->
+        <!-- Covers for Android Auto / Automotive, which load art only from content:// URIs. Exported:
+             the car's media app reads it; it serves only https images (ArtProvider). -->
+        <provider
+            android:name=".ArtProvider"
+            android:authorities="${applicationId}.art"
+            android:exported="true"
+            android:grantUriPermissions="true" />
         <service
             android:name="com.ryanheise.audioservice.AudioService"
             android:foregroundServiceType="mediaPlayback"

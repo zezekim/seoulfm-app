@@ -121,6 +121,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.channels = () => channels.channels;
     radio.onTune = (key) => tuneIn(key, fromCar: true);
     radio.stationsNowPlaying = () => stations.byStation;
+    radio.onCarBrowse = _onCarBrowse;
     radio.songPositionMs = nowPlaying.positionMs;
 
     // Writes carry a device proof once the dashboard turns attestation on; each config poll
@@ -135,6 +136,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     channels.start();
     nowPlaying.addListener(_onHeard);
     stations.addListener(_syncCar);
+    stations.addListener(radio.stationsUpdated);
     radio.wantPlaying.addListener(_syncCar);
     radio.wantPlaying.addListener(_syncWidgets);
     radio.wantPlaying.addListener(_syncStationsPolling);
@@ -208,7 +210,24 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   /// Other stations are polled while the app is on screen, or while it plays (the car lists them).
-  void _syncStationsPolling() => stations.setActive(_foreground || radio.wantPlaying.value);
+  void _syncStationsPolling() =>
+      stations.setActive(_foreground || radio.wantPlaying.value || _carBrowsedAt != null);
+
+  /// A car opened the station list (maybe with no phone screen at all): fetch what the stations
+  /// play for a while, so its grid has covers and songs, and tell it when they arrive.
+  DateTime? _carBrowsedAt;
+  Timer? _carBrowseEnd;
+
+  void _onCarBrowse() {
+    final first = _carBrowsedAt == null;
+    _carBrowsedAt = DateTime.now();
+    _carBrowseEnd?.cancel();
+    _carBrowseEnd = Timer(const Duration(minutes: 10), () {
+      _carBrowsedAt = null;
+      _syncStationsPolling();
+    });
+    if (first) _syncStationsPolling();
+  }
 
   void _onChannels() {
     final active = channels.active;

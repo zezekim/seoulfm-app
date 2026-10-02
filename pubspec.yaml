@@ -58,6 +58,7 @@ dependencies:
   in_app_review: ^2.0.12
   app_attest: ^0.2.1
   crypto: ^3.0.7
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

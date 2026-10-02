@@ -6,6 +6,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/data/app_language.dart';
@@ -136,6 +137,26 @@ class RadioHandler extends BaseAudioHandler {
   List<Channel> Function() channels = () => const [];
   void Function(String key) onTune = (_) {};
   Map<String, NowPlaying> Function() stationsNowPlaying = () => const {};
+
+  /// A car (Android Auto / Automotive) is browsing the stations: their covers and songs should
+  /// be fetched even with no phone screen (`AppState` polls the stations meanwhile).
+  void Function() onCarBrowse = () {};
+
+  /// Tells a browsing car the stations' list changed (new covers, new songs).
+  final _stationsChanged = BehaviorSubject<Map<String, dynamic>>.seeded(const {});
+  void stationsUpdated() => _stationsChanged.add(const {});
+
+  @override
+  ValueStream<Map<String, dynamic>> subscribeToChildren(String parentMediaId) =>
+      parentMediaId == _stationsFolder ? _stationsChanged : super.subscribeToChildren(parentMediaId);
+
+  /// Artwork as the system media UIs can load it. Android Auto and Automotive only take
+  /// content:// URIs the app serves (`ArtProvider`), never web links; iOS takes the link.
+  static Uri? _systemArt(String? url) {
+    if (url == null || url.isEmpty) return null;
+    if (defaultTargetPlatform != TargetPlatform.android || !url.startsWith('https://')) return Uri.parse(url);
+    return Uri(scheme: 'content', host: 'com.seoulfm.seoulfm.art', path: '/cover', queryParameters: {'u': url});
+  }
 
   /// The listener's position in the heard song, ms (`NowPlayingController.positionMs`): the
   /// lock screen's progress and time left. The player's own clock is the stream's, not the song's.
@@ -754,14 +775,14 @@ class RadioHandler extends BaseAudioHandler {
       _publishedTrack = null;
       return _publishIdleItem();
     }
-    final art = t.artworkUrl ?? _stationArt(c)?.toString();
+    final art = t.artworkUrl ?? stationsNowPlaying()[c.key]?.current?.artworkUrl ?? c.live?.artworkUrl;
     mediaItem.add(
       MediaItem(
         id: c.key,
         title: t.displayTitle,
         artist: t.displayArtist,
         album: isolate('SeoulFM ${c.rawName}'),
-        artUri: art == null ? null : Uri.parse(art),
+        artUri: _systemArt(art),
         duration: t.durationMs == null ? null : Duration(milliseconds: t.durationMs!),
         extras: {'track_id': t.id},
       ),
@@ -774,10 +795,7 @@ class RadioHandler extends BaseAudioHandler {
     }
   }
 
-  Uri? _stationArt(Channel c) {
-    final art = stationsNowPlaying()[c.key]?.current?.artworkUrl ?? c.live?.artworkUrl;
-    return art == null ? null : Uri.parse(art);
-  }
+  Uri? _stationArt(Channel c) => _systemArt(stationsNowPlaying()[c.key]?.current?.artworkUrl ?? c.live?.artworkUrl);
 
   // ── Android Auto / Automotive browse tree ───────────────────────────────
 
@@ -799,6 +817,7 @@ class RadioHandler extends BaseAudioHandler {
 
   @override
   Future<List<MediaItem>> getChildren(String parentMediaId, [Map<String, dynamic>? options]) async {
+    onCarBrowse();
     final live = channels().where((c) => c.tunable).toList();
     switch (parentMediaId) {
       case AudioService.browsableRootId:
