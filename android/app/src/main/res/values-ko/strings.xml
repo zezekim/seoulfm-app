@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="widget_description">SeoulFM에서 지금 나오는 곡, 재생과 일시정지까지</string>
+    <string name="widget_play_pause">재생 또는 일시정지</string>
+    <string name="widget_idle">탭해서 듣기</string>
     <string name="tile_playing">재생 중</string>
     <string name="tile_paused">일시정지됨</string>
 </resources>
