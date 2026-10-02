@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
+import 'package:seoulfm/platform/request_notifications.dart';
+import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/state/session.dart';
@@ -68,16 +70,23 @@ class _RequestSheetState extends State<_RequestSheet> {
       if (r.accepted && r.requestId != null && r.statusToken != null) {
         context.read<RequestTracker>().follow(r.requestId!, r.statusToken!);
       }
-      if (r.accepted) HapticFeedback.heavyImpact();
+      if (r.accepted) {
+        HapticFeedback.heavyImpact();
+        // The first accepted request is when a "your song is up" notification makes sense:
+        // ask then (once), after the celebration has played.
+        Future.delayed(const Duration(milliseconds: 1200), RequestNotifications.askOnce);
+      }
       setState(() => _result = r);
     } on ApiError catch (e) {
       if (!mounted) return;
+      context.read<AppState>().review.noteError(); // no rating prompt right after this
       setState(() {
         _error = e.message;
         _resetCaptcha(); // the token was spent
       });
     } catch (_) {
       if (!mounted) return;
+      context.read<AppState>().review.noteError(); // no rating prompt right after this
       setState(() {
         _error = context.l.errorGeneric;
         _resetCaptcha();
@@ -196,7 +205,11 @@ class _RequestSheetState extends State<_RequestSheet> {
                         ),
                         onPressed: _canSend ? _send : null,
                         child: _sending
-                            ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: readableOn(accent)))
+                            ? SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: readableOn(accent)),
+                              )
                             : Text(context.l.sendRequest),
                       ),
                     ],

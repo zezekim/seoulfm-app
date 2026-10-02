@@ -74,6 +74,14 @@ class Nav {
     playerPresentation.value = null;
   }
 
+  /// Whether nothing (a sheet, a dialog, the welcome) is over the app: [shell]'s route is on
+  /// top, or the full-screen player is.
+  static bool isClear(BuildContext shell) {
+    final player = _player;
+    if (player != null && player.mounted) return ModalRoute.isCurrentOf(player) ?? false;
+    return shell.mounted && (ModalRoute.isCurrentOf(shell) ?? false);
+  }
+
   static void openSupport() => push(const SupportScreen());
 
   static void openSong(Track t) {

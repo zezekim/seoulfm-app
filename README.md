@@ -136,6 +136,25 @@ ios/Runner/SceneDelegate.swift   phone scene, CarPlay scene, the bridge
 - **Fail open.** If the runtime config can't be fetched, the app keeps the last good copy, or
   the defaults.
 
+### Request notifications and the rating prompt
+
+While the app is out of sight, the listener's own requests notify once when one is coming up
+(with its ETA) and once when it is on air; tapping opens the player
+(`lib/platform/request_notifications.dart`). The permission is asked once, right after the first
+accepted request, never at launch. Android posts them on the "Your requests" channel with the
+status-bar icon audio_service uses (`drawable/ic_stat_seoulfm`).
+
+**Limitation:** these are local notifications fed by the request's live status stream, so they
+only come while the app's process is alive: on iOS that means while it is playing in the
+background; a suspended or closed app hears nothing. Real push needs the server; the brief is in
+`docs/push-requests.md`.
+
+The App Store / Play rating prompt (`lib/state/review_prompt.dart`, rules unit-tested) asks right
+after the listener hears their own request with the app open, or on their third day with at least
+10 minutes of listening. Never in the first 2 days, at most once per version, not within 10
+minutes of an error, never over a sheet or the welcome. The OS may still show nothing; the app
+never falls back to the store page.
+
 ### CarPlay
 
 `ios/Runner/SceneDelegate.swift` adds a CarPlay scene: a list of stations, each with the cover
@@ -190,4 +209,5 @@ here: the car shows only system templates.
 ## Not in this version
 
 Chromecast, the equalizer and visualizer, the marathon "Speed it up" boost (hidden on the site
-too until the API ships it), push notifications, featured-artist heroes.
+too until the API ships it), server push for requests (`docs/push-requests.md`),
+featured-artist heroes.
