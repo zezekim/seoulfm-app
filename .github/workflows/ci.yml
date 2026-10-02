@@ -85,6 +85,10 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v5
+      # Plugins build against the current iOS SDK (connectivity_plus uses iOS 26 API): not the image's default Xcode.
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
