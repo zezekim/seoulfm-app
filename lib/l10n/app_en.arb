@@ -401,5 +401,7 @@
   "undo": "Undo",
   "yourSongsEmptyTitle": "Keep the songs you love",
   "yourSongsEmptyBody": "Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.",
-  "requestFromYourSongs": "Request one of them"
+  "requestFromYourSongs": "Request one of them",
+  "quickSettingsAdd": "Add to Quick Settings",
+  "quickSettingsAdded": "SeoulFM is in your Quick Settings: swipe down to play or pause."
 }

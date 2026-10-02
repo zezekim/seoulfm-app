@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/config.dart';
+import 'package:seoulfm/platform/quick_settings.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/moderation.dart';
 import 'package:seoulfm/state/saved_songs.dart';
@@ -21,7 +22,6 @@ import 'package:seoulfm/ui/widgets/quality_sheet.dart';
 /// Your songs, dedications, settings, the car, and about.
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +126,22 @@ class MoreScreen extends StatelessWidget {
                   onTap: () => pickQuality(context),
                 ),
               ),
+              // Android 13+: the system's prompt to add the play/pause tile to Quick Settings.
+              FutureBuilder<bool>(
+                future: QuickSettingsTile.canAdd,
+                builder: (context, snap) => snap.data != true
+                    ? const SizedBox.shrink()
+                    : ListTile(
+                        leading: const Icon(AppIcons.add),
+                        title: Text(l.quickSettingsAdd),
+                        onTap: () async {
+                          final messenger = ScaffoldMessenger.of(context);
+                          if (await QuickSettingsTile.add()) {
+                            messenger.showSnackBar(SnackBar(content: Text(l.quickSettingsAdded)));
+                          }
+                        },
+                      ),
+              ),
               // Android Auto only: CarPlay waits for Apple's entitlement (see the README).
               if (defaultTargetPlatform == TargetPlatform.android) ...[
                 SectionHeader(l.inTheCar, icon: AppIcons.car),
@@ -146,11 +162,7 @@ class MoreScreen extends StatelessWidget {
                 title: Text(l.privacy),
                 onTap: () => openSitePage('/privacy/'),
               ),
-              ListTile(
-                leading: const Icon(AppIcons.terms),
-                title: Text(l.terms),
-                onTap: () => openSitePage('/terms/'),
-              ),
+              ListTile(leading: const Icon(AppIcons.terms), title: Text(l.terms), onTap: () => openSitePage('/terms/')),
               ListTile(
                 leading: const Icon(AppIcons.mail),
                 title: Text(l.contact),

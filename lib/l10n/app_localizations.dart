@@ -1457,6 +1457,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request one of them'**
   String get requestFromYourSongs;
+
+  /// No description provided for @quickSettingsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Quick Settings'**
+  String get quickSettingsAdd;
+
+  /// No description provided for @quickSettingsAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'SeoulFM is in your Quick Settings: swipe down to play or pause.'**
+  String get quickSettingsAdded;
 }
 
 class _AppLocalizationsDelegate

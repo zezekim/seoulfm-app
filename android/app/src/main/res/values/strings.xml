@@ -3,4 +3,8 @@
     <string name="widget_description">What\'s playing on SeoulFM, with play and pause</string>
     <string name="widget_play_pause">Play or pause</string>
     <string name="widget_idle">Tap to listen</string>
+    <!-- The Quick Settings tile: its name, and its state as TalkBack reads it. -->
+    <string name="tile_label" translatable="false">SeoulFM</string>
+    <string name="tile_playing">Playing</string>
+    <string name="tile_paused">Paused</string>
 </resources>

@@ -12,6 +12,7 @@
         android:label="SeoulFM"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="false">
         <activity
             android:name=".MainActivity"
@@ -111,6 +112,21 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/now_playing_widget_info" />
         </receiver>
+        <!-- The Quick Settings tile (RadioTileService.kt): play/pause through the media session. -->
+        <service
+            android:name=".RadioTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_stat_seoulfm"
+            android:label="@string/tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <!-- An on/off switch to accessibility services (Android 13+). -->
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
         <receiver
             android:name="com.ryanheise.audioservice.MediaButtonReceiver"
             android:exported="true">

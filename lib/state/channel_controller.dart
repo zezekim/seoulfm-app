@@ -18,8 +18,11 @@ class ChannelController extends ChangeNotifier {
   List<Channel> get tunable => _channels.where((c) => c.tunable).toList();
   Channel get active => _channels.firstWhere((c) => c.key == _activeKey, orElse: () => _channels.first);
 
+  /// The station tuned last time (kept on the device), else the first.
+  static String get savedKey => Session.prefs.getString(_prefKey) ?? channelRegistry.first.key;
+
   void start() {
-    _activeKey = Session.prefs.getString(_prefKey) ?? channelRegistry.first.key;
+    _activeKey = savedKey;
     api.activeStation = _activeKey;
     _refresh();
     _timer = Timer.periodic(const Duration(seconds: 30), (_) => _refresh());

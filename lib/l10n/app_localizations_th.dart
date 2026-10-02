@@ -769,4 +769,11 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get requestFromYourSongs => 'Request one of them';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }

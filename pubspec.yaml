@@ -133,7 +133,8 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   adaptive_icon_background: "#0A0A0B"
   adaptive_icon_foreground: assets/icon/adaptive-foreground.png
-  adaptive_icon_monochrome: assets/icon/adaptive-foreground.png
+  # Android 13+ themed icons: the monogram in plain white (the launcher only uses its alpha).
+  adaptive_icon_monochrome: assets/icon/adaptive-monochrome.png
 
 # `dart run flutter_native_splash:create` writes the native launch screens: the wordmark
 # (tool/render_icons_test.dart) centred on the app's near-black, in both themes.
