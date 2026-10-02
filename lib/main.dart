@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,12 @@ import 'package:provider/provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/data/app_language.dart';
+import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/platform/screenshots.dart';
 import 'package:seoulfm/state/app_state.dart';
+import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/root_shell.dart';
@@ -39,12 +43,15 @@ Future<void> _start() async {
   // background, and answers the lock screen, CarPlay and Android Auto (which can start
   // the app with no screen at all, so nothing here may depend on the UI).
   final radio = await AudioService.init<RadioHandler>(
-    builder: RadioHandler.new,
+    builder: _tunedRadio,
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.seoulfm.seoulfm.playback',
       androidNotificationChannelName: 'SeoulFM playback',
       androidNotificationIcon: 'drawable/ic_stat_seoulfm',
       androidStopForegroundOnPause: true,
+      // Android 11+ keeps a "resume SeoulFM" player after the session ends and after a reboot;
+      // it asks the recent root for the last station (RadioHandler.getChildren) and plays it.
+      androidResumeOnClick: true,
       androidBrowsableRootExtras: {
         // Android Auto: show the stations as a grid of artwork.
         'android.media.browse.CONTENT_STYLE_SUPPORTED': true,
@@ -58,6 +65,18 @@ Future<void> _start() async {
   Screenshots.start();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   runApp(ChangeNotifierProvider.value(value: app, child: const SeoulFmApp()));
+}
+
+/// The radio, already on the last station. When the system starts the app to play (the Quick
+/// Settings tile, a headset button, the resume player after a reboot), audio_service delivers
+/// that play as soon as the handler exists, before AppState is wired up; untuned, it would do
+/// nothing. AppState then tunes the same station, which is a no-op.
+RadioHandler _tunedRadio() {
+  final radio = RadioHandler();
+  final key = ChannelController.savedKey;
+  final last = Channel.build(null).where((c) => c.key == key && c.tunable).firstOrNull;
+  if (last != null) unawaited(radio.setChannel(last));
+  return radio;
 }
 
 class SeoulFmApp extends StatelessWidget {

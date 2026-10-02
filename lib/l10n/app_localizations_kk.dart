@@ -731,4 +731,11 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM құлаққапқа арналған BS2B (Bauer stereophonic-to-binaural) кроссфидпен араластырылған. Бөлмедегі динамиктердегідей, әр арнаның дыбысы екінші құлаққа да сәл жетеді, сондықтан дыбыс кеңірек, табиғирақ естіледі және сағаттап тыңдағанда құлақ шаршамайды.';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }

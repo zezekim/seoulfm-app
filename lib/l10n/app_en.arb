@@ -388,5 +388,7 @@
     }
   },
   "stationsFolder": "Stations",
-  "spatialAudioBody": "SeoulFM is mixed for headphones with BS2B (Bauer stereophonic-to-binaural) crossfeed. A little of each channel reaches the other ear, as it would from speakers in a room, so the sound feels wider, more natural and easier on the ears for hours."
+  "spatialAudioBody": "SeoulFM is mixed for headphones with BS2B (Bauer stereophonic-to-binaural) crossfeed. A little of each channel reaches the other ear, as it would from speakers in a room, so the sound feels wider, more natural and easier on the ears for hours.",
+  "quickSettingsAdd": "Add to Quick Settings",
+  "quickSettingsAdded": "SeoulFM is in your Quick Settings: swipe down to play or pause."
 }

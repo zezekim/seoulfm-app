@@ -709,6 +709,13 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM 针对耳机采用 BS2B（Bauer stereophonic-to-binaural）串音混合。每个声道的少量声音会传到另一只耳朵，就像在房间里听音箱一样，因此声音更开阔、更自然，长时间聆听也不易疲劳。';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).

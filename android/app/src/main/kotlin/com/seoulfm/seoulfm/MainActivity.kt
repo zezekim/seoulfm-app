@@ -1,7 +1,10 @@
 package com.seoulfm.seoulfm
 
 import android.app.Activity
+import android.app.StatusBarManager
+import android.content.ComponentName
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.media.MediaRouter2
 import android.os.Build
 import com.ryanheise.audioservice.AudioServiceActivity
@@ -42,6 +45,25 @@ class MainActivity : AudioServiceActivity() {
                 result.notImplemented()
             }
         }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "fm.seoul/tile").setMethodCallHandler { call, result ->
+            when (call.method) {
+                // The system's "add tile" prompt is Android 13+; earlier, the listener adds it by editing the panel.
+                "canAdd" -> result.success(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                "add" -> requestAddTile(result)
+                else -> result.notImplemented()
+            }
+        }
+    }
+
+    // Asks the system to add the Quick Settings tile; answers with StatusBarManager's result code.
+    private fun requestAddTile(result: MethodChannel.Result) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return result.success(null)
+        getSystemService(StatusBarManager::class.java).requestAddTileService(
+            ComponentName(this, RadioTileService::class.java),
+            getString(R.string.tile_label),
+            Icon.createWithResource(this, R.drawable.ic_stat_seoulfm),
+            mainExecutor,
+        ) { code -> result.success(code) }
     }
 
     // Where the sound goes: Android 14's system output switcher, else the media output panel.

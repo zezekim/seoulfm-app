@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tile_playing">재생 중</string>
+    <string name="tile_paused">일시정지됨</string>
+</resources>

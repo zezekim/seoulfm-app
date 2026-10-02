@@ -102,27 +102,23 @@ class _RootShellState extends State<RootShell> {
   Widget build(BuildContext context) {
     final l = context.l;
     final index = Nav.tab.value.index;
-    final shell = PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) async {
-        if (didPop) return;
-        final nav = Nav.tabs[index].currentState;
-        if (nav != null && nav.canPop()) {
-          nav.pop();
-        } else if (index != 0) {
-          _select(0);
-        }
-      },
-      child: Scaffold(
+    final shell = TabsBackScope(
+      index: index,
+      navigators: Nav.tabs,
+      onHome: () => _select(0),
+      builder: (track) => Scaffold(
         // The pages run under the floating player and the glass tab bar.
         extendBody: true,
         body: IndexedStack(
           index: index,
           children: [
             for (final tab in AppTab.values)
-              Navigator(
-                key: Nav.tabs[tab.index],
-                onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _pages[tab]!),
+              track(
+                tab.index,
+                Navigator(
+                  key: Nav.tabs[tab.index],
+                  onGenerateRoute: (_) => MaterialPageRoute<void>(builder: (_) => _pages[tab]!),
+                ),
               ),
           ],
         ),
@@ -179,6 +175,61 @@ class _RootShellState extends State<RootShell> {
           );
         },
       ),
+    );
+  }
+}
+
+/// Back across tabs that each keep their own navigator: it pops the selected tab's pages, then
+/// goes Home ([onHome]), then leaves the app. Only that last step is left to the system, so
+/// Android 14's predictive back previews the way home, and nowhere else does back do nothing.
+class TabsBackScope extends StatefulWidget {
+  const TabsBackScope({
+    super.key,
+    required this.index,
+    required this.navigators,
+    required this.onHome,
+    required this.builder,
+  });
+
+  /// The selected tab; 0 is Home.
+  final int index;
+  final List<GlobalKey<NavigatorState>> navigators;
+  final VoidCallback onHome;
+
+  /// Builds the tabs, passing each tab's navigator through `track(tab, navigator)`.
+  final Widget Function(Widget Function(int tab, Widget navigator) track) builder;
+
+  @override
+  State<TabsBackScope> createState() => _TabsBackScopeState();
+}
+
+class _TabsBackScopeState extends State<TabsBackScope> {
+  /// Whether each tab's navigator has something to pop (a page, or a page's own PopScope).
+  late final _canPop = List.filled(widget.navigators.length, false);
+
+  /// A tab's navigator changed. Swallowed here: this scope's PopScope alone tells the system
+  /// whether the app handles back, so a hidden tab's pages can't make it swallow or allow back.
+  bool _onNavigation(int tab, NavigationNotification n) {
+    if (_canPop[tab] != n.canHandlePop) setState(() => _canPop[tab] = n.canHandlePop);
+    return true;
+  }
+
+  Widget _track(int tab, Widget navigator) =>
+      NotificationListener<NavigationNotification>(onNotification: (n) => _onNavigation(tab, n), child: navigator);
+
+  @override
+  Widget build(BuildContext context) {
+    final index = widget.index;
+    return PopScope(
+      canPop: index == 0 && !_canPop[index],
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final nav = widget.navigators[index].currentState;
+        // maybePop, so a page's own PopScope still has its say; false at the tab's root.
+        if (nav != null && (_canPop[index] || nav.canPop()) && await nav.maybePop()) return;
+        if (index != 0) widget.onHome();
+      },
+      child: widget.builder(_track),
     );
   }
 }

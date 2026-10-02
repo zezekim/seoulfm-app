@@ -740,4 +740,11 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM сведён для наушников с кроссфидом BS2B (Bauer stereophonic-to-binaural). Часть каждого канала попадает и в другое ухо, как от колонок в комнате, поэтому звук становится шире, естественнее и не утомляет слух часами.';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }

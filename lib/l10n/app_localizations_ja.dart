@@ -713,4 +713,11 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFMは、BS2B（Bauer stereophonic-to-binaural）クロスフィードでヘッドホン向けにミックスされています。部屋のスピーカーで聴くように、左右それぞれの音がわずかに反対の耳にも届くため、より広く自然に聞こえ、長時間聴いても耳が疲れにくくなります。';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }

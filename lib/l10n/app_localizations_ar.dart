@@ -738,4 +738,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'تم مزج SeoulFM لسماعات الرأس باستخدام كروس فيد BS2B (Bauer stereophonic-to-binaural). يصل جزء بسيط من كل قناة إلى الأذن الأخرى كما لو كان من مكبرات صوت في غرفة، فيبدو الصوت أوسع وأكثر طبيعية ومريحًا للأذن لساعات طويلة.';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }

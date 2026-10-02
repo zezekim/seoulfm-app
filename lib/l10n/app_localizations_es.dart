@@ -732,6 +732,13 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM está mezclado para auriculares con crossfeed BS2B (Bauer stereophonic-to-binaural). Un poco de cada canal llega también al otro oído, como ocurriría con altavoces en una habitación, así que el sonido resulta más amplio, más natural y más descansado para el oído durante horas.';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }
 
 /// The translations for Spanish Castilian, as used in Spain (`es_ES`).

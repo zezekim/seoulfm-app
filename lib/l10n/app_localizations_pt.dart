@@ -734,4 +734,11 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'O SeoulFM é mixado para fones de ouvido com crossfeed BS2B (Bauer stereophonic-to-binaural). Um pouco de cada canal chega também ao outro ouvido, como aconteceria com caixas de som numa sala, e o som fica mais amplo, mais natural e mais confortável para ouvir por horas.';
+
+  @override
+  String get quickSettingsAdd => 'Add to Quick Settings';
+
+  @override
+  String get quickSettingsAdded =>
+      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
 }
