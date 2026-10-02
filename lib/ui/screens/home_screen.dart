@@ -96,8 +96,11 @@ class HomeScreen extends StatelessWidget {
 /// What a station is playing: the heard track for the tuned one, station time for the rest.
 Track? _onAir(BuildContext context, Channel ch) {
   final tuned = context.watch<ChannelController>().active.key == ch.key;
-  if (tuned) return context.watch<NowPlayingController>().track;
-  return context.watch<StationsNowPlaying>().byStation[ch.key]?.current;
+  final station = context.watch<StationsNowPlaying>().byStation[ch.key]?.current;
+  if (!tuned) return station;
+  final heard = context.watch<NowPlayingController>();
+  // Until the live feed's first answer (a second or so at launch), the station's last known song.
+  return heard.station == null ? station : heard.track;
 }
 
 /// Tune and play; on the station already playing, open the player instead.
@@ -354,7 +357,12 @@ class _Tag extends StatelessWidget {
           if (channel.onAir) ...[LiveDot(color: channel.color, size: 6), const SizedBox(width: 6)],
           Text(
             label.toUpperCase(),
-            style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, letterSpacing: tracking(1.6), color: Colors.white),
+            style: TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.w700,
+              letterSpacing: tracking(1.6),
+              color: Colors.white,
+            ),
           ),
         ],
       ),

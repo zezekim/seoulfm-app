@@ -1,0 +1,20 @@
+# lucide_icons_flutter 3.1.21 (MIT, https://github.com/vqh2602/lucide-flutter-main), trimmed to the
+# plain Lucide font: upstream also bundles six weighted variants (~1.4 MB of every download) that
+# the app never uses and the icon tree shaker can't remove. Same package name and import path, so
+# `LucideIcons.x` works as before. To update, see tool/strip.py.
+name: lucide_icons_flutter
+version: 3.1.21
+publish_to: none
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  fonts:
+    - family: Lucide
+      fonts:
+        - asset: assets/lucide.ttf

@@ -1,7 +1,9 @@
 import 'dart:ui' show ImageFilter;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:octo_image/octo_image.dart';
 import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
@@ -13,6 +15,7 @@ import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/ui/icons.dart';
+import 'package:seoulfm/ui/widgets/cover_image.dart';
 
 extension L10nX on BuildContext {
   AppLocalizations get l => AppLocalizations.of(this);
@@ -34,13 +37,33 @@ String timeAgo(BuildContext context, int epochSeconds) {
 const tabular = [FontFeature.tabularFigures()];
 
 /// A cover that shimmers while it loads and fades in once decoded; a radio glyph when there is none.
+///
+/// Decoded at the size it is drawn (plus the screen's density), not the file's: a 1000 px cover
+/// in a 52 pt row is ~16x the memory and the decode time. Without [size] the box's layout size
+/// is used. Only covers shown full-screen ask for [fullResolution].
 class Artwork extends StatelessWidget {
-  const Artwork(this.url, {super.key, this.size, this.radius = Radii.sm, this.fit = BoxFit.cover, this.iconSize = 18});
+  const Artwork(
+    this.url, {
+    super.key,
+    this.size,
+    this.radius = Radii.sm,
+    this.fit = BoxFit.cover,
+    this.iconSize = 18,
+    this.fullResolution = false,
+    this.pixelRatio,
+  });
   final String? url;
   final double? size;
   final double radius;
   final BoxFit fit;
   final double iconSize;
+
+  /// Decode the file as it is (the player's big cover, the artist hero).
+  final bool fullResolution;
+
+  /// Pixels per point to decode at, instead of the screen's: the share card renders at 3x, a
+  /// heavily blurred glow needs far less.
+  final double? pixelRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -50,21 +73,35 @@ class Artwork extends StatelessWidget {
       alignment: Alignment.center,
       child: Icon(AppIcons.radio, size: iconSize, color: c.faint),
     );
-    // Decode at the size it is drawn (plus the screen's density), not the file's: a 1000 px
-    // cover in a 52 pt row is ~16x the memory and the decode time.
-    final px = size == null ? null : (size! * MediaQuery.devicePixelRatioOf(context)).round();
-    final child = url == null
-        ? placeholder
-        : CachedNetworkImage(
-            imageUrl: url!,
-            memCacheWidth: px,
-            memCacheHeight: px,
-            fit: fit,
-            fadeInDuration: Motion.slow,
-            fadeOutDuration: Duration.zero,
-            placeholder: (_, _) => const Skeleton(),
-            errorWidget: (_, _, _) => placeholder,
-          );
+    final ratio = pixelRatio ?? MediaQuery.devicePixelRatioOf(context);
+    Widget image(int? px) {
+      final file = CachedNetworkImageProvider(url!);
+      return OctoImage(
+        image: px == null ? file : CoverResize(file, px),
+        fit: fit,
+        fadeInDuration: Motion.slow,
+        fadeOutDuration: Duration.zero,
+        placeholderBuilder: (_) => const Skeleton(),
+        errorBuilder: (_, _, _) => placeholder,
+      );
+    }
+
+    final Widget child;
+    if (url == null) {
+      child = placeholder;
+    } else if (fullResolution) {
+      child = image(null);
+    } else if (size != null) {
+      child = image(decodeBucket(size!, ratio));
+    } else {
+      child = LayoutBuilder(
+        builder: (_, box) {
+          final w = box.maxWidth.isFinite ? box.maxWidth : 0.0;
+          final h = box.maxHeight.isFinite ? box.maxHeight : 0.0;
+          return image(decodeBucket(w > h ? w : h, ratio));
+        },
+      );
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
       child: SizedBox(width: size, height: size, child: child),
@@ -410,7 +447,11 @@ class TrackRow extends StatelessWidget {
                               track.displayTitle,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500, color: onAir ? accent : c.text),
+                              style: TextStyle(
+                                fontSize: 15.5,
+                                fontWeight: FontWeight.w500,
+                                color: onAir ? accent : c.text,
+                              ),
                             ),
                           ),
                         ],
@@ -592,7 +633,11 @@ class EmptyState extends StatelessWidget {
           ),
           if (body != null) ...[
             const SizedBox(height: 6),
-            Text(body!, textAlign: TextAlign.center, style: TextStyle(color: c.muted, height: 1.45)),
+            Text(
+              body!,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: c.muted, height: 1.45),
+            ),
           ],
           if (action != null && onAction != null) ...[
             const SizedBox(height: 20),
@@ -993,7 +1038,9 @@ SliverAppBar largeTitleBar(BuildContext context, String title, {PreferredSizeWid
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             color: Color.lerp(c.bg, c.bg.withValues(alpha: 0.72), frost),
-                            border: Border(bottom: BorderSide(color: c.border.withValues(alpha: frost), width: 0.5)),
+                            border: Border(
+                              bottom: BorderSide(color: c.border.withValues(alpha: frost), width: 0.5),
+                            ),
                           ),
                         ),
                       ),

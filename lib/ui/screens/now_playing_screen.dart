@@ -630,7 +630,7 @@ class _BleedArtState extends State<_BleedArt> with SingleTickerProviderStateMixi
               layoutBuilder: (current, previous) => Stack(fit: StackFit.expand, children: [...previous, ?current]),
               child: url == null
                   ? const SizedBox.expand(key: ValueKey('none'))
-                  : Artwork(url, key: ValueKey(url), radius: 0, fit: BoxFit.cover, iconSize: 56),
+                  : Artwork(url, key: ValueKey(url), radius: 0, fit: BoxFit.cover, iconSize: 56, fullResolution: true),
             ),
           ),
         ),
@@ -681,7 +681,11 @@ class _AmbientArt extends StatelessWidget {
       child: ImageFiltered(
         key: ValueKey(url),
         imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60, tileMode: TileMode.decal),
-        child: Transform.scale(scale: 1.4, child: Opacity(opacity: 0.95, child: Artwork(url, radius: 0))),
+        // Blurred this much, a quarter of the screen's pixels looks the same.
+        child: Transform.scale(
+          scale: 1.4,
+          child: Opacity(opacity: 0.95, child: Artwork(url, radius: 0, pixelRatio: 0.25)),
+        ),
       ),
     );
   }

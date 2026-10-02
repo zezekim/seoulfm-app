@@ -34,7 +34,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final runtime = RuntimeConfigController();
   late final NowPlayingController nowPlaying = NowPlayingController(delayMs: _delayMs);
   final stations = StationsNowPlaying();
-  late final RatingsController ratings = RatingsController(listeningSince: radio.listeningSince, station: () => channels.active.key);
+  late final RatingsController ratings = RatingsController(
+    listeningSince: radio.listeningSince,
+    station: () => channels.active.key,
+  );
   final requests = RequestTracker();
   final covers = CoverColors();
   final support = SupportStore();
@@ -103,6 +106,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.songPositionMs = nowPlaying.positionMs;
 
     runtime.start();
+    // The last line-up and songs paint the first frame; both refresh straight after.
+    stations.restore();
     channels.addListener(_onChannels);
     channels.start();
     nowPlaying.addListener(_onHeard);
@@ -111,7 +116,6 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.wantPlaying.addListener(_syncWidgets);
     radio.wantPlaying.addListener(_syncStationsPolling);
     ratings.start();
-    support.listen();
     carPlay.start();
     WidgetsBinding.instance.addObserver(this);
     _onChannels();
@@ -156,7 +160,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   /// The home-screen widgets follow the station, the heard song and the play state.
-  void _syncWidgets() => HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
+  void _syncWidgets() =>
+      HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
 
   void _syncCar() => carPlay.update(
     channels: channels.channels,

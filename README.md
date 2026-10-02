@@ -65,6 +65,33 @@ xcrun devicectl device install app --device <device udid> ../build/device/Build/
 Then trust the developer on the phone (Settings → General → VPN & Device Management). Free
 builds expire after 7 days.
 
+## Release builds
+
+Store builds are obfuscated and their Dart debug symbols kept outside the app (about 1.4 MB less
+per download). Keep the symbols of every build you ship: without them a crash's Dart stack is
+just addresses.
+
+```bash
+V=$(grep '^version:' pubspec.yaml | cut -d' ' -f2)   # e.g. 3.0.0+300
+SYMBOLS="--obfuscate --split-debug-info=build/symbols/$V \
+  --extra-gen-snapshot-options=--save-obfuscation-map=build/symbols/$V/obfuscation.map.json"
+flutter build appbundle --release $SYMBOLS --dart-define-from-file=dart-defines.json \
+  --dart-define=GIT_COMMIT=$(git rev-parse --short HEAD)
+flutter build ipa --release $SYMBOLS --dart-define-from-file=dart-defines.json \
+  --dart-define=GIT_COMMIT=$(git rev-parse --short HEAD)
+```
+
+`build/symbols/<version>/` then holds `app.android-arm64.symbols` (one per ABI), `app.ios-arm64.symbols`
+and the obfuscation map. `build/` is wiped by `flutter clean`, so copy the folder somewhere safe
+(it is not secret, but it is not in git). With Sentry on, upload it for each release, e.g. with
+`sentry-cli debug-files upload --org <org> --project <project> build/symbols/<version>` or the
+`sentry_dart_plugin`, which also takes the obfuscation map for type names. To read a trace by hand:
+`flutter symbolize -i trace.txt -d build/symbols/<version>/app.android-arm64.symbols`.
+
+Play delivers each phone only its own ABI from the bundle (arm64 about 25 MB); R8 and resource
+shrinking are on for release (the Flutter Gradle plugin's defaults). The icons come from
+`third_party/lucide_icons_flutter`, the Lucide package without its six unused weighted fonts.
+
 ## Store listings and screenshots
 
 `store/` holds everything the App Store and Google Play ask for, in every language:
@@ -113,6 +140,7 @@ lib/
   ui/                       shell, screens, widgets
   l10n/                     the site's 20 languages (ARB); station taglines in data/
 ios/Runner/SceneDelegate.swift   phone scene, CarPlay scene, the bridge
+third_party/lucide_icons_flutter the icon package, trimmed to the one font the app draws
 ```
 
 - **One radio.** `RadioHandler` (an `audio_service` handler) owns the only player. It lives in
@@ -135,6 +163,10 @@ ios/Runner/SceneDelegate.swift   phone scene, CarPlay scene, the bridge
   thumbs only after 25 s of listening, and the API's `reason` shown as it is.
 - **Fail open.** If the runtime config can't be fetched, the app keeps the last good copy, or
   the defaults.
+- **Fast start.** The last line-up and each station's last song are kept on the device, so Home
+  paints them on the first frame and refreshes behind them; a kept song older than five minutes,
+  or past its end, isn't shown. Covers are decoded at the size they're drawn (`Artwork`), in a
+  few shared sizes; only the player's cover and the artist hero decode the full file.
 
 ### CarPlay
 

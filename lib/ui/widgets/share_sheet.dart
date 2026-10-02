@@ -16,6 +16,9 @@ import 'package:share_plus/share_plus.dart';
 /// Whether a share sheet is up (a screenshot while it is shouldn't open another).
 bool shareSheetOpen = false;
 
+/// The shared image's pixels per point; the card's covers are decoded for it, not the screen.
+const shareCardScale = 3.0;
+
 /// Spotify's share sheet: a card to share as an image (the song, or a few lines of its
 /// lyrics), and ways to send it. [lyricsFirst] opens on the lyrics card when there are lyrics.
 Future<void> showShareSheet(
@@ -47,7 +50,13 @@ Future<void> showShareSheet(
 enum _Card { song, lyrics }
 
 class _ShareSheet extends StatefulWidget {
-  const _ShareSheet({required this.track, required this.color, this.lyrics, required this.lyricsFirst, this.positionMs});
+  const _ShareSheet({
+    required this.track,
+    required this.color,
+    this.lyrics,
+    required this.lyricsFirst,
+    this.positionMs,
+  });
   final Track track;
   final Color color;
   final Lyrics? lyrics;
@@ -100,7 +109,7 @@ class _ShareSheetState extends State<_ShareSheet> {
   Future<Uint8List?> _render() async {
     final boundary = _card.currentContext?.findRenderObject() as RenderRepaintBoundary?;
     if (boundary == null) return null;
-    final image = await boundary.toImage(pixelRatio: 3);
+    final image = await boundary.toImage(pixelRatio: shareCardScale);
     final data = await image.toByteData(format: ui.ImageByteFormat.png);
     return data?.buffer.asUint8List();
   }
@@ -159,7 +168,10 @@ class _ShareSheetState extends State<_ShareSheet> {
             margin: const EdgeInsets.only(top: 10, bottom: 20),
             width: 36,
             height: 4,
-            decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.25), borderRadius: BorderRadius.circular(9)),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.25),
+              borderRadius: BorderRadius.circular(9),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -205,12 +217,7 @@ class _ShareSheetState extends State<_ShareSheet> {
                 label: _copied ? context.l.linkCopied : context.l.copyLink,
                 onTap: (_) => _copyLink(),
               ),
-              _Action(
-                icon: AppIcons.image,
-                label: context.l.shareImage,
-                busy: _busy,
-                onTap: _shareImage,
-              ),
+              _Action(icon: AppIcons.image, label: context.l.shareImage, busy: _busy, onTap: _shareImage),
               _Action(icon: AppIcons.more, label: context.l.tabMore, onTap: _shareLink),
             ],
           ),
@@ -302,7 +309,7 @@ class _SongCard extends StatelessWidget {
                     decoration: const BoxDecoration(
                       boxShadow: [BoxShadow(color: Color(0x59000000), blurRadius: 24, offset: Offset(0, 10))],
                     ),
-                    child: Artwork(track.artworkUrl, radius: Radii.md, iconSize: 40),
+                    child: Artwork(track.artworkUrl, radius: Radii.md, iconSize: 40, pixelRatio: shareCardScale),
                   ),
                 ),
               ),
@@ -350,7 +357,7 @@ class _LyricsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Artwork(track.artworkUrl, size: 44, radius: 6),
+                Artwork(track.artworkUrl, size: 44, radius: 6, pixelRatio: shareCardScale),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
