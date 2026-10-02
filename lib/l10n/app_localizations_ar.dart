@@ -740,50 +740,50 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم مزج SeoulFM لسماعات الرأس باستخدام كروس فيد BS2B (Bauer stereophonic-to-binaural). يصل جزء بسيط من كل قناة إلى الأذن الأخرى كما لو كان من مكبرات صوت في غرفة، فيبدو الصوت أوسع وأكثر طبيعية ومريحًا للأذن لساعات طويلة.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'طلباتك';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'يُعلمك عندما تقترب الأغنية التي طلبتها وعندما تكون على الهواء.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'أغانيك';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'مفضّلة';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'احفظ في أغانيك';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'أزِل من أغانيك';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'تم الحفظ في أغانيك';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'تمت الإزالة من أغانيك';
 
   @override
-  String get view => 'View';
+  String get view => 'عرض';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'تراجع';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'احتفظ بالأغاني التي تحبها';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'اضغط على القلب في المشغّل أو في صفحة الأغنية، أو اختر «احفظ في أغانيك» من قائمة الأغنية. تبقى على هذا الهاتف، دون الحاجة إلى حساب.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'اطلب واحدة منها';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'أضِف إلى الإعدادات السريعة';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'أصبح SeoulFM في إعداداتك السريعة: اسحب للأسفل للتشغيل أو الإيقاف المؤقت.';
 }

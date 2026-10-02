@@ -207,5 +207,20 @@
   "openPlayer": "Ouvrir le lecteur",
   "songsCount": "{count, plural, =1{1 chanson} other{{count} chansons}}",
   "stationsFolder": "Stations",
-  "spatialAudioBody": "SeoulFM est mixé pour le casque avec un crossfeed BS2B (Bauer stereophonic-to-binaural). Un peu de chaque canal parvient à l'autre oreille, comme avec des enceintes dans une pièce : le son paraît plus large, plus naturel et reste agréable à l'oreille pendant des heures."
+  "spatialAudioBody": "SeoulFM est mixé pour le casque avec un crossfeed BS2B (Bauer stereophonic-to-binaural). Un peu de chaque canal parvient à l'autre oreille, comme avec des enceintes dans une pièce : le son paraît plus large, plus naturel et reste agréable à l'oreille pendant des heures.",
+  "requestNotificationChannel": "Vos demandes",
+  "requestNotificationChannelDescription": "Vous prévient quand une chanson que vous avez demandée arrive bientôt et quand elle passe à l’antenne.",
+  "yourSongs": "Vos titres",
+  "favourite": "Favori",
+  "saveToYourSongs": "Ajouter à Vos titres",
+  "removeFromYourSongs": "Retirer de Vos titres",
+  "savedToYourSongs": "Ajouté à Vos titres",
+  "removedFromYourSongs": "Retiré de Vos titres",
+  "view": "Voir",
+  "undo": "Annuler",
+  "yourSongsEmptyTitle": "Gardez les chansons que vous aimez",
+  "yourSongsEmptyBody": "Touchez le cœur dans le lecteur ou sur la page d’une chanson, ou choisissez Ajouter à Vos titres dans le menu d’une chanson. Elles restent sur ce téléphone, sans compte.",
+  "requestFromYourSongs": "En demander une",
+  "quickSettingsAdd": "Ajouter aux Réglages rapides",
+  "quickSettingsAdded": "SeoulFM est dans vos Réglages rapides : balayez vers le bas pour lancer ou mettre en pause."
 }

@@ -207,5 +207,20 @@
   "openPlayer": "Открыть плеер",
   "songsCount": "{count, plural, one{{count} песня} few{{count} песни} many{{count} песен} other{{count} песни}}",
   "stationsFolder": "Станции",
-  "spatialAudioBody": "SeoulFM сведён для наушников с кроссфидом BS2B (Bauer stereophonic-to-binaural). Часть каждого канала попадает и в другое ухо, как от колонок в комнате, поэтому звук становится шире, естественнее и не утомляет слух часами."
+  "spatialAudioBody": "SeoulFM сведён для наушников с кроссфидом BS2B (Bauer stereophonic-to-binaural). Часть каждого канала попадает и в другое ухо, как от колонок в комнате, поэтому звук становится шире, естественнее и не утомляет слух часами.",
+  "requestNotificationChannel": "Твои заявки",
+  "requestNotificationChannelDescription": "Сообщает, когда заказанная тобой песня скоро прозвучит и когда она в эфире.",
+  "yourSongs": "Твои песни",
+  "favourite": "Избранное",
+  "saveToYourSongs": "Сохранить в «Твои песни»",
+  "removeFromYourSongs": "Удалить из «Твоих песен»",
+  "savedToYourSongs": "Сохранено в «Твои песни»",
+  "removedFromYourSongs": "Удалено из «Твоих песен»",
+  "view": "Открыть",
+  "undo": "Отменить",
+  "yourSongsEmptyTitle": "Сохраняй любимые песни",
+  "yourSongsEmptyBody": "Нажми на сердечко в плеере или на странице песни либо выбери «Сохранить в „Твои песни“» в меню песни. Они хранятся на этом телефоне, аккаунт не нужен.",
+  "requestFromYourSongs": "Заказать одну из них",
+  "quickSettingsAdd": "Добавить в быстрые настройки",
+  "quickSettingsAdded": "SeoulFM теперь в быстрых настройках: проведи вниз, чтобы включить или поставить на паузу."
 }

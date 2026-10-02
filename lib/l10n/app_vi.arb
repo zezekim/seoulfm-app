@@ -207,5 +207,20 @@
   "openPlayer": "Mở trình phát",
   "songsCount": "{count, plural, =1{1 bài hát} other{{count} bài hát}}",
   "stationsFolder": "Kênh",
-  "spatialAudioBody": "SeoulFM được phối cho tai nghe với crossfeed BS2B (Bauer stereophonic-to-binaural). Một phần nhỏ âm thanh của mỗi kênh sẽ truyền sang tai bên kia như khi nghe loa trong phòng, nên âm thanh rộng hơn, tự nhiên hơn và nghe nhiều giờ vẫn dễ chịu cho tai."
+  "spatialAudioBody": "SeoulFM được phối cho tai nghe với crossfeed BS2B (Bauer stereophonic-to-binaural). Một phần nhỏ âm thanh của mỗi kênh sẽ truyền sang tai bên kia như khi nghe loa trong phòng, nên âm thanh rộng hơn, tự nhiên hơn và nghe nhiều giờ vẫn dễ chịu cho tai.",
+  "requestNotificationChannel": "Yêu cầu của bạn",
+  "requestNotificationChannelDescription": "Báo cho bạn khi bài hát bạn yêu cầu sắp phát và khi đang lên sóng.",
+  "yourSongs": "Bài hát của bạn",
+  "favourite": "Yêu thích",
+  "saveToYourSongs": "Lưu vào Bài hát của bạn",
+  "removeFromYourSongs": "Xóa khỏi Bài hát của bạn",
+  "savedToYourSongs": "Đã lưu vào Bài hát của bạn",
+  "removedFromYourSongs": "Đã xóa khỏi Bài hát của bạn",
+  "view": "Xem",
+  "undo": "Hoàn tác",
+  "yourSongsEmptyTitle": "Lưu giữ những bài bạn yêu thích",
+  "yourSongsEmptyBody": "Chạm vào trái tim trên trình phát hoặc trên trang bài hát, hoặc chọn Lưu vào Bài hát của bạn trong menu của bài hát. Bài hát được lưu trên điện thoại này, không cần tài khoản.",
+  "requestFromYourSongs": "Yêu cầu một bài trong số này",
+  "quickSettingsAdd": "Thêm vào Cài đặt nhanh",
+  "quickSettingsAdded": "SeoulFM đã có trong Cài đặt nhanh: vuốt xuống để phát hoặc tạm dừng."
 }

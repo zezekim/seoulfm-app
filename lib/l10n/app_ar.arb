@@ -207,5 +207,20 @@
   "openPlayer": "فتح المشغّل",
   "songsCount": "{count, plural, =0{لا أغاني} =1{أغنية واحدة} =2{أغنيتان} few{{count} أغانٍ} many{{count} أغنية} other{{count} أغنية}}",
   "stationsFolder": "المحطات",
-  "spatialAudioBody": "تم مزج SeoulFM لسماعات الرأس باستخدام كروس فيد BS2B (Bauer stereophonic-to-binaural). يصل جزء بسيط من كل قناة إلى الأذن الأخرى كما لو كان من مكبرات صوت في غرفة، فيبدو الصوت أوسع وأكثر طبيعية ومريحًا للأذن لساعات طويلة."
+  "spatialAudioBody": "تم مزج SeoulFM لسماعات الرأس باستخدام كروس فيد BS2B (Bauer stereophonic-to-binaural). يصل جزء بسيط من كل قناة إلى الأذن الأخرى كما لو كان من مكبرات صوت في غرفة، فيبدو الصوت أوسع وأكثر طبيعية ومريحًا للأذن لساعات طويلة.",
+  "requestNotificationChannel": "طلباتك",
+  "requestNotificationChannelDescription": "يُعلمك عندما تقترب الأغنية التي طلبتها وعندما تكون على الهواء.",
+  "yourSongs": "أغانيك",
+  "favourite": "مفضّلة",
+  "saveToYourSongs": "احفظ في أغانيك",
+  "removeFromYourSongs": "أزِل من أغانيك",
+  "savedToYourSongs": "تم الحفظ في أغانيك",
+  "removedFromYourSongs": "تمت الإزالة من أغانيك",
+  "view": "عرض",
+  "undo": "تراجع",
+  "yourSongsEmptyTitle": "احتفظ بالأغاني التي تحبها",
+  "yourSongsEmptyBody": "اضغط على القلب في المشغّل أو في صفحة الأغنية، أو اختر «احفظ في أغانيك» من قائمة الأغنية. تبقى على هذا الهاتف، دون الحاجة إلى حساب.",
+  "requestFromYourSongs": "اطلب واحدة منها",
+  "quickSettingsAdd": "أضِف إلى الإعدادات السريعة",
+  "quickSettingsAdded": "أصبح SeoulFM في إعداداتك السريعة: اسحب للأسفل للتشغيل أو الإيقاف المؤقت."
 }

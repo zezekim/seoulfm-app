@@ -734,50 +734,50 @@ class AppLocalizationsTr extends AppLocalizations {
       'SeoulFM, kulaklıklar için BS2B (Bauer stereophonic-to-binaural) crossfeed ile miksleniyor. Her kanalın bir kısmı, odadaki hoparlörlerde olduğu gibi diğer kulağa da ulaşır; böylece ses daha geniş ve doğal gelir, saatlerce dinlerken kulağı yormaz.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'İsteklerin';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'İstediğin bir şarkı birazdan çalacağında ve yayına girdiğinde haber verir.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'Şarkıların';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'Favori';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'Şarkılarına kaydet';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'Şarkılarından kaldır';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'Şarkılarına kaydedildi';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'Şarkılarından kaldırıldı';
 
   @override
-  String get view => 'View';
+  String get view => 'Göster';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'Geri al';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'Sevdiğin şarkıları sakla';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'Oynatıcıda ya da bir şarkının sayfasında kalbe dokun veya bir şarkının menüsünden Şarkılarına kaydet’i seç. Hesap gerekmeden bu telefonda kalırlar.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'Bunlardan birini iste';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'Hızlı Ayarlar’a ekle';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'SeoulFM Hızlı Ayarlar’ında: oynatmak veya duraklatmak için aşağı kaydır.';
 }

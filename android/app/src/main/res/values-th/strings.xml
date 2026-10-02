@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">เพลงที่กำลังเล่นบน SeoulFM พร้อมปุ่มเล่นและหยุดชั่วคราว</string>
+    <string name="widget_play_pause">เล่นหรือหยุดชั่วคราว</string>
+    <string name="widget_idle">แตะเพื่อฟัง</string>
+    <string name="tile_playing">กำลังเล่น</string>
+    <string name="tile_paused">หยุดชั่วคราว</string>
+</resources>

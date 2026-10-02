@@ -738,50 +738,50 @@ class AppLocalizationsMs extends AppLocalizations {
       'SeoulFM dicampur untuk fon kepala dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit bunyi daripada setiap saluran sampai juga ke telinga sebelah, seperti daripada pembesar suara dalam bilik, jadi bunyi terasa lebih luas, lebih semula jadi dan selesa di telinga selama berjam-jam.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'Permintaan anda';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'Memaklumkan anda apabila lagu yang anda minta akan dimainkan dan apabila ia bersiaran.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'Lagu anda';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'Kegemaran';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'Simpan ke Lagu anda';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'Alih keluar daripada Lagu anda';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'Disimpan ke Lagu anda';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'Dialih keluar daripada Lagu anda';
 
   @override
-  String get view => 'View';
+  String get view => 'Lihat';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'Buat asal';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'Simpan lagu yang anda suka';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'Ketik hati pada pemain atau pada halaman lagu, atau pilih Simpan ke Lagu anda dalam menu lagu. Lagu kekal pada telefon ini, tanpa perlu akaun.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'Minta salah satu daripadanya';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'Tambah pada Tetapan Pantas';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'SeoulFM ada dalam Tetapan Pantas anda: leret ke bawah untuk main atau jeda.';
 }

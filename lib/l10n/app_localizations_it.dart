@@ -736,50 +736,50 @@ class AppLocalizationsIt extends AppLocalizations {
       'SeoulFM è mixato per le cuffie con crossfeed BS2B (Bauer stereophonic-to-binaural). Un po\' di ogni canale raggiunge anche l\'altro orecchio, come con le casse in una stanza, così il suono risulta più ampio, più naturale e meno faticoso da ascoltare per ore.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'Le tue richieste';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'Ti avvisa quando un brano che hai richiesto sta per andare in onda e quando è in onda.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'I tuoi brani';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'Preferito';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'Salva nei tuoi brani';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'Rimuovi dai tuoi brani';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'Salvato nei tuoi brani';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'Rimosso dai tuoi brani';
 
   @override
-  String get view => 'View';
+  String get view => 'Vedi';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'Annulla';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'Tieni i brani che ami';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'Tocca il cuore nel player o nella pagina di un brano, oppure scegli Salva nei tuoi brani nel menu di un brano. Restano su questo telefono, senza bisogno di un account.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'Richiedine uno';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'Aggiungi alle Impostazioni rapide';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'SeoulFM è nelle tue Impostazioni rapide: scorri verso il basso per riprodurre o mettere in pausa.';
 }

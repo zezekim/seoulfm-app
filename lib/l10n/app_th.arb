@@ -207,5 +207,20 @@
   "openPlayer": "เปิดเครื่องเล่น",
   "songsCount": "{count, plural, =1{1 เพลง} other{{count} เพลง}}",
   "stationsFolder": "สถานี",
-  "spatialAudioBody": "SeoulFM มิกซ์เสียงมาสำหรับหูฟังด้วยครอสฟีด BS2B (Bauer stereophonic-to-binaural) เสียงจากแต่ละช่องจะส่งไปถึงหูอีกข้างเล็กน้อยเหมือนฟังจากลำโพงในห้อง ทำให้เสียงกว้างและเป็นธรรมชาติขึ้น และฟังได้นานหลายชั่วโมงโดยไม่เมื่อยหู"
+  "spatialAudioBody": "SeoulFM มิกซ์เสียงมาสำหรับหูฟังด้วยครอสฟีด BS2B (Bauer stereophonic-to-binaural) เสียงจากแต่ละช่องจะส่งไปถึงหูอีกข้างเล็กน้อยเหมือนฟังจากลำโพงในห้อง ทำให้เสียงกว้างและเป็นธรรมชาติขึ้น และฟังได้นานหลายชั่วโมงโดยไม่เมื่อยหู",
+  "requestNotificationChannel": "เพลงที่คุณขอ",
+  "requestNotificationChannelDescription": "แจ้งให้คุณทราบเมื่อเพลงที่คุณขอใกล้จะเล่นและเมื่อออนแอร์",
+  "yourSongs": "เพลงของคุณ",
+  "favourite": "รายการโปรด",
+  "saveToYourSongs": "บันทึกไว้ในเพลงของคุณ",
+  "removeFromYourSongs": "ลบออกจากเพลงของคุณ",
+  "savedToYourSongs": "บันทึกไว้ในเพลงของคุณแล้ว",
+  "removedFromYourSongs": "ลบออกจากเพลงของคุณแล้ว",
+  "view": "ดู",
+  "undo": "เลิกทำ",
+  "yourSongsEmptyTitle": "เก็บเพลงที่คุณชอบไว้",
+  "yourSongsEmptyBody": "แตะรูปหัวใจในเครื่องเล่นหรือในหน้าเพลง หรือเลือก “บันทึกไว้ในเพลงของคุณ” ในเมนูของเพลง เพลงจะอยู่ในโทรศัพท์เครื่องนี้ ไม่ต้องมีบัญชี",
+  "requestFromYourSongs": "ขอเพลงจากรายการนี้",
+  "quickSettingsAdd": "เพิ่มไปยังการตั้งค่าด่วน",
+  "quickSettingsAdded": "SeoulFM อยู่ในการตั้งค่าด่วนแล้ว ปัดลงเพื่อเล่นหรือหยุดชั่วคราว"
 }

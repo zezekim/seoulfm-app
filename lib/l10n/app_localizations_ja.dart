@@ -715,50 +715,49 @@ class AppLocalizationsJa extends AppLocalizations {
       'SeoulFMは、BS2B（Bauer stereophonic-to-binaural）クロスフィードでヘッドホン向けにミックスされています。部屋のスピーカーで聴くように、左右それぞれの音がわずかに反対の耳にも届くため、より広く自然に聞こえ、長時間聴いても耳が疲れにくくなります。';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'あなたのリクエスト';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'リクエストした曲がまもなく流れるときと、放送中になったときにお知らせします。';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => '保存した曲';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'お気に入り';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => '保存した曲に追加';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => '保存した曲から削除';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => '保存した曲に追加しました';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => '保存した曲から削除しました';
 
   @override
-  String get view => 'View';
+  String get view => '表示';
 
   @override
-  String get undo => 'Undo';
+  String get undo => '取り消す';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => '好きな曲をとっておこう';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'プレーヤーや曲のページでハートをタップするか、曲のメニューで「保存した曲に追加」を選んでください。アカウントなしで、このスマートフォンに保存されます。';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'この中から1曲リクエスト';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'クイック設定に追加';
 
   @override
-  String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+  String get quickSettingsAdded => 'クイック設定にSeoulFMを追加しました。下にスワイプして再生・一時停止できます。';
 }

@@ -207,5 +207,20 @@
   "openPlayer": "Abrir player",
   "songsCount": "{count, plural, =1{1 música} other{{count} músicas}}",
   "stationsFolder": "Estações",
-  "spatialAudioBody": "O SeoulFM é mixado para fones de ouvido com crossfeed BS2B (Bauer stereophonic-to-binaural). Um pouco de cada canal chega também ao outro ouvido, como aconteceria com caixas de som numa sala, e o som fica mais amplo, mais natural e mais confortável para ouvir por horas."
+  "spatialAudioBody": "O SeoulFM é mixado para fones de ouvido com crossfeed BS2B (Bauer stereophonic-to-binaural). Um pouco de cada canal chega também ao outro ouvido, como aconteceria com caixas de som numa sala, e o som fica mais amplo, mais natural e mais confortável para ouvir por horas.",
+  "requestNotificationChannel": "Seus pedidos",
+  "requestNotificationChannelDescription": "Avisa quando uma música que você pediu está para tocar e quando ela entra no ar.",
+  "yourSongs": "Suas músicas",
+  "favourite": "Favorita",
+  "saveToYourSongs": "Salvar em Suas músicas",
+  "removeFromYourSongs": "Remover de Suas músicas",
+  "savedToYourSongs": "Salva em Suas músicas",
+  "removedFromYourSongs": "Removida de Suas músicas",
+  "view": "Ver",
+  "undo": "Desfazer",
+  "yourSongsEmptyTitle": "Guarde as músicas que você ama",
+  "yourSongsEmptyBody": "Toque no coração no player ou na página de uma música, ou escolha Salvar em Suas músicas no menu de uma música. Elas ficam neste celular, sem precisar de conta.",
+  "requestFromYourSongs": "Peça uma delas",
+  "quickSettingsAdd": "Adicionar às Configurações rápidas",
+  "quickSettingsAdded": "A SeoulFM está nas suas Configurações rápidas: deslize para baixo para tocar ou pausar."
 }

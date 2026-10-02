@@ -207,5 +207,20 @@
   "openPlayer": "Apri il player",
   "songsCount": "{count, plural, =1{1 brano} other{{count} brani}}",
   "stationsFolder": "Stazioni",
-  "spatialAudioBody": "SeoulFM è mixato per le cuffie con crossfeed BS2B (Bauer stereophonic-to-binaural). Un po' di ogni canale raggiunge anche l'altro orecchio, come con le casse in una stanza, così il suono risulta più ampio, più naturale e meno faticoso da ascoltare per ore."
+  "spatialAudioBody": "SeoulFM è mixato per le cuffie con crossfeed BS2B (Bauer stereophonic-to-binaural). Un po' di ogni canale raggiunge anche l'altro orecchio, come con le casse in una stanza, così il suono risulta più ampio, più naturale e meno faticoso da ascoltare per ore.",
+  "requestNotificationChannel": "Le tue richieste",
+  "requestNotificationChannelDescription": "Ti avvisa quando un brano che hai richiesto sta per andare in onda e quando è in onda.",
+  "yourSongs": "I tuoi brani",
+  "favourite": "Preferito",
+  "saveToYourSongs": "Salva nei tuoi brani",
+  "removeFromYourSongs": "Rimuovi dai tuoi brani",
+  "savedToYourSongs": "Salvato nei tuoi brani",
+  "removedFromYourSongs": "Rimosso dai tuoi brani",
+  "view": "Vedi",
+  "undo": "Annulla",
+  "yourSongsEmptyTitle": "Tieni i brani che ami",
+  "yourSongsEmptyBody": "Tocca il cuore nel player o nella pagina di un brano, oppure scegli Salva nei tuoi brani nel menu di un brano. Restano su questo telefono, senza bisogno di un account.",
+  "requestFromYourSongs": "Richiedine uno",
+  "quickSettingsAdd": "Aggiungi alle Impostazioni rapide",
+  "quickSettingsAdded": "SeoulFM è nelle tue Impostazioni rapide: scorri verso il basso per riprodurre o mettere in pausa."
 }

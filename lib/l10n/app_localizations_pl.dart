@@ -739,50 +739,50 @@ class AppLocalizationsPl extends AppLocalizations {
       'SeoulFM jest zmiksowane pod słuchawki z crossfeedem BS2B (Bauer stereophonic-to-binaural). Odrobina każdego kanału trafia też do drugiego ucha, jak z głośników w pokoju, dzięki czemu dźwięk jest szerszy, bardziej naturalny i przez wiele godzin nie męczy uszu.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'Twoje zamówienia';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'Daje znać, kiedy zamówiony przez ciebie utwór zaraz zagra i kiedy jest na antenie.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'Twoje utwory';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'Ulubione';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'Zapisz w Twoich utworach';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'Usuń z Twoich utworów';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'Zapisano w Twoich utworach';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'Usunięto z Twoich utworów';
 
   @override
-  String get view => 'View';
+  String get view => 'Pokaż';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'Cofnij';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'Zachowaj utwory, które kochasz';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'Stuknij serce w odtwarzaczu lub na stronie utworu albo wybierz Zapisz w Twoich utworach w menu utworu. Zostają na tym telefonie, bez zakładania konta.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'Zamów jeden z nich';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'Dodaj do Szybkich ustawień';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'SeoulFM jest w Szybkich ustawieniach: przesuń w dół, aby odtworzyć lub wstrzymać.';
 }

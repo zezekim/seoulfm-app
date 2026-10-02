@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Bài đang phát trên SeoulFM, kèm nút phát và tạm dừng</string>
+    <string name="widget_play_pause">Phát hoặc tạm dừng</string>
+    <string name="widget_idle">Chạm để nghe</string>
+    <string name="tile_playing">Đang phát</string>
+    <string name="tile_paused">Đã tạm dừng</string>
+</resources>

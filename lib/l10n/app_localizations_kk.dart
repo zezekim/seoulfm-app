@@ -733,50 +733,50 @@ class AppLocalizationsKk extends AppLocalizations {
       'SeoulFM құлаққапқа арналған BS2B (Bauer stereophonic-to-binaural) кроссфидпен араластырылған. Бөлмедегі динамиктердегідей, әр арнаның дыбысы екінші құлаққа да сәл жетеді, сондықтан дыбыс кеңірек, табиғирақ естіледі және сағаттап тыңдағанда құлақ шаршамайды.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'Сенің тапсырыстарың';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'Сен тапсырыс берген ән жақында ойнайтын кезде және эфирге шыққанда хабарлайды.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'Сенің әндерің';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'Таңдаулы';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'Әндеріңе сақтау';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'Әндеріңнен өшіру';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'Әндеріңе сақталды';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'Әндеріңнен өшірілді';
 
   @override
-  String get view => 'View';
+  String get view => 'Көру';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'Болдырмау';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'Ұнаған әндеріңді сақта';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'Плеердегі немесе ән парағындағы жүрекшені бас, не болмаса ән мәзірінен «Әндеріңе сақтау» тармағын таңда. Олар осы телефонда сақталады, аккаунт керек емес.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'Солардың біріне тапсырыс беру';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'Жылдам параметрлерге қосу';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'SeoulFM жылдам параметрлерде: ойнату немесе кідірту үшін төмен сырғыт.';
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">SeoulFM-де қазір не ойнап тұр, ойнату және кідірту түймелерімен</string>
+    <string name="widget_play_pause">Ойнату немесе кідірту</string>
+    <string name="widget_idle">Тыңдау үшін түрт</string>
+    <string name="tile_playing">Ойнап тұр</string>
+    <string name="tile_paused">Кідіртілді</string>
+</resources>

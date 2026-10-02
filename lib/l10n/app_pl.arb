@@ -207,5 +207,20 @@
   "openPlayer": "Otwórz odtwarzacz",
   "songsCount": "{count, plural, one{{count} utwór} few{{count} utwory} many{{count} utworów} other{{count} utworu}}",
   "stationsFolder": "Stacje",
-  "spatialAudioBody": "SeoulFM jest zmiksowane pod słuchawki z crossfeedem BS2B (Bauer stereophonic-to-binaural). Odrobina każdego kanału trafia też do drugiego ucha, jak z głośników w pokoju, dzięki czemu dźwięk jest szerszy, bardziej naturalny i przez wiele godzin nie męczy uszu."
+  "spatialAudioBody": "SeoulFM jest zmiksowane pod słuchawki z crossfeedem BS2B (Bauer stereophonic-to-binaural). Odrobina każdego kanału trafia też do drugiego ucha, jak z głośników w pokoju, dzięki czemu dźwięk jest szerszy, bardziej naturalny i przez wiele godzin nie męczy uszu.",
+  "requestNotificationChannel": "Twoje zamówienia",
+  "requestNotificationChannelDescription": "Daje znać, kiedy zamówiony przez ciebie utwór zaraz zagra i kiedy jest na antenie.",
+  "yourSongs": "Twoje utwory",
+  "favourite": "Ulubione",
+  "saveToYourSongs": "Zapisz w Twoich utworach",
+  "removeFromYourSongs": "Usuń z Twoich utworów",
+  "savedToYourSongs": "Zapisano w Twoich utworach",
+  "removedFromYourSongs": "Usunięto z Twoich utworów",
+  "view": "Pokaż",
+  "undo": "Cofnij",
+  "yourSongsEmptyTitle": "Zachowaj utwory, które kochasz",
+  "yourSongsEmptyBody": "Stuknij serce w odtwarzaczu lub na stronie utworu albo wybierz Zapisz w Twoich utworach w menu utworu. Zostają na tym telefonie, bez zakładania konta.",
+  "requestFromYourSongs": "Zamów jeden z nich",
+  "quickSettingsAdd": "Dodaj do Szybkich ustawień",
+  "quickSettingsAdded": "SeoulFM jest w Szybkich ustawieniach: przesuń w dół, aby odtworzyć lub wstrzymać."
 }

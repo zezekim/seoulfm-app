@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Cosa va in onda su SeoulFM, con riproduci e pausa</string>
+    <string name="widget_play_pause">Riproduci o metti in pausa</string>
+    <string name="widget_idle">Tocca per ascoltare</string>
+    <string name="tile_playing">In riproduzione</string>
+    <string name="tile_paused">In pausa</string>
+</resources>

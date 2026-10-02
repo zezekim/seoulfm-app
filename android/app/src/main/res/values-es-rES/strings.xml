@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Lo que suena en SeoulFM, con reproducir y pausa</string>
+    <string name="widget_play_pause">Reproducir o pausar</string>
+    <string name="widget_idle">Toca para escuchar</string>
+    <string name="tile_playing">Sonando</string>
+    <string name="tile_paused">En pausa</string>
+</resources>

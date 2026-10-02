@@ -207,5 +207,20 @@
   "openPlayer": "Buka pemutar",
   "songsCount": "{count, plural, =1{1 lagu} other{{count} lagu}}",
   "stationsFolder": "Stasiun",
-  "spatialAudioBody": "SeoulFM dimiks untuk headphone dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit suara dari tiap kanal sampai juga ke telinga sebelahnya, seperti dari speaker di dalam ruangan, sehingga suara terasa lebih luas, lebih alami, dan nyaman di telinga berjam-jam."
+  "spatialAudioBody": "SeoulFM dimiks untuk headphone dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit suara dari tiap kanal sampai juga ke telinga sebelahnya, seperti dari speaker di dalam ruangan, sehingga suara terasa lebih luas, lebih alami, dan nyaman di telinga berjam-jam.",
+  "requestNotificationChannel": "Request-mu",
+  "requestNotificationChannelDescription": "Memberi tahu saat lagu yang kamu request akan segera diputar dan saat sedang diputar.",
+  "yourSongs": "Lagumu",
+  "favourite": "Favorit",
+  "saveToYourSongs": "Simpan ke Lagumu",
+  "removeFromYourSongs": "Hapus dari Lagumu",
+  "savedToYourSongs": "Disimpan ke Lagumu",
+  "removedFromYourSongs": "Dihapus dari Lagumu",
+  "view": "Lihat",
+  "undo": "Urungkan",
+  "yourSongsEmptyTitle": "Simpan lagu yang kamu suka",
+  "yourSongsEmptyBody": "Ketuk hati di pemutar atau di halaman lagu, atau pilih Simpan ke Lagumu di menu lagu. Lagu tersimpan di ponsel ini, tanpa perlu akun.",
+  "requestFromYourSongs": "Request salah satunya",
+  "quickSettingsAdd": "Tambahkan ke Setelan Cepat",
+  "quickSettingsAdded": "SeoulFM ada di Setelan Cepat: geser ke bawah untuk memutar atau menjeda."
 }

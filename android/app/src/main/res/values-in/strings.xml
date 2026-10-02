@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Yang sedang diputar di SeoulFM, dengan putar dan jeda</string>
+    <string name="widget_play_pause">Putar atau jeda</string>
+    <string name="widget_idle">Ketuk untuk mendengarkan</string>
+    <string name="tile_playing">Diputar</string>
+    <string name="tile_paused">Dijeda</string>
+</resources>

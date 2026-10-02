@@ -207,5 +207,20 @@
   "openPlayer": "Oynatıcıyı aç",
   "songsCount": "{count, plural, one{{count} şarkı} other{{count} şarkı}}",
   "stationsFolder": "İstasyonlar",
-  "spatialAudioBody": "SeoulFM, kulaklıklar için BS2B (Bauer stereophonic-to-binaural) crossfeed ile miksleniyor. Her kanalın bir kısmı, odadaki hoparlörlerde olduğu gibi diğer kulağa da ulaşır; böylece ses daha geniş ve doğal gelir, saatlerce dinlerken kulağı yormaz."
+  "spatialAudioBody": "SeoulFM, kulaklıklar için BS2B (Bauer stereophonic-to-binaural) crossfeed ile miksleniyor. Her kanalın bir kısmı, odadaki hoparlörlerde olduğu gibi diğer kulağa da ulaşır; böylece ses daha geniş ve doğal gelir, saatlerce dinlerken kulağı yormaz.",
+  "requestNotificationChannel": "İsteklerin",
+  "requestNotificationChannelDescription": "İstediğin bir şarkı birazdan çalacağında ve yayına girdiğinde haber verir.",
+  "yourSongs": "Şarkıların",
+  "favourite": "Favori",
+  "saveToYourSongs": "Şarkılarına kaydet",
+  "removeFromYourSongs": "Şarkılarından kaldır",
+  "savedToYourSongs": "Şarkılarına kaydedildi",
+  "removedFromYourSongs": "Şarkılarından kaldırıldı",
+  "view": "Göster",
+  "undo": "Geri al",
+  "yourSongsEmptyTitle": "Sevdiğin şarkıları sakla",
+  "yourSongsEmptyBody": "Oynatıcıda ya da bir şarkının sayfasında kalbe dokun veya bir şarkının menüsünden Şarkılarına kaydet’i seç. Hesap gerekmeden bu telefonda kalırlar.",
+  "requestFromYourSongs": "Bunlardan birini iste",
+  "quickSettingsAdd": "Hızlı Ayarlar’a ekle",
+  "quickSettingsAdded": "SeoulFM Hızlı Ayarlar’ında: oynatmak veya duraklatmak için aşağı kaydır."
 }

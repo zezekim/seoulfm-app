@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">SeoulFM正在播放的歌曲，可播放和暂停</string>
+    <string name="widget_play_pause">播放或暂停</string>
+    <string name="widget_idle">轻点收听</string>
+    <string name="tile_playing">正在播放</string>
+    <string name="tile_paused">已暂停</string>
+</resources>

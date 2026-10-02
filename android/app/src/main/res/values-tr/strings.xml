@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">SeoulFM’de şu an çalan, oynat ve duraklat ile</string>
+    <string name="widget_play_pause">Oynat veya duraklat</string>
+    <string name="widget_idle">Dinlemek için dokun</string>
+    <string name="tile_playing">Çalıyor</string>
+    <string name="tile_paused">Duraklatıldı</string>
+</resources>

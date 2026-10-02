@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Apa yang dimainkan di SeoulFM, dengan main dan jeda</string>
+    <string name="widget_play_pause">Main atau jeda</string>
+    <string name="widget_idle">Ketik untuk mendengar</string>
+    <string name="tile_playing">Sedang dimainkan</string>
+    <string name="tile_paused">Dijeda</string>
+</resources>

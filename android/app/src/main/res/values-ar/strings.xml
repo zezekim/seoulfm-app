@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">ما يُذاع على SeoulFM، مع التشغيل والإيقاف المؤقت</string>
+    <string name="widget_play_pause">تشغيل أو إيقاف مؤقت</string>
+    <string name="widget_idle">اضغط للاستماع</string>
+    <string name="tile_playing">قيد التشغيل</string>
+    <string name="tile_paused">متوقف مؤقتًا</string>
+</resources>

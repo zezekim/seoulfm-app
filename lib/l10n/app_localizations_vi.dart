@@ -736,50 +736,50 @@ class AppLocalizationsVi extends AppLocalizations {
       'SeoulFM được phối cho tai nghe với crossfeed BS2B (Bauer stereophonic-to-binaural). Một phần nhỏ âm thanh của mỗi kênh sẽ truyền sang tai bên kia như khi nghe loa trong phòng, nên âm thanh rộng hơn, tự nhiên hơn và nghe nhiều giờ vẫn dễ chịu cho tai.';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => 'Yêu cầu của bạn';
 
   @override
   String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+      'Báo cho bạn khi bài hát bạn yêu cầu sắp phát và khi đang lên sóng.';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => 'Bài hát của bạn';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => 'Yêu thích';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => 'Lưu vào Bài hát của bạn';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => 'Xóa khỏi Bài hát của bạn';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => 'Đã lưu vào Bài hát của bạn';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => 'Đã xóa khỏi Bài hát của bạn';
 
   @override
-  String get view => 'View';
+  String get view => 'Xem';
 
   @override
-  String get undo => 'Undo';
+  String get undo => 'Hoàn tác';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => 'Lưu giữ những bài bạn yêu thích';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      'Chạm vào trái tim trên trình phát hoặc trên trang bài hát, hoặc chọn Lưu vào Bài hát của bạn trong menu của bài hát. Bài hát được lưu trên điện thoại này, không cần tài khoản.';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => 'Yêu cầu một bài trong số này';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => 'Thêm vào Cài đặt nhanh';
 
   @override
   String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+      'SeoulFM đã có trong Cài đặt nhanh: vuốt xuống để phát hoặc tạm dừng.';
 }

@@ -207,5 +207,20 @@
   "openPlayer": "Buka pemain",
   "songsCount": "{count, plural, =1{1 lagu} other{{count} lagu}}",
   "stationsFolder": "Stesen",
-  "spatialAudioBody": "SeoulFM dicampur untuk fon kepala dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit bunyi daripada setiap saluran sampai juga ke telinga sebelah, seperti daripada pembesar suara dalam bilik, jadi bunyi terasa lebih luas, lebih semula jadi dan selesa di telinga selama berjam-jam."
+  "spatialAudioBody": "SeoulFM dicampur untuk fon kepala dengan crossfeed BS2B (Bauer stereophonic-to-binaural). Sedikit bunyi daripada setiap saluran sampai juga ke telinga sebelah, seperti daripada pembesar suara dalam bilik, jadi bunyi terasa lebih luas, lebih semula jadi dan selesa di telinga selama berjam-jam.",
+  "requestNotificationChannel": "Permintaan anda",
+  "requestNotificationChannelDescription": "Memaklumkan anda apabila lagu yang anda minta akan dimainkan dan apabila ia bersiaran.",
+  "yourSongs": "Lagu anda",
+  "favourite": "Kegemaran",
+  "saveToYourSongs": "Simpan ke Lagu anda",
+  "removeFromYourSongs": "Alih keluar daripada Lagu anda",
+  "savedToYourSongs": "Disimpan ke Lagu anda",
+  "removedFromYourSongs": "Dialih keluar daripada Lagu anda",
+  "view": "Lihat",
+  "undo": "Buat asal",
+  "yourSongsEmptyTitle": "Simpan lagu yang anda suka",
+  "yourSongsEmptyBody": "Ketik hati pada pemain atau pada halaman lagu, atau pilih Simpan ke Lagu anda dalam menu lagu. Lagu kekal pada telefon ini, tanpa perlu akaun.",
+  "requestFromYourSongs": "Minta salah satu daripadanya",
+  "quickSettingsAdd": "Tambah pada Tetapan Pantas",
+  "quickSettingsAdded": "SeoulFM ada dalam Tetapan Pantas anda: leret ke bawah untuk main atau jeda."
 }

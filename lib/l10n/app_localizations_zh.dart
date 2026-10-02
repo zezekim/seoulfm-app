@@ -711,52 +711,50 @@ class AppLocalizationsZh extends AppLocalizations {
       'SeoulFM 针对耳机采用 BS2B（Bauer stereophonic-to-binaural）串音混合。每个声道的少量声音会传到另一只耳朵，就像在房间里听音箱一样，因此声音更开阔、更自然，长时间聆听也不易疲劳。';
 
   @override
-  String get requestNotificationChannel => 'Your requests';
+  String get requestNotificationChannel => '你的点歌';
 
   @override
-  String get requestNotificationChannelDescription =>
-      'Tells you when a song you requested is coming up and when it’s on air.';
+  String get requestNotificationChannelDescription => '你点的歌快要播出和正在播出时通知你。';
 
   @override
-  String get yourSongs => 'Your songs';
+  String get yourSongs => '我的歌曲';
 
   @override
-  String get favourite => 'Favourite';
+  String get favourite => '收藏';
 
   @override
-  String get saveToYourSongs => 'Save to Your songs';
+  String get saveToYourSongs => '保存到我的歌曲';
 
   @override
-  String get removeFromYourSongs => 'Remove from Your songs';
+  String get removeFromYourSongs => '从我的歌曲中移除';
 
   @override
-  String get savedToYourSongs => 'Saved to Your songs';
+  String get savedToYourSongs => '已保存到我的歌曲';
 
   @override
-  String get removedFromYourSongs => 'Removed from Your songs';
+  String get removedFromYourSongs => '已从我的歌曲中移除';
 
   @override
-  String get view => 'View';
+  String get view => '查看';
 
   @override
-  String get undo => 'Undo';
+  String get undo => '撤销';
 
   @override
-  String get yourSongsEmptyTitle => 'Keep the songs you love';
+  String get yourSongsEmptyTitle => '收藏你喜欢的歌';
 
   @override
   String get yourSongsEmptyBody =>
-      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+      '在播放器或歌曲页面点按爱心，或在歌曲菜单中选择“保存到我的歌曲”。歌曲保存在这部手机上，无需账号。';
 
   @override
-  String get requestFromYourSongs => 'Request one of them';
+  String get requestFromYourSongs => '从中点一首';
 
   @override
-  String get quickSettingsAdd => 'Add to Quick Settings';
+  String get quickSettingsAdd => '添加到快捷设置';
 
   @override
-  String get quickSettingsAdded =>
-      'SeoulFM is in your Quick Settings: swipe down to play or pause.';
+  String get quickSettingsAdded => 'SeoulFM已添加到快捷设置：下滑即可播放或暂停。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1463,4 +1461,50 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   @override
   String get spatialAudioBody =>
       'SeoulFM 針對耳機採用 BS2B（Bauer stereophonic-to-binaural）串音混合。每個聲道的少量聲音會傳到另一隻耳朵，就像在房間裡聽喇叭一樣，因此聲音更開闊、更自然，長時間聆聽也不易疲勞。';
+
+  @override
+  String get requestNotificationChannel => '你的點歌';
+
+  @override
+  String get requestNotificationChannelDescription => '你點的歌快要播出和正在播出時通知你。';
+
+  @override
+  String get yourSongs => '我的歌曲';
+
+  @override
+  String get favourite => '收藏';
+
+  @override
+  String get saveToYourSongs => '儲存到我的歌曲';
+
+  @override
+  String get removeFromYourSongs => '從我的歌曲中移除';
+
+  @override
+  String get savedToYourSongs => '已儲存到我的歌曲';
+
+  @override
+  String get removedFromYourSongs => '已從我的歌曲中移除';
+
+  @override
+  String get view => '查看';
+
+  @override
+  String get undo => '復原';
+
+  @override
+  String get yourSongsEmptyTitle => '收藏你喜歡的歌';
+
+  @override
+  String get yourSongsEmptyBody =>
+      '在播放器或歌曲頁面點一下愛心，或在歌曲選單中選擇「儲存到我的歌曲」。歌曲會存在這支手機上，不需要帳號。';
+
+  @override
+  String get requestFromYourSongs => '從中點一首';
+
+  @override
+  String get quickSettingsAdd => '新增到快速設定';
+
+  @override
+  String get quickSettingsAdded => 'SeoulFM已加入快速設定：往下滑即可播放或暫停。';
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_description">Was gerade auf SeoulFM läuft, mit Abspielen und Pause</string>
+    <string name="widget_play_pause">Abspielen oder pausieren</string>
+    <string name="widget_idle">Tippen zum Hören</string>
+    <string name="tile_playing">Läuft</string>
+    <string name="tile_paused">Pausiert</string>
+</resources>

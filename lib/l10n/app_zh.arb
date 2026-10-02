@@ -207,5 +207,20 @@
   "openPlayer": "打开播放器",
   "songsCount": "{count, plural, =1{{count}首歌} other{{count}首歌}}",
   "stationsFolder": "电台",
-  "spatialAudioBody": "SeoulFM 针对耳机采用 BS2B（Bauer stereophonic-to-binaural）串音混合。每个声道的少量声音会传到另一只耳朵，就像在房间里听音箱一样，因此声音更开阔、更自然，长时间聆听也不易疲劳。"
+  "spatialAudioBody": "SeoulFM 针对耳机采用 BS2B（Bauer stereophonic-to-binaural）串音混合。每个声道的少量声音会传到另一只耳朵，就像在房间里听音箱一样，因此声音更开阔、更自然，长时间聆听也不易疲劳。",
+  "requestNotificationChannel": "你的点歌",
+  "requestNotificationChannelDescription": "你点的歌快要播出和正在播出时通知你。",
+  "yourSongs": "我的歌曲",
+  "favourite": "收藏",
+  "saveToYourSongs": "保存到我的歌曲",
+  "removeFromYourSongs": "从我的歌曲中移除",
+  "savedToYourSongs": "已保存到我的歌曲",
+  "removedFromYourSongs": "已从我的歌曲中移除",
+  "view": "查看",
+  "undo": "撤销",
+  "yourSongsEmptyTitle": "收藏你喜欢的歌",
+  "yourSongsEmptyBody": "在播放器或歌曲页面点按爱心，或在歌曲菜单中选择“保存到我的歌曲”。歌曲保存在这部手机上，无需账号。",
+  "requestFromYourSongs": "从中点一首",
+  "quickSettingsAdd": "添加到快捷设置",
+  "quickSettingsAdded": "SeoulFM已添加到快捷设置：下滑即可播放或暂停。"
 }
