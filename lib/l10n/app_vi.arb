@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Chạm vào trái tim trên trình phát hoặc trên trang bài hát, hoặc chọn Lưu vào Bài hát của bạn trong menu của bài hát. Bài hát được lưu trên điện thoại này, không cần tài khoản.",
   "requestFromYourSongs": "Yêu cầu một bài trong số này",
   "quickSettingsAdd": "Thêm vào Cài đặt nhanh",
-  "quickSettingsAdded": "SeoulFM đã có trong Cài đặt nhanh: vuốt xuống để phát hoặc tạm dừng."
+  "quickSettingsAdded": "SeoulFM đã có trong Cài đặt nhanh: vuốt xuống để phát hoặc tạm dừng.",
+  "edit": "Sửa",
+  "moreStations": "Kênh khác",
+  "addToYourStations": "Thêm vào Kênh của bạn",
+  "removeFromYourStations": "Xóa khỏi Kênh của bạn",
+  "addStations": "Thêm"
 }

@@ -782,4 +782,19 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'A SeoulFM está nas suas Configurações rápidas: deslize para baixo para tocar ou pausar.';
+
+  @override
+  String get edit => 'Editar';
+
+  @override
+  String get moreStations => 'Mais estações';
+
+  @override
+  String get addToYourStations => 'Adicionar às suas estações';
+
+  @override
+  String get removeFromYourStations => 'Remover das suas estações';
+
+  @override
+  String get addStations => 'Incluir';
 }

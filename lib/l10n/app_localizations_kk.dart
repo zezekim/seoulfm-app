@@ -779,4 +779,19 @@ class AppLocalizationsKk extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM жылдам параметрлерде: ойнату немесе кідірту үшін төмен сырғыт.';
+
+  @override
+  String get edit => 'Өзгерту';
+
+  @override
+  String get moreStations => 'Басқа станциялар';
+
+  @override
+  String get addToYourStations => 'Сенің станцияларыңа қосу';
+
+  @override
+  String get removeFromYourStations => 'Сенің станцияларыңнан өшіру';
+
+  @override
+  String get addStations => 'Қосу';
 }

@@ -781,4 +781,19 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM ada di Setelan Cepat: geser ke bawah untuk memutar atau menjeda.';
+
+  @override
+  String get edit => 'Ubah';
+
+  @override
+  String get moreStations => 'Stasiun lainnya';
+
+  @override
+  String get addToYourStations => 'Tambahkan ke Stasiunmu';
+
+  @override
+  String get removeFromYourStations => 'Hapus dari Stasiunmu';
+
+  @override
+  String get addStations => 'Tambah';
 }

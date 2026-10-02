@@ -776,4 +776,19 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM อยู่ในการตั้งค่าด่วนแล้ว ปัดลงเพื่อเล่นหรือหยุดชั่วคราว';
+
+  @override
+  String get edit => 'แก้ไข';
+
+  @override
+  String get moreStations => 'สถานีอื่น ๆ';
+
+  @override
+  String get addToYourStations => 'เพิ่มในสถานีของคุณ';
+
+  @override
+  String get removeFromYourStations => 'ลบออกจากสถานีของคุณ';
+
+  @override
+  String get addStations => 'เพิ่ม';
 }

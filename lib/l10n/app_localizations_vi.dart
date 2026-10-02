@@ -782,4 +782,19 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM đã có trong Cài đặt nhanh: vuốt xuống để phát hoặc tạm dừng.';
+
+  @override
+  String get edit => 'Sửa';
+
+  @override
+  String get moreStations => 'Kênh khác';
+
+  @override
+  String get addToYourStations => 'Thêm vào Kênh của bạn';
+
+  @override
+  String get removeFromYourStations => 'Xóa khỏi Kênh của bạn';
+
+  @override
+  String get addStations => 'Thêm';
 }

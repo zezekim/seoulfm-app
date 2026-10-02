@@ -755,6 +755,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get quickSettingsAdded => 'SeoulFM已添加到快捷设置：下滑即可播放或暂停。';
+
+  @override
+  String get edit => '编辑';
+
+  @override
+  String get moreStations => '更多电台';
+
+  @override
+  String get addToYourStations => '添加到我的电台';
+
+  @override
+  String get removeFromYourStations => '从我的电台移除';
+
+  @override
+  String get addStations => '添加';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -1507,4 +1522,19 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get quickSettingsAdded => 'SeoulFM已加入快速設定：往下滑即可播放或暫停。';
+
+  @override
+  String get edit => '編輯';
+
+  @override
+  String get moreStations => '更多電台';
+
+  @override
+  String get addToYourStations => '加入我的電台';
+
+  @override
+  String get removeFromYourStations => '從我的電台移除';
+
+  @override
+  String get addStations => '加入';
 }

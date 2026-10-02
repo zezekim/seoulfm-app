@@ -743,4 +743,19 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get quickSettingsAdded => '빠른 설정에 SeoulFM이 있어요. 화면을 내려 재생하거나 일시정지하세요.';
+
+  @override
+  String get edit => '편집';
+
+  @override
+  String get moreStations => '다른 채널';
+
+  @override
+  String get addToYourStations => '내 채널에 추가';
+
+  @override
+  String get removeFromYourStations => '내 채널에서 삭제';
+
+  @override
+  String get addStations => '추가';
 }

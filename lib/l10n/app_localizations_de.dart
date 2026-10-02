@@ -783,4 +783,19 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM ist in deinen Schnelleinstellungen: Wisch nach unten, um abzuspielen oder zu pausieren.';
+
+  @override
+  String get edit => 'Bearbeiten';
+
+  @override
+  String get moreStations => 'Weitere Sender';
+
+  @override
+  String get addToYourStations => 'Zu deinen Sendern hinzufügen';
+
+  @override
+  String get removeFromYourStations => 'Aus deinen Sendern entfernen';
+
+  @override
+  String get addStations => 'Hinzufügen';
 }

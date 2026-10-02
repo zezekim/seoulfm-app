@@ -1469,6 +1469,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SeoulFM is in your Quick Settings: swipe down to play or pause.'**
   String get quickSettingsAdded;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @moreStations.
+  ///
+  /// In en, this message translates to:
+  /// **'More stations'**
+  String get moreStations;
+
+  /// No description provided for @addToYourStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Your stations'**
+  String get addToYourStations;
+
+  /// No description provided for @removeFromYourStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Your stations'**
+  String get removeFromYourStations;
+
+  /// No description provided for @addStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addStations;
 }
 
 class _AppLocalizationsDelegate

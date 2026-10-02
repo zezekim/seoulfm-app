@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Ketuk hati di pemutar atau di halaman lagu, atau pilih Simpan ke Lagumu di menu lagu. Lagu tersimpan di ponsel ini, tanpa perlu akun.",
   "requestFromYourSongs": "Request salah satunya",
   "quickSettingsAdd": "Tambahkan ke Setelan Cepat",
-  "quickSettingsAdded": "SeoulFM ada di Setelan Cepat: geser ke bawah untuk memutar atau menjeda."
+  "quickSettingsAdded": "SeoulFM ada di Setelan Cepat: geser ke bawah untuk memutar atau menjeda.",
+  "edit": "Ubah",
+  "moreStations": "Stasiun lainnya",
+  "addToYourStations": "Tambahkan ke Stasiunmu",
+  "removeFromYourStations": "Hapus dari Stasiunmu",
+  "addStations": "Tambah"
 }

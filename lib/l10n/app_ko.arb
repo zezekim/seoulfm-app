@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "플레이어나 곡 페이지에서 하트를 누르거나, 곡 메뉴에서 ‘저장한 곡에 추가’를 고르세요. 계정 없이 이 휴대폰에 저장돼요.",
   "requestFromYourSongs": "이 중에서 한 곡 신청하기",
   "quickSettingsAdd": "빠른 설정에 추가",
-  "quickSettingsAdded": "빠른 설정에 SeoulFM이 있어요. 화면을 내려 재생하거나 일시정지하세요."
+  "quickSettingsAdded": "빠른 설정에 SeoulFM이 있어요. 화면을 내려 재생하거나 일시정지하세요.",
+  "edit": "편집",
+  "moreStations": "다른 채널",
+  "addToYourStations": "내 채널에 추가",
+  "removeFromYourStations": "내 채널에서 삭제",
+  "addStations": "추가"
 }

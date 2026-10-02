@@ -760,4 +760,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get quickSettingsAdded => 'クイック設定にSeoulFMを追加しました。下にスワイプして再生・一時停止できます。';
+
+  @override
+  String get edit => '編集';
+
+  @override
+  String get moreStations => 'その他のステーション';
+
+  @override
+  String get addToYourStations => 'あなたのステーションに追加';
+
+  @override
+  String get removeFromYourStations => 'あなたのステーションから削除';
+
+  @override
+  String get addStations => '追加';
 }

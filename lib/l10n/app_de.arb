@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Tippe im Player oder auf der Seite eines Songs auf das Herz oder wähl im Menü eines Songs „Zu deinen Songs hinzufügen“. Sie bleiben auf diesem Handy, ganz ohne Konto.",
   "requestFromYourSongs": "Wünsch dir einen davon",
   "quickSettingsAdd": "Zu den Schnelleinstellungen hinzufügen",
-  "quickSettingsAdded": "SeoulFM ist in deinen Schnelleinstellungen: Wisch nach unten, um abzuspielen oder zu pausieren."
+  "quickSettingsAdded": "SeoulFM ist in deinen Schnelleinstellungen: Wisch nach unten, um abzuspielen oder zu pausieren.",
+  "edit": "Bearbeiten",
+  "moreStations": "Weitere Sender",
+  "addToYourStations": "Zu deinen Sendern hinzufügen",
+  "removeFromYourStations": "Aus deinen Sendern entfernen",
+  "addStations": "Hinzufügen"
 }

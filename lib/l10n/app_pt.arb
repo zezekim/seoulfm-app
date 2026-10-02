@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Toque no coração no player ou na página de uma música, ou escolha Salvar em Suas músicas no menu de uma música. Elas ficam neste celular, sem precisar de conta.",
   "requestFromYourSongs": "Peça uma delas",
   "quickSettingsAdd": "Adicionar às Configurações rápidas",
-  "quickSettingsAdded": "A SeoulFM está nas suas Configurações rápidas: deslize para baixo para tocar ou pausar."
+  "quickSettingsAdded": "A SeoulFM está nas suas Configurações rápidas: deslize para baixo para tocar ou pausar.",
+  "edit": "Editar",
+  "moreStations": "Mais estações",
+  "addToYourStations": "Adicionar às suas estações",
+  "removeFromYourStations": "Remover das suas estações",
+  "addStations": "Incluir"
 }

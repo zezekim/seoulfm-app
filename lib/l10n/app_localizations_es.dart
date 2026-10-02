@@ -780,6 +780,21 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM está en tu Configuración rápida: desliza hacia abajo para reproducir o pausar.';
+
+  @override
+  String get edit => 'Editar';
+
+  @override
+  String get moreStations => 'Más estaciones';
+
+  @override
+  String get addToYourStations => 'Añadir a tus estaciones';
+
+  @override
+  String get removeFromYourStations => 'Quitar de tus estaciones';
+
+  @override
+  String get addStations => 'Añadir';
 }
 
 /// The translations for Spanish Castilian, as used in Spain (`es_ES`).
@@ -1558,4 +1573,19 @@ class AppLocalizationsEsEs extends AppLocalizationsEs {
   @override
   String get quickSettingsAdded =>
       'SeoulFM está en tus Ajustes rápidos: desliza hacia abajo para reproducir o pausar.';
+
+  @override
+  String get edit => 'Editar';
+
+  @override
+  String get moreStations => 'Más emisoras';
+
+  @override
+  String get addToYourStations => 'Añadir a tus emisoras';
+
+  @override
+  String get removeFromYourStations => 'Quitar de tus emisoras';
+
+  @override
+  String get addStations => 'Añadir';
 }

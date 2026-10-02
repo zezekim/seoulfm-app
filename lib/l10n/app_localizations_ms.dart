@@ -784,4 +784,19 @@ class AppLocalizationsMs extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM ada dalam Tetapan Pantas anda: leret ke bawah untuk main atau jeda.';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get moreStations => 'Stesen lain';
+
+  @override
+  String get addToYourStations => 'Tambah ke Stesen anda';
+
+  @override
+  String get removeFromYourStations => 'Alih keluar daripada Stesen anda';
+
+  @override
+  String get addStations => 'Tambah';
 }

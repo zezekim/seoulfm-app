@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Ketik hati pada pemain atau pada halaman lagu, atau pilih Simpan ke Lagu anda dalam menu lagu. Lagu kekal pada telefon ini, tanpa perlu akaun.",
   "requestFromYourSongs": "Minta salah satu daripadanya",
   "quickSettingsAdd": "Tambah pada Tetapan Pantas",
-  "quickSettingsAdded": "SeoulFM ada dalam Tetapan Pantas anda: leret ke bawah untuk main atau jeda."
+  "quickSettingsAdded": "SeoulFM ada dalam Tetapan Pantas anda: leret ke bawah untuk main atau jeda.",
+  "edit": "Edit",
+  "moreStations": "Stesen lain",
+  "addToYourStations": "Tambah ke Stesen anda",
+  "removeFromYourStations": "Alih keluar daripada Stesen anda",
+  "addStations": "Tambah"
 }

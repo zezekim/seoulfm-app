@@ -786,4 +786,19 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'أصبح SeoulFM في إعداداتك السريعة: اسحب للأسفل للتشغيل أو الإيقاف المؤقت.';
+
+  @override
+  String get edit => 'تعديل';
+
+  @override
+  String get moreStations => 'محطات أخرى';
+
+  @override
+  String get addToYourStations => 'أضف إلى محطاتك';
+
+  @override
+  String get removeFromYourStations => 'أزل من محطاتك';
+
+  @override
+  String get addStations => 'إضافة';
 }

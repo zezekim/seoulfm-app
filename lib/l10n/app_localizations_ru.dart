@@ -788,4 +788,19 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM теперь в быстрых настройках: проведи вниз, чтобы включить или поставить на паузу.';
+
+  @override
+  String get edit => 'Изменить';
+
+  @override
+  String get moreStations => 'Другие станции';
+
+  @override
+  String get addToYourStations => 'Добавить в «Твои станции»';
+
+  @override
+  String get removeFromYourStations => 'Убрать из «Твоих станций»';
+
+  @override
+  String get addStations => 'Добавить';
 }

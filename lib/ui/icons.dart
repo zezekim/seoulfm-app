@@ -5,6 +5,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 /// glyphs stay solid and rounded, as music players draw them.
 abstract final class AppIcons {
   static const IconData add = LucideIcons.plus;
+  static const IconData remove = LucideIcons.circleMinus;
+  static const IconData addCircle = LucideIcons.circlePlus;
+  static const IconData drag = LucideIcons.gripVertical;
   static const IconData airplay = LucideIcons.airplay;
   static const IconData artist = LucideIcons.userRound;
   static const IconData car = LucideIcons.car;

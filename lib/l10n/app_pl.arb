@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Stuknij serce w odtwarzaczu lub na stronie utworu albo wybierz Zapisz w Twoich utworach w menu utworu. Zostają na tym telefonie, bez zakładania konta.",
   "requestFromYourSongs": "Zamów jeden z nich",
   "quickSettingsAdd": "Dodaj do Szybkich ustawień",
-  "quickSettingsAdded": "SeoulFM jest w Szybkich ustawieniach: przesuń w dół, aby odtworzyć lub wstrzymać."
+  "quickSettingsAdded": "SeoulFM jest w Szybkich ustawieniach: przesuń w dół, aby odtworzyć lub wstrzymać.",
+  "edit": "Edytuj",
+  "moreStations": "Więcej stacji",
+  "addToYourStations": "Dodaj do swoich stacji",
+  "removeFromYourStations": "Usuń ze swoich stacji",
+  "addStations": "Dodaj"
 }

@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Touchez le cœur dans le lecteur ou sur la page d’une chanson, ou choisissez Ajouter à Vos titres dans le menu d’une chanson. Elles restent sur ce téléphone, sans compte.",
   "requestFromYourSongs": "En demander une",
   "quickSettingsAdd": "Ajouter aux Réglages rapides",
-  "quickSettingsAdded": "SeoulFM est dans vos Réglages rapides : balayez vers le bas pour lancer ou mettre en pause."
+  "quickSettingsAdded": "SeoulFM est dans vos Réglages rapides : balayez vers le bas pour lancer ou mettre en pause.",
+  "edit": "Modifier",
+  "moreStations": "Autres stations",
+  "addToYourStations": "Ajouter à vos stations",
+  "removeFromYourStations": "Retirer de vos stations",
+  "addStations": "Ajouter"
 }

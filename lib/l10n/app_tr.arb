@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Oynatıcıda ya da bir şarkının sayfasında kalbe dokun veya bir şarkının menüsünden Şarkılarına kaydet’i seç. Hesap gerekmeden bu telefonda kalırlar.",
   "requestFromYourSongs": "Bunlardan birini iste",
   "quickSettingsAdd": "Hızlı Ayarlar’a ekle",
-  "quickSettingsAdded": "SeoulFM Hızlı Ayarlar’ında: oynatmak veya duraklatmak için aşağı kaydır."
+  "quickSettingsAdded": "SeoulFM Hızlı Ayarlar’ında: oynatmak veya duraklatmak için aşağı kaydır.",
+  "edit": "Düzenle",
+  "moreStations": "Diğer istasyonlar",
+  "addToYourStations": "İstasyonlarına ekle",
+  "removeFromYourStations": "İstasyonlarından kaldır",
+  "addStations": "Ekle"
 }

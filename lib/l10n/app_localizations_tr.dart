@@ -780,4 +780,19 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get quickSettingsAdded =>
       'SeoulFM Hızlı Ayarlar’ında: oynatmak veya duraklatmak için aşağı kaydır.';
+
+  @override
+  String get edit => 'Düzenle';
+
+  @override
+  String get moreStations => 'Diğer istasyonlar';
+
+  @override
+  String get addToYourStations => 'İstasyonlarına ekle';
+
+  @override
+  String get removeFromYourStations => 'İstasyonlarından kaldır';
+
+  @override
+  String get addStations => 'Ekle';
 }

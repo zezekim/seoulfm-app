@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "在播放器或歌曲页面点按爱心，或在歌曲菜单中选择“保存到我的歌曲”。歌曲保存在这部手机上，无需账号。",
   "requestFromYourSongs": "从中点一首",
   "quickSettingsAdd": "添加到快捷设置",
-  "quickSettingsAdded": "SeoulFM已添加到快捷设置：下滑即可播放或暂停。"
+  "quickSettingsAdded": "SeoulFM已添加到快捷设置：下滑即可播放或暂停。",
+  "edit": "编辑",
+  "moreStations": "更多电台",
+  "addToYourStations": "添加到我的电台",
+  "removeFromYourStations": "从我的电台移除",
+  "addStations": "添加"
 }

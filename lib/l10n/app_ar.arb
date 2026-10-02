@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "اضغط على القلب في المشغّل أو في صفحة الأغنية، أو اختر «احفظ في أغانيك» من قائمة الأغنية. تبقى على هذا الهاتف، دون الحاجة إلى حساب.",
   "requestFromYourSongs": "اطلب واحدة منها",
   "quickSettingsAdd": "أضِف إلى الإعدادات السريعة",
-  "quickSettingsAdded": "أصبح SeoulFM في إعداداتك السريعة: اسحب للأسفل للتشغيل أو الإيقاف المؤقت."
+  "quickSettingsAdded": "أصبح SeoulFM في إعداداتك السريعة: اسحب للأسفل للتشغيل أو الإيقاف المؤقت.",
+  "edit": "تعديل",
+  "moreStations": "محطات أخرى",
+  "addToYourStations": "أضف إلى محطاتك",
+  "removeFromYourStations": "أزل من محطاتك",
+  "addStations": "إضافة"
 }

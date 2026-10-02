@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/ui/widgets/stations_editor.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
@@ -539,8 +540,8 @@ class _GenreTile extends StatelessWidget {
 
 // ── Your stations ─────────────────────────────────────────────────────────
 
-/// The stations picked on the welcome screen, as round covers of what each plays: one tap
-/// to listen. Hidden when none were picked.
+/// The listener's own stations, as round covers of what each plays: one tap to listen. Edit
+/// (or the + at the end) opens the editor; with none picked, an invitation to pick some.
 class _YourStations extends StatelessWidget {
   const _YourStations();
   @override
@@ -551,24 +552,116 @@ class _YourStations extends StatelessWidget {
       builder: (context, keys, _) {
         final cc = context.watch<ChannelController>();
         final picked = [for (final k in keys) ?cc.byKey(k)].where((c) => c.tunable).toList();
-        if (picked.isEmpty) return const SizedBox.shrink();
+        final title = ShelfTitle(
+          context.l.yourStations,
+          trailing: picked.isEmpty
+              ? null
+              : TextButton(onPressed: () => showStationsEditor(context), child: Text(context.l.edit)),
+        );
+        if (picked.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [title, _PickStations(onTap: () => showStationsEditor(context))],
+          );
+        }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ShelfTitle(context.l.yourStations),
+            title,
             SizedBox(
               height: 112,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: picked.length,
+                itemCount: picked.length + 1,
                 separatorBuilder: (_, _) => const SizedBox(width: 16),
-                itemBuilder: (context, i) => _StationBubble(channel: picked[i]),
+                itemBuilder: (context, i) => i < picked.length
+                    ? _StationBubble(channel: picked[i])
+                    : _AddBubble(onTap: () => showStationsEditor(context)),
               ),
             ),
           ],
         );
       },
+    );
+  }
+}
+
+/// The + at the end of Your stations: opens the editor.
+class _AddBubble extends StatelessWidget {
+  const _AddBubble({required this.onTap});
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    return Pressable(
+      onTap: onTap,
+      semanticLabel: context.l.addStations,
+      child: SizedBox(
+        width: 76,
+        child: Column(
+          children: [
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(shape: BoxShape.circle, color: c.text.withValues(alpha: 0.08)),
+              child: Icon(AppIcons.add, size: 28, color: c.text),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              context.l.addStations,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w600, color: c.muted),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Your stations with none picked: an invitation, not an empty row.
+class _PickStations extends StatelessWidget {
+  const _PickStations({required this.onTap});
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) {
+    final c = context.sfm;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Pressable(
+        onTap: onTap,
+        semanticLabel: context.l.pickStationsTitle,
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: c.surface,
+            border: Border.all(color: c.border),
+            borderRadius: BorderRadius.circular(Radii.lg),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(shape: BoxShape.circle, color: c.text.withValues(alpha: 0.08)),
+                child: Icon(AppIcons.add, color: c.text),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(context.l.pickStationsTitle, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                    Text(context.l.pickStationsBody, style: TextStyle(color: c.muted, fontSize: 13)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "プレーヤーや曲のページでハートをタップするか、曲のメニューで「保存した曲に追加」を選んでください。アカウントなしで、このスマートフォンに保存されます。",
   "requestFromYourSongs": "この中から1曲リクエスト",
   "quickSettingsAdd": "クイック設定に追加",
-  "quickSettingsAdded": "クイック設定にSeoulFMを追加しました。下にスワイプして再生・一時停止できます。"
+  "quickSettingsAdded": "クイック設定にSeoulFMを追加しました。下にスワイプして再生・一時停止できます。",
+  "edit": "編集",
+  "moreStations": "その他のステーション",
+  "addToYourStations": "あなたのステーションに追加",
+  "removeFromYourStations": "あなたのステーションから削除",
+  "addStations": "追加"
 }

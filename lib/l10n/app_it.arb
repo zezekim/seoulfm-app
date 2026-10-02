@@ -222,5 +222,10 @@
   "yourSongsEmptyBody": "Tocca il cuore nel player o nella pagina di un brano, oppure scegli Salva nei tuoi brani nel menu di un brano. Restano su questo telefono, senza bisogno di un account.",
   "requestFromYourSongs": "Richiedine uno",
   "quickSettingsAdd": "Aggiungi alle Impostazioni rapide",
-  "quickSettingsAdded": "SeoulFM è nelle tue Impostazioni rapide: scorri verso il basso per riprodurre o mettere in pausa."
+  "quickSettingsAdded": "SeoulFM è nelle tue Impostazioni rapide: scorri verso il basso per riprodurre o mettere in pausa.",
+  "edit": "Modifica",
+  "moreStations": "Altre stazioni",
+  "addToYourStations": "Aggiungi alle tue stazioni",
+  "removeFromYourStations": "Rimuovi dalle tue stazioni",
+  "addStations": "Aggiungi"
 }
