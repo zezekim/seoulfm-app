@@ -18,6 +18,8 @@ struct RadioActivityAttributes: ActivityAttributes {
     var requestTitle: String?
     var requestAt: Date?
     var requestPlaying: Bool?
+    /// When the countdown began, for the ring that fills as the request comes up.
+    var requestSince: Date?
   }
 }
 

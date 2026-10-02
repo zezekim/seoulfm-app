@@ -37,20 +37,26 @@ struct RadioLiveActivity: Widget {
           }
         }
       } compactLeading: {
-        Cover(file: s.artFile, accent: s.accent).frame(width: 24, height: 24).clipShape(Circle())
+        // SeoulFM's mark, not the cover: iOS's own Now Playing shows the cover beside it.
+        StationCover(accent: argbColor(s.accent)).frame(width: 24, height: 24).clipShape(Circle())
       } compactTrailing: {
         // A request on its way: the time to go, where the waveform was.
         if let at = s.requestAt, s.requestPlaying != true, at > .now {
-          Text(timerInterval: Date.now...at, countsDown: true)
-            .font(.system(size: 14, weight: .semibold)).monospacedDigit()
-            .foregroundStyle(argbColor(s.accent))
-            .multilineTextAlignment(.trailing)
-            .frame(maxWidth: 44)
+          HStack(spacing: 4) {
+            Wave(playing: s.playing, accent: s.accent).frame(width: 18, height: 14)
+            Text(timerInterval: Date.now...at, countsDown: true)
+              .font(.system(size: 14, weight: .semibold)).monospacedDigit()
+              .foregroundStyle(argbColor(s.accent))
+              .multilineTextAlignment(.trailing)
+              .frame(maxWidth: 44)
+          }
         } else {
           Wave(playing: s.playing, accent: s.accent).frame(width: 22, height: 16)
         }
       } minimal: {
-        Cover(file: s.artFile, accent: s.accent).frame(width: 24, height: 24).clipShape(Circle())
+        // Sharing the island with Now Playing: the mark inside a ring that fills as the request
+        // comes up; the waveform once it plays.
+        RequestMinimal(state: s)
       }
       .keylineTint(argbColor(s.accent))
     }
@@ -82,6 +88,29 @@ private struct Wave: View {
       .font(.system(size: 16, weight: .bold))
       .foregroundStyle(argbColor(accent))
       .symbolEffect(.variableColor.iterative, isActive: playing)
+  }
+}
+
+/// The island's small circle: SFM in a countdown ring, or the waveform once the song plays.
+private struct RequestMinimal: View {
+  let state: RadioActivityAttributes.ContentState
+  var body: some View {
+    let accent = argbColor(state.accent)
+    if state.requestPlaying == true {
+      Image(systemName: "waveform").font(.system(size: 12, weight: .bold)).foregroundStyle(accent)
+        .symbolEffect(.variableColor.iterative, isActive: true)
+    } else if let at = state.requestAt, at > .now {
+      ZStack {
+        ProgressView(timerInterval: (state.requestSince ?? .now)...at, countsDown: false, label: { EmptyView() },
+                     currentValueLabel: { EmptyView() })
+          .progressViewStyle(.circular).tint(accent)
+        // Just the mark: a Live Activity is drawn as still snapshots, so a waveform here would
+        // stand frozen (iOS's own Now Playing, beside it, has the moving one).
+        Text("SFM").font(.system(size: 8.5, weight: .black)).foregroundStyle(.white)
+      }
+    } else {
+      StationCover(accent: accent).clipShape(Circle())
+    }
   }
 }
 

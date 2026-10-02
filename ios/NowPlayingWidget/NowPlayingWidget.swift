@@ -92,9 +92,13 @@ struct Provider: TimelineProvider {
     guard let string, let url = URL(string: string),
       let (data, _) = try? await URLSession.shared.data(from: url), let image = UIImage(data: data)
     else { return nil }
-    // Widgets have a small memory budget: keep the cover small.
+    // Widgets have a small memory budget: keep the cover small, 300 px (not 300 pt at 3x).
     let size = CGSize(width: 300, height: 300)
-    return UIGraphicsImageRenderer(size: size).image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+    let format = UIGraphicsImageRendererFormat()
+    format.scale = 1
+    return UIGraphicsImageRenderer(size: size, format: format).image { _ in
+      image.draw(in: CGRect(origin: .zero, size: size))
+    }
   }
 
   private func color(argb: Int) -> Color {
