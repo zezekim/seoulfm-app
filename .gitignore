@@ -56,3 +56,6 @@ fastlane/Preview.html
 fastlane/test_output/
 /vendor/bundle/
 *.p8
+
+# Diff images from failed golden tests (docs/golden-tests.md)
+/test/goldens/failures/

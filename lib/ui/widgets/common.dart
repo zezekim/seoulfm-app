@@ -1,6 +1,5 @@
 import 'dart:ui' show ImageFilter;
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:octo_image/octo_image.dart';
@@ -78,7 +77,7 @@ class Artwork extends StatelessWidget {
     );
     final ratio = pixelRatio ?? MediaQuery.devicePixelRatioOf(context);
     Widget image(int? px) {
-      final file = CachedNetworkImageProvider(url!);
+      final file = coverProvider(url!);
       return OctoImage(
         image: px == null ? file : CoverResize(file, px),
         fit: fit,

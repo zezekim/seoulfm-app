@@ -7,6 +7,14 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Run by hand with "update goldens" to redraw the golden images on the macOS runner and download
+  # them as an artifact (docs/golden-tests.md).
+  workflow_dispatch:
+    inputs:
+      update_goldens:
+        description: Redraw the golden images and upload them
+        type: boolean
+        default: false
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -26,7 +34,35 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter analyze
+      # Golden tests run here too, for layout (overflow, direction) only: their images are
+      # compared in the goldens job, on macOS, where they were rendered.
       - run: flutter test
+
+  # Screen snapshots in six languages (test/goldens): pixel comparison on macOS (docs/golden-tests.md).
+  goldens:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+      - run: flutter pub get
+      - if: ${{ !inputs.update_goldens }}
+        run: flutter test --tags golden
+      - if: ${{ inputs.update_goldens }}
+        run: flutter test --tags golden --update-goldens
+      - if: ${{ inputs.update_goldens }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-images
+          path: test/goldens/images/
+      # What differed: the expected, actual and diff images of each failed golden.
+      - if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: golden-failures
+          path: test/goldens/failures/
 
   android:
     needs: check

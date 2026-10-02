@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 
@@ -39,7 +40,12 @@ class _PlayerProgressState extends State<PlayerProgress> {
     final dur = np.track?.durationMs ?? 0;
     final f = dur > 0 ? (pos / dur).clamp(0.0, 1.0) : 0.0;
     final c = widget.color;
-    final style = TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: c.withValues(alpha: 0.6), fontFeatures: tabular);
+    final style = TextStyle(
+      fontSize: 11,
+      fontWeight: FontWeight.w500,
+      color: c.withValues(alpha: 0.6),
+      fontFeatures: tabular,
+    );
     return Column(
       children: [
         ClipRRect(
@@ -57,7 +63,8 @@ class _PlayerProgressState extends State<PlayerProgress> {
             Expanded(child: Text(fmtDuration(pos), style: style)),
             ?widget.center,
             Expanded(
-              child: Text(dur > 0 ? '−${fmtDuration(dur - pos)}' : '', style: style, textAlign: TextAlign.end),
+              // Isolated, so the minus stays before the digits in right-to-left text ("1:35−" otherwise).
+              child: Text(dur > 0 ? isolate('−${fmtDuration(dur - pos)}') : '', style: style, textAlign: TextAlign.end),
             ),
           ],
         ),

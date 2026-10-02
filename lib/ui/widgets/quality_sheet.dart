@@ -40,22 +40,25 @@ Future<void> pickQuality(BuildContext context) async {
         );
       }
 
+      // Scrolls when large text makes the five options taller than the screen.
       return SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(l.quality, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
-            const SizedBox(height: 8),
-            option(null),
-            for (final kbps in RadioHandler.ladder) option(kbps),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
-              child: Text(
-                '${l.qualityFixedBody} ${l.qualityLosslessNote}',
-                style: TextStyle(color: c.faint, fontSize: 12.5, height: 1.4),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(l.quality, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              option(null),
+              for (final kbps in RadioHandler.ladder) option(kbps),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 12),
+                child: Text(
+                  '${l.qualityFixedBody} ${l.qualityLosslessNote}',
+                  style: TextStyle(color: c.faint, fontSize: 12.5, height: 1.4),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     },
