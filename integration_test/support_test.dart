@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:seoulfm/config.dart';
 import 'package:seoulfm/ui/root_shell.dart';
 
 import 'helpers.dart';
@@ -8,7 +9,8 @@ import 'helpers.dart';
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('support', (t) async {
+  // Needs --dart-define=SEOULFM_SUPPORT=true: support is off until the store products are approved.
+  testWidgets('support', skip: !Config.supportEnabled, (t) async {
     await launch(binding);
     await wait(t, 12);
     await binding.takeScreenshot('s1-home');

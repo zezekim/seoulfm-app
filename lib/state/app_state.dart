@@ -148,6 +148,9 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     requests.addListener(_onRequestChange);
     unawaited(RequestNotifications.init());
     review.start();
+    // Purchases can finish while Support is closed (Ask to Buy, a pending payment), and Google
+    // refunds one that isn't acknowledged within three days: handle them from launch.
+    if (Config.supportEnabled) support.listen();
     radio.streamFailing.addListener(_onPlaybackTrouble);
     radio.losslessFailed.addListener(_onPlaybackTrouble);
     Timer.periodic(const Duration(minutes: 1), (_) => _countListening());

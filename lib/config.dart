@@ -39,6 +39,11 @@ class Config {
   static const gitCommit = String.fromEnvironment('GIT_COMMIT');
 
   /// Where reported dedications go.
+  /// Listener support (tips and the monthly supporter, through the stores). Off until the store
+  /// products are approved: App Review rejects purchase screens that can't complete, so with it
+  /// off the app shows no Support card, page or button at all. `--dart-define=SEOULFM_SUPPORT=true`.
+  static const supportEnabled = bool.fromEnvironment('SEOULFM_SUPPORT');
+
   static const reportEmail = String.fromEnvironment('SEOULFM_REPORT_EMAIL', defaultValue: 'hi@seoul.fm');
 }
 

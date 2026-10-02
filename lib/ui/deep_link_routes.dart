@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:seoulfm/config.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/platform/deep_links.dart';
@@ -25,7 +26,8 @@ Future<void> openDeepLink(BuildContext context, AppState app, Uri uri) async {
     case WallLink():
       Nav.push(const WallScreen());
     case SupportLink():
-      Nav.openSupport();
+      // With support off there is no page to open: the link just opens the app.
+      if (Config.supportEnabled) Nav.openSupport();
     case WebLink(:final url):
       await _openWeb(url);
   }

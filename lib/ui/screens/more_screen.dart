@@ -35,7 +35,7 @@ class MoreScreen extends StatelessWidget {
           largeTitleBar(context, l.tabMore),
           SliverList.list(
             children: [
-              const SupportCard(),
+              if (Config.supportEnabled) const SupportCard(),
               // The listener's library: songs saved from the player, a song's page or its menu.
               ListTile(
                 leading: const HeartIcon(fill: 1, size: 24),

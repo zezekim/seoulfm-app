@@ -5,7 +5,7 @@ import json, os, sys
 ROOT = os.path.dirname(os.path.abspath(__file__))
 IOS = {'name.txt': 30, 'subtitle.txt': 30, 'keywords.txt': 100, 'promotional_text.txt': 170,
        'description.txt': 4000, 'release_notes.txt': 4000}
-ANDROID = {'title.txt': 30, 'short_description.txt': 80, 'full_description.txt': 4000, 'changelogs/300.txt': 500}
+ANDROID = {'title.txt': 30, 'short_description.txt': 80, 'full_description.txt': 4000, 'changelogs/301.txt': 500}
 CAPTIONS = ['1-home', '2-player', '3-lyrics', '4-genres', '5-charts', '6-request', 'feature']
 
 locales = {k: v for k, v in json.load(open(os.path.join(ROOT, 'locales.json'))).items() if not k.startswith('_')}

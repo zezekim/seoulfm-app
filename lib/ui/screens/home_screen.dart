@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:seoulfm/config.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/app_language.dart';
@@ -51,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                 SliverToBoxAdapter(child: _FeaturedCarousel(channels: featured)),
                 const SliverToBoxAdapter(child: _YourSongs()),
                 if (rest.isNotEmpty) ...[
-                  const SliverToBoxAdapter(child: SupportCard()),
+                  if (Config.supportEnabled) const SliverToBoxAdapter(child: SupportCard()),
                   SliverToBoxAdapter(child: ShelfTitle(context.l.genresAndEras)),
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -159,8 +160,8 @@ class _Header extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              // Support, always a tap away.
-              IconButton(
+              // Support, always a tap away (when it's on).
+              if (Config.supportEnabled) IconButton(
                 tooltip: context.l.support,
                 onPressed: Nav.openSupport,
                 style: IconButton.styleFrom(backgroundColor: c.text.withValues(alpha: 0.08)),

@@ -18,6 +18,15 @@ the privacy answers (`store/privacy.md`).
 
 ## In-app purchases
 
+**Held back from 3.0** (decided 2026-10-02): the app ships with support switched off
+(`SEOULFM_SUPPORT`, default off: no Support card, page or button), and the store descriptions
+dropped their closing paragraph about tips (restore it from git history). The four products below
+already exist in App Store Connect, priced: small $2.99, medium $10.99, large $20.99, monthly
+$5.99, in the app's 174 territories (no mainland China). To launch them: build with
+`--dart-define=SEOULFM_SUPPORT=true`, restore the description paragraph, add each product's
+review screenshot, and submit them with that version once the Paid Apps Agreement is active.
+
+
 Create these before submitting. The app reads the names and prices from the store, so set them
 there, in each language.
 
