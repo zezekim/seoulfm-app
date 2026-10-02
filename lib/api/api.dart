@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
@@ -12,7 +13,8 @@ class ApiError implements Exception {
   final String message;
   final Json detail;
 
-  int? get retryAfterSeconds => detail['retry_after_seconds'] is num ? (detail['retry_after_seconds'] as num).toInt() : null;
+  int? get retryAfterSeconds =>
+      detail['retry_after_seconds'] is num ? (detail['retry_after_seconds'] as num).toInt() : null;
   String? get reason => detail['reason'] is String ? detail['reason'] as String : null;
 
   @override
@@ -22,7 +24,18 @@ class ApiError implements Exception {
 const defaultStation = 'seoulfm';
 
 /// Endpoints not scoped to a station (`STATIONLESS` in lib/api.ts).
-final _stationless = RegExp(r'^/(stations|streams|keys|version|requests/[^/]+|tracks/[^/]+/(lyrics|rating)|tracks/hot|featured)(/|$)');
+final _stationless = RegExp(
+  r'^/(stations|streams|keys|version|attest|requests/[^/]+|tracks/[^/]+/(lyrics|rating)|tracks/hot|featured)(/|$)',
+);
+
+/// Signs writes with a device attestation (lib/platform/attestation.dart).
+abstract interface class WriteAttestor {
+  /// Proof headers for a write, or none; never throws.
+  Future<Map<String, String>> headersFor(String method, String path, List<int> body);
+
+  /// The API refused a write that carried a proof: its error code, and `detail.reason`.
+  void rejected(String code, [String? reason]);
+}
 
 /// The v3 client (`api.*` in lib/api.ts). The tuned channel is appended as `?station=`
 /// to every station-scoped endpoint, so charts, search and requests follow it.
@@ -30,8 +43,12 @@ class Api {
   Api._();
   static final Api instance = Api._();
 
-  final http.Client _client = http.Client();
+  @visibleForTesting
+  http.Client client = http.Client();
   String activeStation = defaultStation;
+
+  /// Set at launch; requests, votes and nominations carry its proof when it has one.
+  WriteAttestor? attestor;
 
   Map<String, String> get _headers => {
     if (Config.apiKey.isNotEmpty) 'X-API-Key': Config.apiKey,
@@ -64,11 +81,15 @@ class Api {
       // A validation error's own message is generic ("request body or parameters are
       // invalid"); the field's says what to do ("The captcha was not accepted…").
       final errors = detail['errors'];
-      final fieldMessage = errors is List && errors.isNotEmpty && errors.first is Map ? (errors.first as Map)['msg'] : null;
+      final fieldMessage = errors is List && errors.isNotEmpty && errors.first is Map
+          ? (errors.first as Map)['msg']
+          : null;
       throw ApiError(
         res.statusCode,
         (err?['code'] as String?) ?? 'http_error',
-        fieldMessage is String && fieldMessage.isNotEmpty ? fieldMessage : (err?['message'] as String?) ?? 'API error: ${res.statusCode}',
+        fieldMessage is String && fieldMessage.isNotEmpty
+            ? fieldMessage
+            : (err?['message'] as String?) ?? 'API error: ${res.statusCode}',
         detail,
       );
     }
@@ -76,20 +97,39 @@ class Api {
   }
 
   Future<Json> get(String endpoint, [Map<String, Object?>? params]) async =>
-      _parse(await _client.get(url(endpoint, params), headers: _headers).timeout(const Duration(seconds: 20)));
+      _parse(await client.get(url(endpoint, params), headers: _headers).timeout(const Duration(seconds: 20)));
 
-  Future<Json> post(String endpoint, Object body) async => _parse(
-    await _client
-        .post(url(endpoint), headers: {..._headers, 'Content-Type': 'application/json'}, body: jsonEncode(body))
-        .timeout(const Duration(seconds: 20)),
-  );
+  Future<Json> post(String endpoint, Object body, {bool attest = false}) async {
+    final u = url(endpoint);
+    final text = jsonEncode(body);
+    // The proof signs the exact bytes sent: http encodes a String body as UTF-8 too.
+    final proof = attest ? await attestor?.headersFor('POST', u.path, utf8.encode(text)) ?? const {} : const {};
+    // The sheet skipped the captcha because the API waives it for attested clients, but no proof
+    // came: ask for the captcha after all rather than send a write the API will refuse.
+    if (attest && proof.isEmpty && Config.captchaEnabled && body is Map && body['captcha_token'] == null) {
+      attestor?.rejected('captcha_required');
+      throw ApiError(0, 'captcha_required', 'captcha required');
+    }
+    try {
+      return _parse(
+        await client
+            .post(u, headers: {..._headers, 'Content-Type': 'application/json', ...proof}, body: text)
+            .timeout(const Duration(seconds: 20)),
+      );
+    } on ApiError catch (e) {
+      if (proof.isNotEmpty) attestor?.rejected(e.code, e.reason);
+      rethrow;
+    }
+  }
 
   String _e(String s) => Uri.encodeComponent(s);
 
   // ── Stations & streams ──────────────────────────────────────────────────
-  Future<List<StationSummary>> stations() async =>
-      ((await get('/stations'))['items'] as List? ?? []).map((e) => StationSummary.fromJson((e as Map).cast())).toList();
-  Future<LosslessTier> losslessTier(String stream) async => LosslessTier.fromJson(await get('/streams/${_e(stream)}/lossless'));
+  Future<List<StationSummary>> stations() async => ((await get('/stations'))['items'] as List? ?? [])
+      .map((e) => StationSummary.fromJson((e as Map).cast()))
+      .toList();
+  Future<LosslessTier> losslessTier(String stream) async =>
+      LosslessTier.fromJson(await get('/streams/${_e(stream)}/lossless'));
 
   // ── Live ────────────────────────────────────────────────────────────────
   Future<NowPlaying> nowPlaying({String? station, int? at}) async =>
@@ -98,7 +138,8 @@ class Api {
       tracksOf(await get('/recent', {'limit': limit, 'station': station}));
   Future<List<Track>> upcoming({int limit = 12, String? station}) async =>
       tracksOf(await get('/upcoming', {'limit': limit, 'station': station}));
-  Future<ListenerCount> listeners({String? station}) async => ListenerCount.fromJson(await get('/listeners', {'station': station}));
+  Future<ListenerCount> listeners({String? station}) async =>
+      ListenerCount.fromJson(await get('/listeners', {'station': station}));
   Future<Json> heartbeat(Json body) => post('/listeners/heartbeat', body);
 
   // ── Charts ──────────────────────────────────────────────────────────────
@@ -116,42 +157,54 @@ class Api {
   Future<SearchResults> search(String q, {int limit = 20}) async =>
       SearchResults.fromJson(await get('/search', {'q': q, 'type': 'all', 'limit': limit}));
   Future<List<Track>> random({int limit = 24}) async => tracksOf(await get('/tracks/random', {'limit': limit}));
-  Future<List<Track>> newTracks({int limit = 40, int? days}) async => tracksOf(await get('/tracks/new', {'limit': limit, 'days': days}));
+  Future<List<Track>> newTracks({int limit = 40, int? days}) async =>
+      tracksOf(await get('/tracks/new', {'limit': limit, 'days': days}));
   Future<TrackDetail> track(String id) async => TrackDetail.fromJson(await get('/tracks/${_e(id)}'));
   Future<Lyrics> lyrics(String id) async => Lyrics.fromJson(await get('/tracks/${_e(id)}/lyrics'));
 
   // ── Ratings ─────────────────────────────────────────────────────────────
   Future<RatingState> rating(String trackId, String listenerId) async =>
       RatingState.fromJson(await get('/tracks/${_e(trackId)}/rating', {'listener_id': listenerId}));
-  Future<RatingState> rate(String trackId, Json body) async => RatingState.fromJson(await post('/tracks/${_e(trackId)}/rating', body));
+  Future<RatingState> rate(String trackId, Json body) async =>
+      RatingState.fromJson(await post('/tracks/${_e(trackId)}/rating', body));
 
   // ── Artists ─────────────────────────────────────────────────────────────
   Future<ArtistProfile> artist(String key) async => ArtistProfile.fromJson(await get('/artists/${_e(key)}'));
 
   // ── Requests ────────────────────────────────────────────────────────────
   Future<List<WallItem>> wall({int limit = 50}) async =>
-      ((await get('/requests', {'limit': limit}))['items'] as List? ?? []).map((e) => WallItem.fromJson((e as Map).cast())).toList();
+      ((await get('/requests', {'limit': limit}))['items'] as List? ?? [])
+          .map((e) => WallItem.fromJson((e as Map).cast()))
+          .toList();
   Future<List<WallItem>> dedications({int limit = 20}) async =>
-      ((await get('/dedications', {'limit': limit}))['items'] as List? ?? []).map((e) => WallItem.fromJson((e as Map).cast())).toList();
+      ((await get('/dedications', {'limit': limit}))['items'] as List? ?? [])
+          .map((e) => WallItem.fromJson((e as Map).cast()))
+          .toList();
   Future<TrackAvailability> requestEta(String trackId) async =>
       TrackAvailability.fromJson(await get('/requests/eta', {'track_id': trackId}));
-  Future<RequestSubmission> submitRequest(Json body) async => RequestSubmission.fromJson(await post('/requests', body));
+  Future<RequestSubmission> submitRequest(Json body) async =>
+      RequestSubmission.fromJson(await post('/requests', body, attest: true));
   Future<RequestStatus> requestStatus(String id, String token) async =>
       RequestStatus.fromJson(await get('/requests/${_e(id)}', {'token': token}));
 
   // ── Marathon ────────────────────────────────────────────────────────────
-  Future<MarathonState> marathon({String? station}) async => MarathonState.fromJson(await get('/marathon', {'station': station}));
+  Future<MarathonState> marathon({String? station}) async =>
+      MarathonState.fromJson(await get('/marathon', {'station': station}));
   Future<List<MarathonCandidate>> marathonArtists(String q) async =>
       ((await get('/marathon/artists', {'q': q, 'limit': 25}))['items'] as List? ?? [])
           .map((e) => MarathonCandidate.fromJson((e as Map).cast()))
           .toList();
-  Future<WriteResult> marathonNominate(Json body) async => WriteResult.fromJson(await post('/marathon/nominations', body));
+  Future<WriteResult> marathonNominate(Json body) async =>
+      WriteResult.fromJson(await post('/marathon/nominations', body, attest: true));
   Future<WriteResult> marathonVote(String nominationId, Json body) async =>
-      WriteResult.fromJson(await post('/marathon/nominations/${_e(nominationId)}/votes', body));
+      WriteResult.fromJson(await post('/marathon/nominations/${_e(nominationId)}/votes', body, attest: true));
 
   // ── SSE (keyless) ───────────────────────────────────────────────────────
-  Uri stationEvents(String station, {int recentLimit = 30, int upcomingLimit = 12}) =>
-      url('/events', {'station': station == defaultStation ? null : station, 'recent_limit': recentLimit, 'upcoming_limit': upcomingLimit});
+  Uri stationEvents(String station, {int recentLimit = 30, int upcomingLimit = 12}) => url('/events', {
+    'station': station == defaultStation ? null : station,
+    'recent_limit': recentLimit,
+    'upcoming_limit': upcomingLimit,
+  });
   Uri requestEvents(String id, String token) => url('/requests/${_e(id)}/events', {'token': token});
 }
 

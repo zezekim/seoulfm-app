@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
+import 'package:seoulfm/platform/attestation.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/state/session.dart';
@@ -37,6 +38,8 @@ class _RequestSheetState extends State<_RequestSheet> {
   final _message = TextEditingController();
   late final Future<TrackAvailability> _availability = api.requestEta(widget.track.id ?? '');
   String? _token;
+  // No captcha when the API waives it for this attested device (docs/app-attestation.md).
+  bool _captcha = Config.captchaEnabled && !Attestation.instance.captchaWaived;
   bool _captchaFailed = false;
   int _captchaRun = 0; // a new key loads the captcha fresh
   bool _sending = false;
@@ -44,7 +47,7 @@ class _RequestSheetState extends State<_RequestSheet> {
   String? _error;
   String? _idempotencyKey;
 
-  bool get _canSend => !_sending && (!Config.captchaEnabled || _token != null);
+  bool get _canSend => !_sending && (!_captcha || _token != null);
 
   Future<void> _send() async {
     setState(() {
@@ -73,6 +76,10 @@ class _RequestSheetState extends State<_RequestSheet> {
     } on ApiError catch (e) {
       if (!mounted) return;
       setState(() {
+        if (e.code == 'captcha_required' && !_captcha) {
+          _captcha = true; // the device couldn't prove itself after all: the captcha, then send again
+          return;
+        }
         _error = e.message;
         _resetCaptcha(); // the token was spent
       });
@@ -165,15 +172,16 @@ class _RequestSheetState extends State<_RequestSheet> {
                         decoration: InputDecoration(hintText: context.l.dedication),
                       ),
                       const SizedBox(height: 8),
-                      Turnstile(
-                        key: ValueKey(_captchaRun),
-                        action: 'v3_request',
-                        onToken: (t) => setState(() => _token = t),
-                        onError: () => setState(() => _captchaFailed = true),
-                      ),
-                      if (Config.captchaEnabled && _captchaFailed)
+                      if (_captcha)
+                        Turnstile(
+                          key: ValueKey(_captchaRun),
+                          action: 'v3_request',
+                          onToken: (t) => setState(() => _token = t),
+                          onError: () => setState(() => _captchaFailed = true),
+                        ),
+                      if (_captcha && _captchaFailed)
                         TurnstileFailed(onRetry: () => setState(_resetCaptcha))
-                      else if (Config.captchaEnabled && _token == null)
+                      else if (_captcha && _token == null)
                         Padding(
                           padding: const EdgeInsets.only(top: 6),
                           child: Text(
@@ -196,7 +204,11 @@ class _RequestSheetState extends State<_RequestSheet> {
                         ),
                         onPressed: _canSend ? _send : null,
                         child: _sending
-                            ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: readableOn(accent)))
+                            ? SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(strokeWidth: 2, color: readableOn(accent)),
+                              )
                             : Text(context.l.sendRequest),
                       ),
                     ],

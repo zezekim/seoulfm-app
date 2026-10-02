@@ -20,8 +20,15 @@ class Config {
   /// the API requires it for writes in production).
   /// The site's Turnstile key (public: the site serves it in its pages). The API requires a
   /// captcha for requests and votes, so builds default to it rather than to none.
-  static const turnstileSiteKey = String.fromEnvironment('TURNSTILE_SITE_KEY', defaultValue: '0x4AAAAAAEz6FaAbjWEfG2eN');
+  static const turnstileSiteKey = String.fromEnvironment(
+    'TURNSTILE_SITE_KEY',
+    defaultValue: '0x4AAAAAAEz6FaAbjWEfG2eN',
+  );
   static bool get captchaEnabled => turnstileSiteKey.isNotEmpty;
+
+  /// The Google Cloud project number linked to the app in Play Console (App integrity), for Play
+  /// Integrity standard requests. 0 (unset) means Android sends no attestation.
+  static const playIntegrityCloudProjectNumber = int.fromEnvironment('PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER');
 
   /// Sentry DSN for crash and error reports; empty turns reporting off (nothing is sent).
   static const sentryDsn = String.fromEnvironment('SENTRY_DSN');
@@ -50,8 +57,6 @@ abstract final class AppBuild {
   }
 
   /// "3.0.0 (300) · 4cbd3c3", as More shows it.
-  static String get label => [
-    number.isEmpty ? version : '$version ($number)',
-    if (Config.gitCommit.isNotEmpty) Config.gitCommit,
-  ].join(' · ');
+  static String get label =>
+      [number.isEmpty ? version : '$version ($number)', if (Config.gitCommit.isNotEmpty) Config.gitCommit].join(' · ');
 }

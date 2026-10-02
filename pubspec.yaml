@@ -53,6 +53,8 @@ dependencies:
   sentry_flutter: ^9.0.0
   connectivity_plus: ^7.3.1
   package_info_plus: ^10.2.1
+  app_attest: ^0.2.1
+  crypto: ^3.0.7
 
 dev_dependencies:
   flutter_test:

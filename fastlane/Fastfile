@@ -1,0 +1,323 @@
+# Release lanes for SeoulFM. One-time setup, the environment variables and the checklist are in
+# docs/release.md. Every secret comes from the environment; nothing in this folder is secret.
+#
+#   bundle exec fastlane ios beta            build, upload to TestFlight
+#   bundle exec fastlane ios metadata        store/ios listing (+ screenshots) to App Store Connect
+#   bundle exec fastlane ios release         submit pubspec's version for review (manual release)
+#   bundle exec fastlane android internal    build, upload to Play's internal track
+#   bundle exec fastlane android metadata    store/android listing (+ images) to Play
+#   bundle exec fastlane android promote     internal -> production, staged (rollout:0.1)
+#   bundle exec fastlane android rollout     raise the production rollout (rollout:0.5, or 1)
+
+require "fileutils"
+require "json"
+require "shellwords"
+require "tmpdir"
+
+opt_out_usage
+skip_docs # no generated fastlane/README.md
+default_platform(:ios)
+
+# Lanes run with fastlane/ as the working directory: paths are absolute, and relative paths in
+# environment variables are taken from the repo root.
+ROOT = File.expand_path("..", __dir__)
+STORE = File.join(ROOT, "store")
+APP_ID = "com.seoulfm.seoulfm"
+
+def env!(name)
+  value = ENV[name].to_s
+  UI.user_error!("Set #{name} (see docs/release.md)") if value.empty?
+  value
+end
+
+# pubspec.yaml's `version: 3.0.0+300`: the store version, and the build number (Android's
+# versionCode, iOS's CFBundleVersion).
+def pubspec_version
+  version = File.read(File.join(ROOT, "pubspec.yaml"))[/^version:\s*(\S+)/, 1]
+  name, number = version.to_s.split("+")
+  if name.to_s.empty? || number.to_s.empty?
+    UI.user_error!("pubspec.yaml's version needs a build number, like 3.0.0+300")
+  end
+  [name, number]
+end
+
+# App language tag -> the store's locale (store/locales.json); a store without the language is left out.
+def store_locales(store)
+  JSON.parse(File.read(File.join(STORE, "locales.json")))
+      .reject { |tag, _| tag.start_with?("_") }
+      .map { |tag, codes| [tag, codes[store]] }
+      .reject { |_, code| code.nil? }
+      .to_h
+end
+
+# The build's defines: the gitignored dart-defines.json (CI writes it from a secret) and the commit.
+def dart_defines
+  file = File.expand_path(ENV["DART_DEFINES_FILE"].to_s.empty? ? "dart-defines.json" : ENV["DART_DEFINES_FILE"], ROOT)
+  UI.user_error!("#{file} is missing; it holds the API key (copy dart-defines.example.json)") unless File.exist?(file)
+  commit = ENV["GIT_COMMIT"].to_s.empty? ? Dir.chdir(ROOT) { `git rev-parse --short HEAD`.strip } : ENV["GIT_COMMIT"]
+  ["--dart-define-from-file=#{file}", "--dart-define=GIT_COMMIT=#{commit}"]
+end
+
+def flutter(*args)
+  Dir.chdir(ROOT) { sh("flutter", *args) }
+end
+
+# compose_store.swift writes flat folders of "<tag>-<n>-<screen>.png". A tag's own files only:
+# "zh-Hant-1-home.png" is not one of "zh"'s.
+def shots_for(dir, tag)
+  Dir.children(dir).select { |f| f.match?(/\A#{Regexp.escape(tag)}-\d.*\.png\z/i) }.sort.map { |f| File.join(dir, f) }
+end
+
+def folders_from(var)
+  dirs = ENV[var].to_s.split(",").map(&:strip).reject(&:empty?).map { |d| File.expand_path(d, ROOT) }
+  dirs.each { |d| UI.user_error!("#{var}: no folder #{d}") unless File.directory?(d) }
+  dirs
+end
+
+# ── App Store Connect ──────────────────────────────────────────────────────────────────────
+
+# The API key's .p8 as a file: ASC_KEY_PATH, or ASC_KEY_P8_BASE64 written to a private temp file
+# (xcodebuild's -authenticationKeyPath needs a file).
+def asc_key_file
+  @asc_key_file ||= if !ENV["ASC_KEY_PATH"].to_s.empty?
+    File.expand_path(ENV["ASC_KEY_PATH"], ROOT)
+  else
+    path = File.join(Dir.mktmpdir("seoulfm-asc"), "AuthKey.p8")
+    File.write(path, env!("ASC_KEY_P8_BASE64").unpack1("m"))
+    File.chmod(0o600, path)
+    at_exit { FileUtils.rm_rf(File.dirname(path)) }
+    path
+  end
+end
+
+def asc_api_key
+  @asc_api_key ||= app_store_connect_api_key(
+    key_id: env!("ASC_KEY_ID"),
+    issuer_id: env!("ASC_ISSUER_ID"),
+    key_filepath: asc_key_file,
+    duration: 1200,
+    in_house: false
+  )
+end
+
+# deliver wants one folder per App Store locale and tells iPhone from iPad by the image size, so
+# IOS_SCREENSHOTS_DIRS (comma-separated: the iPhone folder, the iPad folder) is staged into that.
+def staged_ios_screenshots
+  dirs = folders_from("IOS_SCREENSHOTS_DIRS")
+  return nil if dirs.empty?
+
+  out = Dir.mktmpdir("seoulfm-ios-shots")
+  store_locales("ios").each do |tag, locale|
+    shots = dirs.each_with_index.flat_map { |dir, i| shots_for(dir, tag).map { |png| [i, png] } }
+    if shots.empty?
+      UI.important("No screenshots for #{tag} (#{locale})")
+      next
+    end
+    FileUtils.mkdir_p(File.join(out, locale))
+    # The folder index keeps the iPhone and iPad sets apart, and each set in its order.
+    shots.each { |i, png| FileUtils.cp(png, File.join(out, locale, "#{i}-#{File.basename(png)}")) }
+  end
+  out
+end
+
+platform :ios do
+  desc "Build the App Store ipa and upload it to TestFlight"
+  lane :beta do
+    version, build = pubspec_version
+    team = env!("APPLE_TEAM_ID")
+    api_key = asc_api_key
+    # `flutter build ipa` can't hand xcodebuild an API key, which automatic signing needs on a
+    # machine with no Apple ID signed in to Xcode (CI). So Flutter writes its config (defines,
+    # version, build number) and gym archives; the Dart code compiles in Xcode's build phase.
+    flutter("build", "ios", "--config-only", "--release", *dart_defines)
+    auth = [
+      "-allowProvisioningUpdates",
+      "-authenticationKeyPath", asc_key_file,
+      "-authenticationKeyID", env!("ASC_KEY_ID"),
+      "-authenticationKeyIssuerID", env!("ASC_ISSUER_ID")
+    ].shelljoin
+    ipa = build_app(
+      workspace: File.join(ROOT, "ios/Runner.xcworkspace"),
+      scheme: "Runner",
+      configuration: "Release",
+      clean: true,
+      export_method: "app-store",
+      export_team_id: team,
+      export_options: { signingStyle: "automatic", teamID: team, manageAppVersionAndBuildNumber: false },
+      skip_profile_detection: true,
+      # The project has no team set (free-team builds pick their own); the release team signs
+      # the app and the widget extension.
+      xcargs: "#{auth} DEVELOPMENT_TEAM=#{team}",
+      export_xcargs: auth,
+      output_directory: File.join(ROOT, "build/ios/ipa"),
+      output_name: "SeoulFM-#{version}-#{build}.ipa"
+    )
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: ipa,
+      # Processing takes 10 to 30 minutes; TestFlight emails when the build is ready.
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "Upload the listing in store/ios, and screenshots from IOS_SCREENSHOTS_DIRS when set"
+  lane :metadata do
+    version, = pubspec_version
+    shots = staged_ios_screenshots
+    deliver(
+      api_key: asc_api_key,
+      app_identifier: APP_ID,
+      app_version: version,
+      metadata_path: File.join(STORE, "ios"),
+      screenshots_path: shots,
+      skip_screenshots: shots.nil?,
+      overwrite_screenshots: !shots.nil?,
+      skip_binary_upload: true,
+      submit_for_review: false,
+      run_precheck_before_submit: false,
+      force: true # no HTML preview to confirm on CI
+    )
+  end
+
+  desc "Submit pubspec's version (its TestFlight build) for review; release it by hand once approved"
+  lane :release do
+    version, build = pubspec_version
+    deliver(
+      api_key: asc_api_key,
+      app_identifier: APP_ID,
+      app_version: version,
+      build_number: build,
+      metadata_path: File.join(STORE, "ios"),
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      submit_for_review: true,
+      automatic_release: false,
+      phased_release: ENV["IOS_PHASED_RELEASE"] == "true",
+      # store/review.md: no IDFA, HTTPS only (ITSAppUsesNonExemptEncryption = NO), licensed music.
+      submission_information: {
+        add_id_info_uses_idfa: false,
+        export_compliance_uses_encryption: false,
+        content_rights_contains_third_party_content: true
+      },
+      precheck_include_in_app_purchases: false,
+      force: true
+    )
+  end
+end
+
+# ── Google Play ────────────────────────────────────────────────────────────────────────────
+
+# The service account: PLAY_SERVICE_ACCOUNT_JSON (the key's JSON) or PLAY_SERVICE_ACCOUNT_JSON_PATH.
+def play_auth
+  path = ENV["PLAY_SERVICE_ACCOUNT_JSON_PATH"].to_s
+  path.empty? ? { json_key_data: env!("PLAY_SERVICE_ACCOUNT_JSON") } : { json_key: File.expand_path(path, ROOT) }
+end
+
+# Uploading nothing but what the lane says.
+NO_UPLOADS = {
+  skip_upload_apk: true,
+  skip_upload_aab: true,
+  skip_upload_metadata: true,
+  skip_upload_changelogs: true,
+  skip_upload_images: true,
+  skip_upload_screenshots: true
+}.freeze
+
+# supply reads <locale>/images/featureGraphic.png and <locale>/images/phoneScreenshots/*.png next
+# to the text, so store/android is copied to a temp folder and the images from
+# ANDROID_SCREENSHOTS_DIR ("<tag>-<n>-<screen>.png" and "feature-<tag>.png") are added there.
+def staged_android_metadata
+  out = Dir.mktmpdir("seoulfm-play")
+  FileUtils.cp_r(File.join(STORE, "android", "."), out)
+  dir = folders_from("ANDROID_SCREENSHOTS_DIR").first
+  return [out, false] if dir.nil?
+
+  store_locales("android").each do |tag, locale|
+    images = File.join(out, locale, "images")
+    shots = shots_for(dir, tag)
+    feature = File.join(dir, "feature-#{tag}.png")
+    UI.important("No phone screenshots for #{tag} (#{locale})") if shots.empty?
+    UI.important("No feature graphic for #{tag}: #{feature}") unless File.exist?(feature)
+    unless shots.empty?
+      FileUtils.mkdir_p(File.join(images, "phoneScreenshots"))
+      shots.each { |png| FileUtils.cp(png, File.join(images, "phoneScreenshots", File.basename(png))) }
+    end
+    if File.exist?(feature)
+      FileUtils.mkdir_p(images)
+      FileUtils.cp(feature, File.join(images, "featureGraphic.png"))
+    end
+  end
+  [out, true]
+end
+
+platform :android do
+  desc "Build the app bundle and upload it to the internal track, with store/android's changelog"
+  lane :internal do
+    _, build = pubspec_version
+    unless File.exist?(File.join(ROOT, "android/key.properties"))
+      UI.user_error!("android/key.properties is missing: the bundle must be signed with the upload key")
+    end
+    changelog = File.join(STORE, "android/en-US/changelogs/#{build}.txt")
+    UI.important("No #{changelog}: the release goes out without release notes") unless File.exist?(changelog)
+    flutter("build", "appbundle", "--release", *dart_defines)
+    mapping = File.join(ROOT, "build/app/outputs/mapping/release/mapping.txt")
+    supply(
+      **play_auth,
+      package_name: APP_ID,
+      track: "internal",
+      # "draft" while the app has never been published on this listing.
+      release_status: ENV["PLAY_RELEASE_STATUS"].to_s.empty? ? "completed" : ENV["PLAY_RELEASE_STATUS"],
+      aab: File.join(ROOT, "build/app/outputs/bundle/release/app-release.aab"),
+      **(File.exist?(mapping) ? { mapping: mapping } : {}), # R8's, for readable Android crash reports
+      metadata_path: File.join(STORE, "android"),
+      **NO_UPLOADS,
+      skip_upload_aab: false,
+      skip_upload_changelogs: false
+    )
+  end
+
+  desc "Upload the listing in store/android, and images from ANDROID_SCREENSHOTS_DIR when set"
+  lane :metadata do
+    _, build = pubspec_version
+    path, images = staged_android_metadata
+    supply(
+      **play_auth,
+      package_name: APP_ID,
+      # supply attaches listing uploads to a release; pubspec's build on the internal track.
+      track: ENV["PLAY_TRACK"].to_s.empty? ? "internal" : ENV["PLAY_TRACK"],
+      version_code: build,
+      metadata_path: path,
+      **NO_UPLOADS,
+      skip_upload_metadata: false,
+      skip_upload_images: !images,
+      skip_upload_screenshots: !images,
+      sync_image_upload: true # skip images Play already has
+    )
+  end
+
+  desc "Promote pubspec's build from internal to production as a staged rollout (rollout:0.1)"
+  lane :promote do |options|
+    _, build = pubspec_version
+    supply(
+      **play_auth,
+      package_name: APP_ID,
+      track: "internal",
+      track_promote_to: "production",
+      version_code: build,
+      rollout: (options[:rollout] || ENV["PLAY_ROLLOUT"] || "0.1").to_s,
+      **NO_UPLOADS
+    )
+  end
+
+  desc "Raise production's staged rollout (rollout:0.5), or complete it (rollout:1)"
+  lane :rollout do |options|
+    rollout = (options[:rollout] || env!("PLAY_ROLLOUT")).to_s
+    supply(
+      **play_auth,
+      package_name: APP_ID,
+      track: "production",
+      rollout: rollout,
+      **NO_UPLOADS
+    )
+  end
+end

@@ -1,4 +1,5 @@
 {
   "SEOULFM_API_KEY": "sfm_your_publishable_app_key",
-  "SENTRY_DSN": ""
+  "SENTRY_DSN": "",
+  "PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER": ""
 }

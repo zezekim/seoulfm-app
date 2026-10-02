@@ -4,6 +4,7 @@ import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
+import 'package:seoulfm/platform/attestation.dart';
 import 'package:seoulfm/platform/carplay_bridge.dart';
 import 'package:seoulfm/platform/home_widgets.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -34,7 +35,10 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final runtime = RuntimeConfigController();
   late final NowPlayingController nowPlaying = NowPlayingController(delayMs: _delayMs);
   final stations = StationsNowPlaying();
-  late final RatingsController ratings = RatingsController(listeningSince: radio.listeningSince, station: () => channels.active.key);
+  late final RatingsController ratings = RatingsController(
+    listeningSince: radio.listeningSince,
+    station: () => channels.active.key,
+  );
   final requests = RequestTracker();
   final covers = CoverColors();
   final support = SupportStore();
@@ -102,6 +106,11 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.stationsNowPlaying = () => stations.byStation;
     radio.songPositionMs = nowPlaying.positionMs;
 
+    // Writes carry a device proof once the dashboard turns attestation on; each config poll
+    // keeps the API's policy and the device's key fresh.
+    final attestation = Attestation.instance..enabled = () => runtime.config.attestation;
+    api.attestor = attestation;
+    runtime.addListener(attestation.warmUp);
     runtime.start();
     channels.addListener(_onChannels);
     channels.start();
@@ -156,7 +165,8 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   /// The home-screen widgets follow the station, the heard song and the play state.
-  void _syncWidgets() => HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
+  void _syncWidgets() =>
+      HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
 
   void _syncCar() => carPlay.update(
     channels: channels.channels,

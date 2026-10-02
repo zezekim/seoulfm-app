@@ -20,6 +20,7 @@ class RuntimeConfig {
     this.streamAvailable = true,
     this.delayMs = defaultDelayMs,
     this.stationDelayMs = const {},
+    this.attestation = false,
   });
 
   static const defaultDelayMs = 15000;
@@ -34,6 +35,10 @@ class RuntimeConfig {
   final int delayMs;
   final Map<String, int> stationDelayMs;
 
+  /// Send App Attest / Play Integrity proofs with writes (`attestation.enabled`,
+  /// docs/app-attestation.md). Off unless the dashboard says so: the API doesn't verify them yet.
+  final bool attestation;
+
   /// How far a listener runs behind the station when the player can't say (`lyricsDelayMs`).
   int delayFor(String station) => stationDelayMs[station] ?? delayMs;
 
@@ -46,6 +51,7 @@ class RuntimeConfig {
     final a = body['announcement'] is Map ? body['announcement'] as Map : const {};
     final s = body['stream'] is Map ? body['stream'] as Map : const {};
     final ly = body['lyrics'] is Map ? body['lyrics'] as Map : const {};
+    final at = body['attestation'] is Map ? body['attestation'] as Map : const {};
     final perStation = <String, int>{};
     if (ly['station_delay_ms'] is Map) {
       (ly['station_delay_ms'] as Map).forEach((k, v) {
@@ -65,6 +71,7 @@ class RuntimeConfig {
       streamNotice: _text(s['notice']),
       delayMs: _delay(ly['delay_ms']) ?? defaultDelayMs,
       stationDelayMs: perStation,
+      attestation: at['enabled'] == true,
     );
   }
 }

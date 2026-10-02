@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/config.dart';
+import 'package:seoulfm/platform/attestation.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/data/app_language.dart';
@@ -241,7 +242,12 @@ class _BlockCard extends StatelessWidget {
                     if (block.source == 'votes')
                       Text(
                         context.l.marathonVotedIn.toUpperCase(),
-                        style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: tracking(1.5), color: accent),
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: tracking(1.5),
+                          color: accent,
+                        ),
                       ),
                     Text(
                       block.artist.name,
@@ -283,6 +289,8 @@ class _ConfirmWrite extends StatefulWidget {
 
 class _ConfirmWriteState extends State<_ConfirmWrite> {
   String? _token;
+  // No captcha when the API waives it for this attested device (docs/app-attestation.md).
+  bool _captcha = Config.captchaEnabled && !Attestation.instance.captchaWaived;
   bool _captchaFailed = false;
   int _captchaRun = 0; // a new key loads the captcha fresh
   bool _sending = false;
@@ -293,7 +301,16 @@ class _ConfirmWriteState extends State<_ConfirmWrite> {
       final r = await widget.send(_token);
       if (mounted) Navigator.pop(context, r);
     } on ApiError catch (e) {
-      if (mounted) Navigator.pop(context, WriteResult(false, e.message));
+      if (!mounted) return;
+      if (e.code == 'captcha_required' && !_captcha) {
+        // The device couldn't prove itself after all: the captcha, then send again.
+        setState(() {
+          _captcha = true;
+          _sending = false;
+        });
+        return;
+      }
+      Navigator.pop(context, WriteResult(false, e.message));
     } catch (_) {
       if (mounted) Navigator.pop(context, WriteResult(false, null));
     }
@@ -319,13 +336,14 @@ class _ConfirmWriteState extends State<_ConfirmWrite> {
               ],
             ),
             const SizedBox(height: 16),
-            Turnstile(
-              key: ValueKey(_captchaRun),
-              action: widget.action,
-              onToken: (t) => setState(() => _token = t),
-              onError: () => setState(() => _captchaFailed = true),
-            ),
-            if (Config.captchaEnabled && _captchaFailed)
+            if (_captcha)
+              Turnstile(
+                key: ValueKey(_captchaRun),
+                action: widget.action,
+                onToken: (t) => setState(() => _token = t),
+                onError: () => setState(() => _captchaFailed = true),
+              ),
+            if (_captcha && _captchaFailed)
               TurnstileFailed(
                 onRetry: () => setState(() {
                   _captchaFailed = false;
@@ -339,7 +357,7 @@ class _ConfirmWriteState extends State<_ConfirmWrite> {
                 foregroundColor: readableOn(accent),
                 minimumSize: const Size.fromHeight(48),
               ),
-              onPressed: _sending || (Config.captchaEnabled && _token == null) ? null : _go,
+              onPressed: _sending || (_captcha && _token == null) ? null : _go,
               child: _sending
                   ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
                   : Text(widget.cta),
@@ -400,10 +418,7 @@ class _ArtistPickerState extends State<_ArtistPicker> {
             future: _f,
             builder: (context, s) {
               if (s.hasError) {
-                return ErrorRetry(
-                  error: s.error,
-                  onRetry: () => setState(() => _f = api.marathonArtists(_q)),
-                );
+                return ErrorRetry(error: s.error, onRetry: () => setState(() => _f = api.marathonArtists(_q)));
               }
               if (!s.hasData) return const Center(child: CircularProgressIndicator(strokeWidth: 2));
               return ListView(
