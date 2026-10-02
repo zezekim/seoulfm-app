@@ -1,1 +1,1 @@
-kpop,korea,muzik,lagu,idol,drama,ost,balada,hiphop,tarian,indie,carta,flac,lossless,fm,strim,percuma
+kpop,korea,muzik,lagu,idol,drama,ost,balada,hiphop,indie,carta,flac,lossless,lirik,langsung,percuma

@@ -1,1 +1,1 @@
-kpop,koreanisch,musik,songs,lieder,lyrics,idol,kdrama,ost,ballade,hiphop,dance,indie,charts,flac,fm
+kpop,koreanisch,musik,songs,lyrics,idol,kdrama,ost,ballade,hiphop,indie,charts,flac,songtexte,live
