@@ -6,6 +6,7 @@ import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
 import 'package:seoulfm/platform/carplay_bridge.dart';
 import 'package:seoulfm/platform/home_widgets.dart';
+import 'package:seoulfm/platform/intents_bridge.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
@@ -34,12 +35,23 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final runtime = RuntimeConfigController();
   late final NowPlayingController nowPlaying = NowPlayingController(delayMs: _delayMs);
   final stations = StationsNowPlaying();
-  late final RatingsController ratings = RatingsController(listeningSince: radio.listeningSince, station: () => channels.active.key);
+  late final RatingsController ratings = RatingsController(
+    listeningSince: radio.listeningSince,
+    station: () => channels.active.key,
+  );
   final requests = RequestTracker();
   final covers = CoverColors();
   final support = SupportStore();
   final moderation = Moderation();
   late final CarPlayBridge carPlay = CarPlayBridge(onTune: (key) => tuneIn(key, play: true, fromCar: true));
+
+  /// Siri, Shortcuts and Control Center. Like the car, they can't answer the lossless notice
+  /// for a station already on; a newly tuned one still offers it in the app.
+  late final IntentsBridge intents = IntentsBridge(
+    onPlay: (key) => tuneIn(key, play: true, fromCar: true),
+    onResume: radio.play,
+    onPause: radio.pause,
+  );
 
   final ValueNotifier<LosslessPrompt?> losslessPrompt = ValueNotifier(null);
   ThemeMode themeMode = ThemeMode.dark;
@@ -110,9 +122,11 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.wantPlaying.addListener(_syncCar);
     radio.wantPlaying.addListener(_syncWidgets);
     radio.wantPlaying.addListener(_syncStationsPolling);
+    requests.current.addListener(_syncRequest);
     ratings.start();
     support.listen();
     carPlay.start();
+    intents.start();
     WidgetsBinding.instance.addObserver(this);
     _onChannels();
     _syncStationsPolling();
@@ -156,7 +170,27 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   }
 
   /// The home-screen widgets follow the station, the heard song and the play state.
-  void _syncWidgets() => HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
+  void _syncWidgets() =>
+      HomeWidgets.update(channel: channels.active, track: nowPlaying.track, playing: radio.wantPlaying.value);
+
+  /// The listener's request on its way, for the Live Activity's countdown. The ETA comes in
+  /// minutes from each update; pinned to a clock time, and moved only when the minutes change,
+  /// so the countdown doesn't jump back on every update.
+  String? _etaFor;
+  DateTime? _etaAt;
+
+  void _syncRequest() {
+    final s = requests.current.value;
+    final minutes = s?.eta.etaMinutes;
+    if (s == null || minutes == null) {
+      _etaFor = null;
+      _etaAt = null;
+    } else if ('${s.requestId}/$minutes' != _etaFor) {
+      _etaFor = '${s.requestId}/$minutes';
+      _etaAt = DateTime.now().add(Duration(minutes: minutes));
+    }
+    HomeWidgets.request(title: s?.track.displayTitle, at: _etaAt, playing: s?.status == 'playing');
+  }
 
   void _syncCar() => carPlay.update(
     channels: channels.channels,
