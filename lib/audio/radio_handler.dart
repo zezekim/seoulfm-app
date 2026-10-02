@@ -6,6 +6,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/data/app_language.dart';
 import 'package:seoulfm/api/api.dart';
@@ -372,7 +373,7 @@ class RadioHandler extends BaseAudioHandler {
     _incomingReady = null;
     _switching = false;
     if (!ok) {
-      debugPrint('radio: switch not ready, cutting over');
+      _trail('switch not ready, cutting over');
       unawaited(_retire(next));
       await _fade(0, _fadeOut);
       if (gen != _switchGen || !wantPlaying.value) return;
@@ -458,11 +459,18 @@ class RadioHandler extends BaseAudioHandler {
       ..removeWhere((t) => now.difference(t) > _stallWindow);
     if (_stalls.length < 2 || !_stepDown()) return;
     _stalls.clear();
-    debugPrint('radio: stalling, down to ${ladder[_rung]} kbps');
+    _trail('stalling, down to ${ladder[_rung]} kbps');
     unawaited(() async {
       await _load();
       if (_loaded && wantPlaying.value) await _player.play();
     }());
+  }
+
+  /// What the radio went through, in the log and as a breadcrumb on any crash report that follows
+  /// (Sentry, when it is on): stalls, recoveries and cut-overs are what a report needs to explain.
+  void _trail(String what) {
+    debugPrint('radio: $what');
+    Sentry.addBreadcrumb(Breadcrumb(category: 'radio', message: what, data: {'station': _channel?.key}));
   }
 
   /// One rung lower, if there is one (AAC on Auto only).
@@ -507,7 +515,7 @@ class RadioHandler extends BaseAudioHandler {
   void _recover(String why) {
     // A switch under way replaces the failing player, or cuts over if it can't.
     if (!wantPlaying.value || _channel == null || _switching) return;
-    debugPrint('radio: recover ($why)');
+    _trail('recover ($why)');
     if (losslessActive.value) {
       losslessFailed.value = true;
       losslessActive.value = false;

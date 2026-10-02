@@ -128,6 +128,8 @@ class SeoulFmApp extends StatelessWidget {
         Provider.value(value: app.radio),
       ],
       child: MaterialApp(
+        // Page changes as breadcrumbs on crash reports (nothing is sent without a DSN).
+        navigatorObservers: [SentryNavigatorObserver()],
         title: 'SeoulFM',
         debugShowCheckedModeBanner: false,
         themeMode: app.themeMode,

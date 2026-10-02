@@ -81,6 +81,15 @@ jobs:
         env:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: GIT_COMMIT=${GITHUB_SHA::7} bundle exec fastlane android internal
+      # Symbols for crash reports from this obfuscated build (skipped until Sentry is set up).
+      - name: Upload symbols to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+        run: |
+          if [ -z "$SENTRY_AUTH_TOKEN" ]; then echo "No SENTRY_AUTH_TOKEN: skipped"; exit 0; fi
+          dart run sentry_dart_plugin --sentry-define=dist=${GITHUB_SHA::7}
       - uses: actions/upload-artifact@v4
         with:
           name: android-bundle
@@ -123,6 +132,15 @@ jobs:
           ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
           ASC_KEY_P8_BASE64: ${{ secrets.ASC_KEY_P8_BASE64 }}
         run: GIT_COMMIT=${GITHUB_SHA::7} bundle exec fastlane ios beta
+      # Symbols for crash reports from this obfuscated build (skipped until Sentry is set up).
+      - name: Upload symbols to Sentry
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+        run: |
+          if [ -z "$SENTRY_AUTH_TOKEN" ]; then echo "No SENTRY_AUTH_TOKEN: skipped"; exit 0; fi
+          dart run sentry_dart_plugin --sentry-define=dist=${GITHUB_SHA::7}
       - uses: actions/upload-artifact@v4
         with:
           name: ios-ipa

@@ -73,6 +73,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.8
+  sentry_dart_plugin: ^3.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -148,3 +149,13 @@ flutter_native_splash:
     image: assets/icon/adaptive-foreground.png
     icon_background_color: "#0A0A0B"
   fullscreen: false
+
+# Crash report symbols (`dart run sentry_dart_plugin`, run by .github/workflows/release.yml after
+# an obfuscated release build). SENTRY_AUTH_TOKEN, SENTRY_ORG and SENTRY_PROJECT come from the
+# environment; the release name matches the app's (`seoulfm@<version>+<build>`).
+sentry:
+  upload_debug_symbols: true
+  upload_source_maps: false
+  upload_sources: false
+  symbols_path: build/symbols
+  ignore_missing: true

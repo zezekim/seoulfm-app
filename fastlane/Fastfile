@@ -62,6 +62,12 @@ def flutter(*args)
   Dir.chdir(ROOT) { sh("flutter", *args) }
 end
 
+# Release builds are obfuscated; the symbols to read crash reports by go to build/symbols, and the
+# release workflow uploads them to Sentry (`dart run sentry_dart_plugin`).
+def obfuscation
+  ["--obfuscate", "--split-debug-info=build/symbols"]
+end
+
 # compose_store.swift writes flat folders of "<tag>-<n>-<screen>.png". A tag's own files only:
 # "zh-Hant-1-home.png" is not one of "zh"'s.
 def shots_for(dir, tag)
@@ -129,7 +135,7 @@ platform :ios do
     # `flutter build ipa` can't hand xcodebuild an API key, which automatic signing needs on a
     # machine with no Apple ID signed in to Xcode (CI). So Flutter writes its config (defines,
     # version, build number) and gym archives; the Dart code compiles in Xcode's build phase.
-    flutter("build", "ios", "--config-only", "--release", *dart_defines)
+    flutter("build", "ios", "--config-only", "--release", *dart_defines, *obfuscation)
     auth = [
       "-allowProvisioningUpdates",
       "-authenticationKeyPath", asc_key_file,
@@ -259,7 +265,7 @@ platform :android do
     end
     changelog = File.join(STORE, "android/en-US/changelogs/#{build}.txt")
     UI.important("No #{changelog}: the release goes out without release notes") unless File.exist?(changelog)
-    flutter("build", "appbundle", "--release", *dart_defines)
+    flutter("build", "appbundle", "--release", *dart_defines, *obfuscation)
     mapping = File.join(ROOT, "build/app/outputs/mapping/release/mapping.txt")
     supply(
       **play_auth,

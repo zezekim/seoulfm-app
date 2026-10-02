@@ -100,6 +100,21 @@ secret, which holds the whole file:
 }
 ```
 
+### Crash reports (Sentry)
+
+Release builds are obfuscated (`--obfuscate --split-debug-info=build/symbols`), so a crash report
+can only be read with that build's symbols. Create a Sentry project (platform Flutter), put its DSN
+in `DART_DEFINES_JSON` as `SENTRY_DSN`, and give the `release` environment:
+
+- secret `SENTRY_AUTH_TOKEN`: an organization auth token with `project:releases` and `org:read`;
+- variables `SENTRY_ORG` and `SENTRY_PROJECT`: the slugs.
+
+Each release job then runs `dart run sentry_dart_plugin` after its build (the `sentry:` block in
+`pubspec.yaml`), uploading the Dart symbols and the native debug files under the release name the
+app reports, `seoulfm@<version>+<build>`, with the commit as `dist`. Without the token the step
+says so and skips. Reports carry the playback trail (stalls, recoveries, station cut-overs) and
+page changes as breadcrumbs; nothing personal is sent (`sendDefaultPii` is off).
+
 ### GitHub secrets
 
 Repository → Settings → Environments → **release** (create it; add required reviewers if a
