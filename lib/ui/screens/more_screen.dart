@@ -4,18 +4,21 @@ import 'package:provider/provider.dart';
 import 'package:seoulfm/config.dart';
 import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/moderation.dart';
+import 'package:seoulfm/state/saved_songs.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/ui/screens/wall_screen.dart';
+import 'package:seoulfm/ui/screens/your_songs_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/language_picker.dart';
+import 'package:seoulfm/ui/widgets/save_button.dart';
 import 'package:seoulfm/ui/widgets/support_card.dart';
 import 'package:seoulfm/ui/widgets/sleep_timer.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/site_pages.dart';
 import 'package:seoulfm/ui/widgets/quality_sheet.dart';
 
-/// Dedications, settings, the car, and about.
+/// Your songs, dedications, settings, the car, and about.
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
@@ -25,6 +28,7 @@ class MoreScreen extends StatelessWidget {
     final app = context.watch<AppState>();
     final c = context.sfm;
     final l = context.l;
+    final saved = context.select<SavedSongs, int>((s) => s.length);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -32,6 +36,20 @@ class MoreScreen extends StatelessWidget {
           SliverList.list(
             children: [
               const SupportCard(),
+              // The listener's library: songs saved from the player, a song's page or its menu.
+              ListTile(
+                leading: const HeartIcon(fill: 1, size: 24),
+                title: Text(l.yourSongs),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (saved > 0) Text('$saved', style: TextStyle(color: c.muted, fontSize: 13)),
+                    const SizedBox(width: 4),
+                    Icon(AppIcons.next, color: c.muted),
+                  ],
+                ),
+                onTap: () => Nav.push(const YourSongsScreen()),
+              ),
               ListTile(
                 leading: const Icon(AppIcons.dedications),
                 title: Text(l.tabWall),

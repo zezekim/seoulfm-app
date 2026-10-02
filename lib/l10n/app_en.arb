@@ -388,5 +388,16 @@
     }
   },
   "stationsFolder": "Stations",
-  "spatialAudioBody": "SeoulFM is mixed for headphones with BS2B (Bauer stereophonic-to-binaural) crossfeed. A little of each channel reaches the other ear, as it would from speakers in a room, so the sound feels wider, more natural and easier on the ears for hours."
+  "spatialAudioBody": "SeoulFM is mixed for headphones with BS2B (Bauer stereophonic-to-binaural) crossfeed. A little of each channel reaches the other ear, as it would from speakers in a room, so the sound feels wider, more natural and easier on the ears for hours.",
+  "yourSongs": "Your songs",
+  "favourite": "Favourite",
+  "saveToYourSongs": "Save to Your songs",
+  "removeFromYourSongs": "Remove from Your songs",
+  "savedToYourSongs": "Saved to Your songs",
+  "removedFromYourSongs": "Removed from Your songs",
+  "view": "View",
+  "undo": "Undo",
+  "yourSongsEmptyTitle": "Keep the songs you love",
+  "yourSongsEmptyBody": "Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.",
+  "requestFromYourSongs": "Request one of them"
 }

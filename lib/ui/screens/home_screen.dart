@@ -11,16 +11,18 @@ import 'package:seoulfm/state/app_state.dart';
 import 'package:seoulfm/state/channel_controller.dart';
 import 'package:seoulfm/state/cover_colors.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
+import 'package:seoulfm/state/saved_songs.dart';
 import 'package:seoulfm/state/stations_now_playing.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/icons.dart';
 import 'package:seoulfm/ui/nav.dart';
+import 'package:seoulfm/ui/screens/your_songs_screen.dart';
 import 'package:seoulfm/ui/widgets/common.dart';
 import 'package:seoulfm/ui/widgets/notices.dart';
 import 'package:seoulfm/ui/widgets/support_card.dart';
 
 /// The home tab is the stations' shop window: a greeting, the featured stations as large
-/// cards, then every other station as a genre tile. Each shows what it is playing right now.
+/// cards, the listener's saved songs, then every other station as a genre tile. Each shows what it is playing right now.
 /// Tapping a station tunes and plays it; tapping the one already playing opens the player.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -47,6 +49,7 @@ class HomeScreen extends StatelessWidget {
                 const SliverToBoxAdapter(child: _YourStations()),
                 SliverToBoxAdapter(child: ShelfTitle(context.l.featuredStations)),
                 SliverToBoxAdapter(child: _FeaturedCarousel(channels: featured)),
+                const SliverToBoxAdapter(child: _YourSongs()),
                 if (rest.isNotEmpty) ...[
                   const SliverToBoxAdapter(child: SupportCard()),
                   SliverToBoxAdapter(child: ShelfTitle(context.l.genresAndEras)),
@@ -616,6 +619,80 @@ class _StationBubble extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+// ── Your songs ────────────────────────────────────────────────────────────
+
+/// The newest saved songs as a shelf of covers; See all opens the list. Hidden until one is saved.
+class _YourSongs extends StatelessWidget {
+  const _YourSongs();
+
+  static const _shown = 20;
+
+  @override
+  Widget build(BuildContext context) {
+    final songs = context.watch<SavedSongs>().songs;
+    if (songs.isEmpty) return const SizedBox.shrink();
+    final c = context.sfm;
+    final shown = songs.take(_shown).map((s) => s.track).toList();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ShelfTitle(
+          context.l.yourSongs,
+          trailing: TextButton(
+            onPressed: () => Nav.push(const YourSongsScreen()),
+            style: TextButton.styleFrom(foregroundColor: c.muted),
+            child: Text(context.l.seeAll, style: const TextStyle(fontWeight: FontWeight.w600)),
+          ),
+        ),
+        SizedBox(
+          // The cover plus two lines of text, which grow with the system text size.
+          height: 146 + MediaQuery.textScalerOf(context).scale(40),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: shown.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            itemBuilder: (context, i) {
+              final t = shown[i];
+              return Pressable(
+                semanticLabel: '${t.displayTitle}, ${t.displayArtist}',
+                // A live-feed song without an id has no page: its menu instead.
+                onTap: t.id == null ? () => showTrackActions(context, t) : () => Nav.openSong(t),
+                onLongPress: () {
+                  HapticFeedback.mediumImpact();
+                  showTrackActions(context, t);
+                },
+                child: SizedBox(
+                  width: 140,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Artwork(t.artworkUrl, size: 140, radius: Radii.md, iconSize: 32),
+                      const SizedBox(height: 6),
+                      Text(
+                        t.displayTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                      ),
+                      Text(
+                        t.displayArtist,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: c.muted, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

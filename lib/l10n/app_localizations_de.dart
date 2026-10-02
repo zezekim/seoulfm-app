@@ -735,4 +735,38 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM ist mit BS2B-Crossfeed (Bauer stereophonic-to-binaural) für Kopfhörer abgemischt. Ein wenig von jedem Kanal erreicht auch das andere Ohr, wie bei Lautsprechern im Raum. So klingt es breiter, natürlicher und ist auch nach Stunden noch angenehm für die Ohren.';
+
+  @override
+  String get yourSongs => 'Your songs';
+
+  @override
+  String get favourite => 'Favourite';
+
+  @override
+  String get saveToYourSongs => 'Save to Your songs';
+
+  @override
+  String get removeFromYourSongs => 'Remove from Your songs';
+
+  @override
+  String get savedToYourSongs => 'Saved to Your songs';
+
+  @override
+  String get removedFromYourSongs => 'Removed from Your songs';
+
+  @override
+  String get view => 'View';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get yourSongsEmptyTitle => 'Keep the songs you love';
+
+  @override
+  String get yourSongsEmptyBody =>
+      'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.';
+
+  @override
+  String get requestFromYourSongs => 'Request one of them';
 }

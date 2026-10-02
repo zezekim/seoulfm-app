@@ -7,8 +7,10 @@ import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/l10n/app_localizations.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
+import 'package:seoulfm/state/saved_songs.dart';
 import 'package:seoulfm/theme.dart';
 import 'package:seoulfm/ui/widgets/request_sheet.dart';
+import 'package:seoulfm/ui/widgets/save_button.dart';
 import 'package:seoulfm/ui/share.dart';
 import 'package:seoulfm/ui/nav.dart';
 import 'package:seoulfm/state/now_playing_controller.dart';
@@ -464,12 +466,13 @@ class TrackRow extends StatelessWidget {
   }
 }
 
-/// A song's actions (long-press on a row): request, its page, its artist, share.
+/// A song's actions (long-press on a row): request, save to Your songs, its page, its artist, share.
 Future<void> showTrackActions(BuildContext context, Track t) => showModalBottomSheet<void>(
   context: context,
   useRootNavigator: true,
   builder: (sheet) {
     final c = sheet.sfm;
+    final saved = sheet.watch<SavedSongs>().isSaved(t);
     void go(VoidCallback f) {
       Navigator.pop(sheet);
       f();
@@ -496,6 +499,12 @@ Future<void> showTrackActions(BuildContext context, Track t) => showModalBottomS
               leading: const Icon(AppIcons.request),
               title: Text(sheet.l.request),
               onTap: () => go(() => showRequestSheet(context, t)),
+            ),
+          if (SavedSongs.canSave(t))
+            ListTile(
+              leading: HeartIcon(fill: saved ? 1 : 0, size: 24),
+              title: Text(saved ? sheet.l.removeFromYourSongs : sheet.l.saveToYourSongs),
+              onTap: () => go(() => toggleSaved(context, t)),
             ),
           if (t.id != null)
             ListTile(

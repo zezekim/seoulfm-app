@@ -12,6 +12,7 @@ import 'package:seoulfm/state/now_playing_controller.dart';
 import 'package:seoulfm/state/ratings_controller.dart';
 import 'package:seoulfm/state/request_tracker.dart';
 import 'package:seoulfm/state/runtime_config.dart';
+import 'package:seoulfm/state/saved_songs.dart';
 import 'package:seoulfm/state/session.dart';
 import 'package:seoulfm/state/stations_now_playing.dart';
 import 'package:seoulfm/state/support_store.dart';
@@ -39,6 +40,7 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
   final covers = CoverColors();
   final support = SupportStore();
   final moderation = Moderation();
+  final saved = SavedSongs();
   late final CarPlayBridge carPlay = CarPlayBridge(onTune: (key) => tuneIn(key, play: true, fromCar: true));
 
   final ValueNotifier<LosslessPrompt?> losslessPrompt = ValueNotifier(null);

@@ -1379,6 +1379,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SeoulFM is mixed for headphones with BS2B (Bauer stereophonic-to-binaural) crossfeed. A little of each channel reaches the other ear, as it would from speakers in a room, so the sound feels wider, more natural and easier on the ears for hours.'**
   String get spatialAudioBody;
+
+  /// No description provided for @yourSongs.
+  ///
+  /// In en, this message translates to:
+  /// **'Your songs'**
+  String get yourSongs;
+
+  /// No description provided for @favourite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourite'**
+  String get favourite;
+
+  /// No description provided for @saveToYourSongs.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Your songs'**
+  String get saveToYourSongs;
+
+  /// No description provided for @removeFromYourSongs.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Your songs'**
+  String get removeFromYourSongs;
+
+  /// No description provided for @savedToYourSongs.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to Your songs'**
+  String get savedToYourSongs;
+
+  /// No description provided for @removedFromYourSongs.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from Your songs'**
+  String get removedFromYourSongs;
+
+  /// No description provided for @view.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get view;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @yourSongsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the songs you love'**
+  String get yourSongsEmptyTitle;
+
+  /// No description provided for @yourSongsEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the heart on the player or on a song’s page, or choose Save to Your songs in a song’s menu. They stay on this phone, no account needed.'**
+  String get yourSongsEmptyBody;
+
+  /// No description provided for @requestFromYourSongs.
+  ///
+  /// In en, this message translates to:
+  /// **'Request one of them'**
+  String get requestFromYourSongs;
 }
 
 class _AppLocalizationsDelegate

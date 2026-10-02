@@ -696,4 +696,38 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get spatialAudioBody =>
       'SeoulFM은 BS2B(Bauer stereophonic-to-binaural) 크로스피드로 헤드폰에 맞게 믹스돼요. 방 안의 스피커처럼 각 채널의 소리가 반대쪽 귀에도 살짝 전해져, 더 넓고 자연스럽게 들리고 오래 들어도 귀가 편해요.';
+
+  @override
+  String get yourSongs => '저장한 곡';
+
+  @override
+  String get favourite => '즐겨찾기';
+
+  @override
+  String get saveToYourSongs => '저장한 곡에 추가';
+
+  @override
+  String get removeFromYourSongs => '저장한 곡에서 삭제';
+
+  @override
+  String get savedToYourSongs => '저장한 곡에 추가했어요';
+
+  @override
+  String get removedFromYourSongs => '저장한 곡에서 삭제했어요';
+
+  @override
+  String get view => '보기';
+
+  @override
+  String get undo => '실행 취소';
+
+  @override
+  String get yourSongsEmptyTitle => '좋아하는 곡을 모아 보세요';
+
+  @override
+  String get yourSongsEmptyBody =>
+      '플레이어나 곡 페이지에서 하트를 누르거나, 곡 메뉴에서 ‘저장한 곡에 추가’를 고르세요. 계정 없이 이 휴대폰에 저장돼요.';
+
+  @override
+  String get requestFromYourSongs => '이 중에서 한 곡 신청하기';
 }
