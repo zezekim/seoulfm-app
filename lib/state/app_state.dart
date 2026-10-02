@@ -8,6 +8,7 @@ import 'package:seoulfm/api/api.dart';
 import 'package:seoulfm/api/models.dart';
 import 'package:seoulfm/audio/radio_handler.dart';
 import 'package:seoulfm/data/channels.dart';
+import 'package:seoulfm/platform/attestation.dart';
 import 'package:seoulfm/platform/carplay_bridge.dart';
 import 'package:seoulfm/platform/home_widgets.dart';
 import 'package:seoulfm/state/channel_controller.dart';
@@ -113,6 +114,11 @@ class AppState extends ChangeNotifier with WidgetsBindingObserver {
     radio.stationsNowPlaying = () => stations.byStation;
     radio.songPositionMs = nowPlaying.positionMs;
 
+    // Writes carry a device proof once the dashboard turns attestation on; each config poll
+    // keeps the API's policy and the device's key fresh.
+    final attestation = Attestation.instance..enabled = () => runtime.config.attestation;
+    api.attestor = attestation;
+    runtime.addListener(attestation.warmUp);
     runtime.start();
     channels.addListener(_onChannels);
     channels.start();

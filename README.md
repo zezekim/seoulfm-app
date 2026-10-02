@@ -33,6 +33,7 @@ every REST call returns 401 and only the tuned station's live feed works.
 | `SEOULFM_RUNTIME_CONFIG_URL` | dash-api runtime config | Operators' notices and listener delay. |
 | `GIT_COMMIT` | none | The commit, shown after the version in More (`$(git rev-parse --short HEAD)`). The version and build number come from `pubspec.yaml`. |
 | `SENTRY_DSN` | none (off) | Crash and error reports to Sentry. Nothing is sent without it. |
+| `PLAY_INTEGRITY_CLOUD_PROJECT_NUMBER` | none (off) | The Google Cloud project number linked in Play Console → App integrity. Android sends Play Integrity proofs with writes only with it (and the dashboard flag; `docs/app-attestation.md`). |
 
 `flutter analyze` and `flutter test` must pass. `flutter gen-l10n` runs on `pub get`. CI (`.github/workflows/ci.yml`)
 runs both on every push, then builds the Android and iOS apps.
@@ -205,6 +206,9 @@ here: the car shows only system templates.
 6. **Icons.** Generated from the site's wordmark (`dart run flutter_launcher_icons`). The iOS
    1024 px icon is upscaled from the site's 512 px file: replace `assets/icon/app-icon-1024.png`
    with a real 1024 px master and regenerate.
+
+Uploads and store listings can be automated with fastlane and the tag-triggered workflow
+(`.github/workflows/release.yml`): see `docs/release.md`.
 
 ## Not in this version
 

@@ -49,3 +49,10 @@ app.*.map.json
 
 # Local build settings (API keys). Copy dart-defines.example.json.
 dart-defines.json
+
+# fastlane run output and local release credentials (docs/release.md)
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output/
+/vendor/bundle/
+*.p8

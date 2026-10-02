@@ -14,5 +14,10 @@
 		<string>applinks:seoul.fm</string>
 		<string>applinks:www.seoul.fm</string>
 	</array>
+	<!-- App Attest (lib/platform/attestation.dart). Production keys in every build signed with the
+	     paid team: the API verifies against Apple's production root. Not in Dev.entitlements,
+	     which free-team builds use and which can't carry it. -->
+	<key>com.apple.developer.devicecheck.appattest-environment</key>
+	<string>production</string>
 </dict>
 </plist>
