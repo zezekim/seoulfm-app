@@ -47,7 +47,7 @@ class NowPlayingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final page = AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: systemBars(Brightness.dark),
       child: const _NowPlayingPage(),
     );
     if (theme.brightness == Brightness.dark) return page;

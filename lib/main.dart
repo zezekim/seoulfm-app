@@ -73,6 +73,7 @@ Future<void> _start(Future<void> prefs) async {
   await AccessibilityPrefs.start();
   DeepLinks.instance.start();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(systemBars(PlatformDispatcher.instance.platformBrightness));
   runApp(
     ChangeNotifierProvider.value(
       value: app,

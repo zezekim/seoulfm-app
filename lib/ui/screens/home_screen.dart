@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
     final rest = channels.skip(_featuredCount).toList();
     final dark = Theme.of(context).brightness == Brightness.dark;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+      value: systemBars(dark ? Brightness.dark : Brightness.light),
       child: Scaffold(
         body: Stack(
           children: [

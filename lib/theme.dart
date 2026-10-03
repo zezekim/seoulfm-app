@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart' show CupertinoPageTransition, CupertinoPageTransitionsBuilder;
 import 'package:seoulfm/data/app_language.dart';
 
@@ -104,6 +105,23 @@ const fontFamily = 'Pretendard';
 @visibleForTesting
 final fontFallback = <String>['Apple SD Gothic Neo', 'Hiragino Sans', 'PingFang SC', 'Noto Sans CJK KR', 'Noto Sans'];
 
+/// The status and navigation bars for a page of this brightness. Both stay see-through, as the app
+/// draws edge to edge: Flutter's own `light` and `dark` presets paint the navigation bar solid, and
+/// some phones (Xiaomi's HyperOS) then fill it white or add their own scrim.
+SystemUiOverlayStyle systemBars(Brightness brightness) {
+  final icons = brightness == Brightness.dark ? Brightness.light : Brightness.dark;
+  return SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: icons,
+    statusBarBrightness: brightness,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    systemNavigationBarIconBrightness: icons,
+    systemNavigationBarContrastEnforced: false,
+    systemStatusBarContrastEnforced: false,
+  );
+}
+
 ThemeData buildTheme(Brightness brightness, Color accent) {
   final c = brightness == Brightness.dark ? SfmColors.dark : SfmColors.light;
   final base = ThemeData(brightness: brightness, useMaterial3: true);
@@ -167,6 +185,7 @@ ThemeData buildTheme(Brightness brightness, Color accent) {
       foregroundColor: c.text,
       elevation: 0,
       centerTitle: false,
+      systemOverlayStyle: systemBars(brightness),
     ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: c.surface,
